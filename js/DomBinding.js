@@ -69,7 +69,7 @@ smalltalk.Var.klass);
 
 smalltalk.addClass('VarBool', smalltalk.Var, [], 'DomBinding');
 smalltalk.addMethod(
-"_&",
+"__and",
 smalltalk.method({
 selector: "&",
 category: 'controlling',
@@ -264,7 +264,7 @@ referencedClasses: []
 smalltalk.VarBool);
 
 smalltalk.addMethod(
-"_|",
+"__or",
 smalltalk.method({
 selector: "|",
 category: 'controlling',
@@ -327,41 +327,39 @@ selector: "dBind",
 category: 'assigning',
 fn: function (){
 var self=this;
-var $1,$2;
-var mutationObserver;
-var myObserver;
-var config;
-var mutationHandler;
+var mutationObserver,myObserver,config,mutationHandler;
+return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
-return smalltalk.send(mutationRecords,"_do_",[(function(each){
+return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-temp=($(each.target).attr(self._attr()));;
-;
-return smalltalk.send(self,"_is_",[temp]);
-})]);
-});
-$1=smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_isWebkit",[]);
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(_st(each)._target())._attr())._self())._attr();
+temp;
+return _st(self)._is_(temp);
+}, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
+$1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
 if(smalltalk.assert($1)){
-mutationObserver=smalltalk.send(window,"_WebKitMutationObserver",[]);
+mutationObserver="WebKitMutationObserver";
 mutationObserver;
 } else {
-mutationObserver=smalltalk.send(window,"_MutationObserver",[]);
+mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver= new mutationObserver(mutationHandler);;
-;
-config={characterData: true, attributes: true, attributeFilter:[self._attr()] };
-;
-smalltalk.send(smalltalk.send(smalltalk.send(self["@selector"],"_asJQuery",[]),"_toArray",[]),"_do_",[(function(each){
-return smalltalk.send(myObserver,"_observe_with_",[each,config]);
-})]);
+_st(_st(myObserver).__eq((smalltalk.NativeFunction || NativeFunction)))._class_value_("mutationObserver",mutationHandler);
+config=_st((smalltalk.Dictionary || Dictionary))._new();
+_st(config)._at_put_("characterData",true);
+_st(config)._at_put_("attributes",true);
+_st(config)._at_put_add_("attributeFilter",_st((smalltalk.Array || Array))._new(),_st(self)._attr());
+_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
-},
+}, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrBool)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                 <temp=($(each.target).attr(self._attr()));>. self is:temp.\x0a                                        ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]\x0a                                            ifFalse:[mutationObserver:=window MutationObserver.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0a<myObserver= new mutationObserver(mutationHandler);>.\x0a\x0a<config={characterData: true, attributes: true, attributeFilter:[self._attr()] }>.\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "is:", "ifTrue:ifFalse:", "WebKitMutationObserver", "MutationObserver", "isWebkit", "observe:with:", "toArray", "asJQuery"],
-referencedClasses: ["HTMLCanvas"]
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                 temp:=each target attr self attr. self is:temp.\x0a                                        ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver= NativeFunction class:'mutationObserver' value:mutationHandler.\x0a\x0aconfig:=Dictionary new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: Array new add: self attr.\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "attr", "self", "target", "is:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "=", "new", "at:put:", "at:put:add:", "observe:with:", "toArray", "asJQuery"],
+referencedClasses: ["HTMLCanvas", "NativeFunction", "Dictionary", "Array"]
 }),
 smalltalk.AttrBool);
 
@@ -476,41 +474,38 @@ selector: "dBind",
 category: 'assigning',
 fn: function (){
 var self=this;
-var $1,$2;
-var mutationObserver;
-var myObserver;
-var config;
-var mutationHandler;
+var mutationObserver,myObserver,config,mutationHandler;
+return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
-return smalltalk.send(mutationRecords,"_do_",[(function(each){
+return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-temp=($(each.target).css(self._attr()));;
-;
-return smalltalk.send(self,"_is_",[temp]);
-})]);
-});
-$1=smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_isWebkit",[]);
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(each)._target())._css_(_st(self)._attr());
+temp;
+return _st(self)._is_(temp);
+}, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
+$1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
 if(smalltalk.assert($1)){
-mutationObserver=smalltalk.send(window,"_WebKitMutationObserver",[]);
+mutationObserver="WebKitMutationObserver";
 mutationObserver;
 } else {
-mutationObserver=smalltalk.send(window,"_MutationObserver",[]);
+mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver= new mutationObserver(mutationHandler);;
-;
-config={attributes: true, attributeFilter:[self._attr()] };
-;
-smalltalk.send(smalltalk.send(smalltalk.send(self["@selector"],"_asJQuery",[]),"_toArray",[]),"_do_",[(function(each){
-return smalltalk.send(myObserver,"_observe_with_",[each,config]);
-})]);
+_st(_st(myObserver).__eq((smalltalk.NativeFunction || NativeFunction)))._class_value_("mutationObserver",mutationHandler);
+config=_st((smalltalk.Dictionary || Dictionary))._new();
+_st(config)._at_put_("attributes",true);
+_st(config)._at_put_add_("attributeFilter",_st((smalltalk.Array || Array))._new(),_st(self)._attr());
+_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
-},
+}, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrBool)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                <temp=($(each.target).css(self._attr()));>.self is:temp.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]\x0a                                            ifFalse:[mutationObserver:=window MutationObserver.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0a<myObserver= new mutationObserver(mutationHandler);>.\x0a\x0a\x0a<config={attributes: true, attributeFilter:[self._attr()] }>.\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "is:", "ifTrue:ifFalse:", "WebKitMutationObserver", "MutationObserver", "isWebkit", "observe:with:", "toArray", "asJQuery"],
-referencedClasses: ["HTMLCanvas"]
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                temp:=each target css: self attr.self is:temp.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver= NativeFunction class:'mutationObserver' value:mutationHandler.\x0a\x0aconfig:=Dictionary new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: Array new add: self attr.\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "css:", "attr", "target", "is:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "=", "new", "at:put:", "at:put:add:", "observe:with:", "toArray", "asJQuery"],
+referencedClasses: ["HTMLCanvas", "NativeFunction", "Dictionary", "Array"]
 }),
 smalltalk.StyleAttrBool);
 
@@ -587,7 +582,7 @@ smalltalk.StyleAttrBool.klass);
 
 smalltalk.addClass('VarNumb', smalltalk.Var, [], 'DomBinding');
 smalltalk.addMethod(
-"_&",
+"__and",
 smalltalk.method({
 selector: "&",
 category: 'converting',
@@ -861,7 +856,7 @@ referencedClasses: []
 smalltalk.VarNumb);
 
 smalltalk.addMethod(
-"_\x5c\x5c",
+"__backslash_backslash",
 smalltalk.method({
 selector: "\x5c\x5c",
 category: 'arithmetic',
@@ -1391,7 +1386,7 @@ referencedClasses: []
 smalltalk.VarNumb);
 
 smalltalk.addMethod(
-"_|",
+"__or",
 smalltalk.method({
 selector: "|",
 category: 'converting',
@@ -1421,7 +1416,7 @@ smalltalk.VarNumb);
 
 smalltalk.addClass('AttrNumb', smalltalk.VarNumb, ['selector', 'attr', 'unit'], 'DomBinding');
 smalltalk.addMethod(
-"_&",
+"__and",
 smalltalk.method({
 selector: "&",
 category: 'converting',
@@ -1604,7 +1599,7 @@ referencedClasses: []
 smalltalk.AttrNumb);
 
 smalltalk.addMethod(
-"_\x5c\x5c",
+"__backslash_backslash",
 smalltalk.method({
 selector: "\x5c\x5c",
 category: 'arithmetic',
@@ -1710,41 +1705,39 @@ selector: "dBind",
 category: 'assigning',
 fn: function (){
 var self=this;
-var $1,$2;
-var mutationObserver;
-var myObserver;
-var config;
-var mutationHandler;
+var mutationObserver,myObserver,config,mutationHandler;
+return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
-return smalltalk.send(mutationRecords,"_do_",[(function(each){
+return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-temp=($(each.target).attr(self._attr()));;
-;
-return smalltalk.send(self,"_is_",[smalltalk.send(smalltalk.send(temp,"_copyFrom_to_",[(0),smalltalk.send(smalltalk.send(temp,"_size",[]),"__minus",[smalltalk.send(self["@unit"],"_size",[])])]),"_asNumber",[])]);
-})]);
-});
-$1=smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_isWebkit",[]);
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(each)._target())._attr_(_st(self)._attr());
+temp;
+return _st(self)._is_(_st(_st(temp)._copyFrom_to_((0),_st(_st(temp)._size()).__minus(_st(self["@unit"])._size())))._asNumber());
+}, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
+$1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
 if(smalltalk.assert($1)){
-mutationObserver=smalltalk.send(window,"_WebKitMutationObserver",[]);
+mutationObserver="WebKitMutationObserver";
 mutationObserver;
 } else {
-mutationObserver=smalltalk.send(window,"_MutationObserver",[]);
+mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver= new mutationObserver(mutationHandler);;
-;
-config={characterData: true, attributes: true, attributeFilter:[self._attr()] };
-;
-smalltalk.send(smalltalk.send(smalltalk.send(self["@selector"],"_asJQuery",[]),"_toArray",[]),"_do_",[(function(each){
-return smalltalk.send(myObserver,"_observe_with_",[each,config]);
-})]);
+_st(_st(myObserver).__eq((smalltalk.NativeFunction || NativeFunction)))._class_value_("mutationObserver",mutationHandler);
+config=_st((smalltalk.Dictionary || Dictionary))._new();
+_st(config)._at_put_("characterData",true);
+_st(config)._at_put_("attributes",true);
+_st(config)._at_put_add_("attributeFilter",_st((smalltalk.Array || Array))._new(),_st(self)._attr());
+_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
-},
+}, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrNumb)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a <temp=($(each.target).attr(self._attr()));>. self is:(temp copyFrom:0 to: temp size- unit size ) asNumber.\x0a                     ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]\x0a                                            ifFalse:[mutationObserver:=window MutationObserver.].\x0a                                            \x0a \x0a<myObserver= new mutationObserver(mutationHandler);>.\x0a\x0a\x0a<config={characterData: true, attributes: true, attributeFilter:[self._attr()] }>.\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "is:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "WebKitMutationObserver", "MutationObserver", "isWebkit", "observe:with:", "toArray", "asJQuery"],
-referencedClasses: ["HTMLCanvas"]
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a temp:=each target attr: self attr. self is:(temp copyFrom:0 to: temp size- unit size ) asNumber.\x0a                     ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver= NativeFunction class:'mutationObserver' value:mutationHandler.\x0a\x0aconfig:=Dictionary new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: Array new add: self attr.\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "attr:", "attr", "target", "is:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "class:value:", "=", "new", "at:put:", "at:put:add:", "observe:with:", "toArray", "asJQuery"],
+referencedClasses: ["HTMLCanvas", "NativeFunction", "Dictionary", "Array"]
 }),
 smalltalk.AttrNumb);
 
@@ -2177,7 +2170,7 @@ referencedClasses: []
 smalltalk.AttrNumb);
 
 smalltalk.addMethod(
-"_|",
+"__or",
 smalltalk.method({
 selector: "|",
 category: 'converting',

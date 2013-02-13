@@ -160,16 +160,19 @@ dBind
 |mutationObserver myObserver config mutationHandler|
 
 mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| 
-                                 <temp=($(each.target).attr(self._attr()));>. self is:temp.
+                                 temp:=each target attr self attr. self is:temp.
                                         ]].
 
-(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]
-                                            ifFalse:[mutationObserver:=window MutationObserver.].
+(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]
+                                            ifFalse:[mutationObserver:='MutationObserver'.].
                                             
  "mutation observer is native code, thus it is not a BlockClosure"
-<myObserver= new mutationObserver(mutationHandler);>.
+myObserver= NativeFunction class:'mutationObserver' value:mutationHandler.
 
-<config={characterData: true, attributes: true, attributeFilter:[self._attr()] }>.
+config:=Dictionary new.
+config at:'characterData' put:true.
+config at:'attributes' put:true.
+config at:'attributeFilter' put: Array new add: self attr.
                        
 selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
            
@@ -226,16 +229,17 @@ dBind
 |mutationObserver myObserver config mutationHandler|
 
 mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| 
-                                <temp=($(each.target).css(self._attr()));>.self is:temp.]].
+                                temp:=each target css: self attr.self is:temp.]].
 
-(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]
-                                            ifFalse:[mutationObserver:=window MutationObserver.].
+(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]
+                                            ifFalse:[mutationObserver:='MutationObserver'.].
                                             
  "mutation observer is native code, thus it is not a BlockClosure"
-<myObserver= new mutationObserver(mutationHandler);>.
+myObserver= NativeFunction class:'mutationObserver' value:mutationHandler.
 
-
-<config={attributes: true, attributeFilter:[self._attr()] }>.
+config:=Dictionary new.
+config at:'attributes' put:true.
+config at:'attributeFilter' put: Array new add: self attr.
 
                        
 selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
@@ -668,17 +672,19 @@ dBind
 |mutationObserver myObserver config mutationHandler|
 
 mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| 
- <temp=($(each.target).attr(self._attr()));>. self is:(temp copyFrom:0 to: temp size- unit size ) asNumber.
+ temp:=each target attr: self attr. self is:(temp copyFrom:0 to: temp size- unit size ) asNumber.
                      ]].
 
-(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]
-                                            ifFalse:[mutationObserver:=window MutationObserver.].
+(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]
+                                            ifFalse:[mutationObserver:='MutationObserver'.].
                                             
- 
-<myObserver= new mutationObserver(mutationHandler);>.
+ "mutation observer is native code, thus it is not a BlockClosure"
+myObserver= NativeFunction class:'mutationObserver' value:mutationHandler.
 
-
-<config={characterData: true, attributes: true, attributeFilter:[self._attr()] }>.
+config:=Dictionary new.
+config at:'characterData' put:true.
+config at:'attributes' put:true.
+config at:'attributeFilter' put: Array new add: self attr.
                        
 selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
            
