@@ -15,6 +15,10 @@ initializeFromMethodContext: aMethodContext
     	self locals at: key put: value ]
 !
 
+localAt: aString
+	^ self locals at: aString ifAbsent: [ nil ]
+!
+
 localAt: aString put: anObject
 	self locals at: aString put: anObject
 !
@@ -86,11 +90,31 @@ initialize
 
 !ASTInterpreter methodsFor: 'interpreting'!
 
+assign: aNode to: anObject
+	^ aNode binding isInstanceVar 
+    	ifTrue: [ self context receiver instVarAt: aNode value put: anObject ]
+      	ifFalse: [ self context localAt: aNode value put: anObject ]
+!
+
 eval: aString
-	"Evaluate aString as JS source inside an immediately evaluated JS function. 
+	"Evaluate aString as JS source inside an JS function. 
     aString is not sandboxed."
     
-    ^ Compiler new eval: '(function() { ', aString, ' })()'
+    | source function |
+    
+    source := String streamContents: [ :str |
+    	str nextPutAll: '(function('.
+        self context locals keys 
+        	do: [ :each | str nextPutAll: each ]
+          	separatedBy: [ str nextPutAll: ',' ].
+        str 
+        	nextPutAll: '){ return (function() {';
+        	nextPutAll: aString;
+            nextPutAll: '})() })' ].
+            
+	function := Compiler new eval: source.
+    
+	^ function valueWithPossibleArguments: self context locals values
 !
 
 interpret: aNode
@@ -112,6 +136,10 @@ messageFromSendNode: aSendNode
 ! !
 
 !ASTInterpreter methodsFor: 'visiting'!
+
+visitAssignmentNode: aNode
+	^ self assign: aNode left to: (self interpretNode: aNode right)
+!
 
 visitBlockNode: aNode
     ^ [ self interpretNode: aNode nodes first ]
@@ -164,5 +192,11 @@ visitSequenceNode: aNode
 
 visitValueNode: aNode
 	^ aNode value
+!
+
+visitVariableNode: aNode
+	^ aNode binding isInstanceVar
+    	ifTrue: [ self context receiver instVarAt: aNode value ]
+      	ifFalse: [ self context localAt: aNode value ]
 ! !
 

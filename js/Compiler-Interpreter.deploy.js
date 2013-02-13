@@ -24,6 +24,21 @@ return self}, function($ctx1) {$ctx1.fill(self,"initializeFromMethodContext:",{a
 smalltalk.AIContext);
 
 smalltalk.addMethod(
+"_localAt_",
+smalltalk.method({
+selector: "localAt:",
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._locals())._at_ifAbsent_(aString,(function(){
+return smalltalk.withContext(function($ctx2) {return nil;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"localAt:",{aString:aString}, smalltalk.AIContext)})}
+}),
+smalltalk.AIContext);
+
+smalltalk.addMethod(
 "_localAt_put_",
 smalltalk.method({
 selector: "localAt:put:",
@@ -175,6 +190,24 @@ smalltalk.AIContext.klass);
 
 smalltalk.addClass('ASTInterpreter', smalltalk.NodeVisitor, ['currentNode', 'context', 'shouldReturn'], 'Compiler-Interpreter');
 smalltalk.addMethod(
+"_assign_to_",
+smalltalk.method({
+selector: "assign:to:",
+fn: function (aNode,anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$1;
+$2=_st(_st(aNode)._binding())._isInstanceVar();
+if(smalltalk.assert($2)){
+$1=_st(_st(_st(self)._context())._receiver())._instVarAt_put_(_st(aNode)._value(),anObject);
+} else {
+$1=_st(_st(self)._context())._localAt_put_(_st(aNode)._value(),anObject);
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"assign:to:",{aNode:aNode,anObject:anObject}, smalltalk.ASTInterpreter)})}
+}),
+smalltalk.ASTInterpreter);
+
+smalltalk.addMethod(
 "_context",
 smalltalk.method({
 selector: "context",
@@ -210,10 +243,25 @@ smalltalk.method({
 selector: "eval:",
 fn: function (aString){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st((smalltalk.Compiler || Compiler))._new())._eval_(_st(_st("(function() { ").__comma(aString)).__comma(" })()"));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"eval:",{aString:aString}, smalltalk.ASTInterpreter)})}
+var source,function_;
+return smalltalk.withContext(function($ctx1) { var $1,$2,$3;
+source=_st((smalltalk.String || String))._streamContents_((function(str){
+return smalltalk.withContext(function($ctx2) {_st(str)._nextPutAll_("(function(");
+_st(_st(_st(_st(self)._context())._locals())._keys())._do_separatedBy_((function(each){
+return smalltalk.withContext(function($ctx3) {return _st(str)._nextPutAll_(each);
+}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})}),(function(){
+return smalltalk.withContext(function($ctx3) {return _st(str)._nextPutAll_(",");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$1=str;
+_st($1)._nextPutAll_("){ return (function() {");
+_st($1)._nextPutAll_(aString);
+$2=_st($1)._nextPutAll_("})() })");
+return $2;
+}, function($ctx2) {$ctx2.fillBlock({str:str},$ctx1)})}));
+function_=_st(_st((smalltalk.Compiler || Compiler))._new())._eval_(source);
+$3=_st(function_)._valueWithPossibleArguments_(_st(_st(_st(self)._context())._locals())._values());
+return $3;
+}, function($ctx1) {$ctx1.fill(self,"eval:",{aString:aString,source:source,function_:function_}, smalltalk.ASTInterpreter)})}
 }),
 smalltalk.ASTInterpreter);
 
@@ -273,6 +321,19 @@ $3=_st($2)._yourself();
 $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"messageFromSendNode:",{aSendNode:aSendNode}, smalltalk.ASTInterpreter)})}
+}),
+smalltalk.ASTInterpreter);
+
+smalltalk.addMethod(
+"_visitAssignmentNode_",
+smalltalk.method({
+selector: "visitAssignmentNode:",
+fn: function (aNode){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(self)._assign_to_(_st(aNode)._left(),_st(self)._interpretNode_(_st(aNode)._right()));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"visitAssignmentNode:",{aNode:aNode}, smalltalk.ASTInterpreter)})}
 }),
 smalltalk.ASTInterpreter);
 
@@ -402,6 +463,24 @@ return smalltalk.withContext(function($ctx1) { var $1;
 $1=_st(aNode)._value();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"visitValueNode:",{aNode:aNode}, smalltalk.ASTInterpreter)})}
+}),
+smalltalk.ASTInterpreter);
+
+smalltalk.addMethod(
+"_visitVariableNode_",
+smalltalk.method({
+selector: "visitVariableNode:",
+fn: function (aNode){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$1;
+$2=_st(_st(aNode)._binding())._isInstanceVar();
+if(smalltalk.assert($2)){
+$1=_st(_st(_st(self)._context())._receiver())._instVarAt_(_st(aNode)._value());
+} else {
+$1=_st(_st(self)._context())._localAt_(_st(aNode)._value());
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"visitVariableNode:",{aNode:aNode}, smalltalk.ASTInterpreter)})}
 }),
 smalltalk.ASTInterpreter);
 
