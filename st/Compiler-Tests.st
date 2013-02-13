@@ -1,4 +1,69 @@
 Smalltalk current createPackage: 'Compiler-Tests' properties: #{}!
+TestCase subclass: #ASTInterpreterTest
+	instanceVariableNames: ''
+	package: 'Compiler-Tests'!
+
+!ASTInterpreterTest methodsFor: 'accessing'!
+
+analyze: aNode forClass: aClass
+	(SemanticAnalyzer on: aClass) visit: aNode.
+    ^ aNode
+!
+
+interpret: aString
+	^ self 
+    	interpret: aString 
+        withArguments: Dictionary new
+!
+
+interpret: aString withArguments: aDictionary
+	"The food is a methodNode. Interpret the sequenceNode only"
+    
+    | ctx |
+    
+    ctx := AIContext new.
+    aDictionary keysAndValuesDo: [ :key :value |
+    	ctx localAt: key put: value ].
+    
+    ^ ASTInterpreter new
+    	context: ctx;
+    	interpret: (self parse: aString forClass: Object) 
+        	nodes first
+!
+
+parse: aString
+	^ Smalltalk current parse: aString
+!
+
+parse: aString forClass: aClass
+	^ self analyze: (self parse: aString) forClass: aClass
+! !
+
+!ASTInterpreterTest methodsFor: 'tests'!
+
+testBinarySend
+	self assert: (self interpret: 'foo 2+3+4') equals: 9
+!
+
+testBlockLiteral
+	self assert: (self interpret: 'foo ^ true ifTrue: [ 1 ] ifFalse: [ 2 ]') equals: 1.
+    self assert: (self interpret: 'foo true ifTrue: [ ^ 1 ] ifFalse: [ 2 ]') equals: 1.
+    self assert: (self interpret: 'foo ^ false ifTrue: [ 1 ] ifFalse: [ 2 ]') equals: 2
+!
+
+testCascade
+	self assert: (self interpret: 'foo ^ OrderedCollection new add: 2; add: 3; yourself') equals: (OrderedCollection with: 2 with: 3)
+!
+
+testInlinedJSStatement
+	self assert: (self interpret: 'foo <return 2+3>') equals: 5.
+    "self 
+    	assert: (self 
+    		interpret: 'foo: anInteger <return 2 + anInteger>' 
+        	withArguments: #{ 'anInteger' -> 3}) 
+		equals: 5"
+! !
+
 TestCase subclass: #CodeGeneratorTest
 	instanceVariableNames: 'receiver'
 	package: 'Compiler-Tests'!
@@ -357,13 +422,6 @@ testUnknownVariables
 	ast := smalltalk parse: src.
 
 	self should: [ analyzer visit: ast ] raise: UnknownVariableError
-!
-
-testUnknownVariablesDefinedInJS
-
-	< var someVariable = 1 >.
-
-	self shouldnt: [ smalltalk parse: 'foo someVariable' ] raise: UnknownVariableError
 !
 
 testUnknownVariablesWithScope
