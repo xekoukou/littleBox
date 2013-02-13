@@ -449,105 +449,6 @@ selector: aSelector styleAttr: anAttr unit:aUnit
 ^ self new selector: aSelector styleAttr: anAttr unit:aUnit
 ! !
 
-Attr subclass: #AttrString
-	instanceVariableNames: 'numb prop'
-	package: 'DomBinding'!
-
-!AttrString methodsFor: 'accessing'!
-
-attr
-
-^attr
-!
-
-selector
-
-^selector
-!
-
-string
-
-^val
-! !
-
-!AttrString methodsFor: 'assigning'!
-
-dBind
-|mutationObserver myObserver config mutationHandler|
-
-mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| 
-                                  (prop) ifTrue:[ <temp=($(each.target).prop(self._attr()));>. self is:temp. ]
-                                              ifFalse:[
-                                 (style) ifTrue:[<temp=($(each.target).attr(self._attr()));>. self is:temp.]
-                                            ifFalse:[<temp=($(each.target).css(self._attr()));>.self is:temp.]]]].
-(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]
-                                            ifFalse:[mutationObserver:=window MutationObserver.].
-                                            
- 
-<myObserver= new mutationObserver(mutationHandler);>.
-
-
-(style:=true)ifTrue:[<config={attributes: true, attributeFilter:[self._attr()] }>.]
-                       ifFalse:[<config={characterData: true, attributes: true, attributeFilter:[self._attr()] }>.].
-                       
-selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
-           
-
-^self
-!
-
-updateSelf
-
-(prop) ifTrue:[  selector asJQuery prop:attr to: val]
-ifFalse:[
-(style) ifFalse:[selector asJQuery attr:attr to: val]
-            ifTrue:[selector asJQuery css:attr to: val]
-          ]
-! !
-
-!AttrString methodsFor: 'initializing'!
-
-selector:aSelector attr: anAttr
-
-style:=false.
-attr:=anAttr.
-selector:=aSelector.
-!
-
-selector:aSelector prop: aProp
-
-"one such Aprop is textContent"
-
-style:=false.
-attr:=aProp.
-selector:=aSelector.
-prop:=true.
-!
-
-selector:aSelector styleAttr: anAttr
-
-style:=true.
-attr:=anAttr.
-selector:=aSelector.
-! !
-
-!AttrString class methodsFor: 'instance creation'!
-
-selector: aSelector attr: anAttr
-
-^ self new selector: aSelector attr: anAttr
-!
-
-selector: aSelector prop: aProp
-
-^ self new selector: aSelector prop: aProp
-!
-
-selector: aSelector styleAttr: anAttr
-
-^ self new selector: aSelector styleAttr: anAttr
-! !
-
 Object subclass: #Var
 	instanceVariableNames: 'val'
 	package: 'DomBinding'!
@@ -683,7 +584,7 @@ or: aBlock
 ! !
 
 VarBool subclass: #AttrBool
-	instanceVariableNames: 'style selector attr'
+	instanceVariableNames: 'selector attr'
 	package: 'DomBinding'!
 
 !AttrBool methodsFor: 'accessing'!
@@ -709,8 +610,8 @@ dBind
 |mutationObserver myObserver config mutationHandler|
 
 mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| 
-                                 (style) ifTrue:[<temp=($(each.target).attr(self._attr()));>. self is:temp.]
-                                            ifFalse:[<temp=($(each.target).css(self._attr()));>.self is:temp.]]].
+                                 <temp=($(each.target).attr(self._attr()));>. self is:temp.
+                                        ]].
 
 (HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]
                                             ifFalse:[mutationObserver:=window MutationObserver.].
@@ -718,9 +619,7 @@ mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp|
  "mutation observer is native code, thus it is not a BlockClosure"
 <myObserver= new mutationObserver(mutationHandler);>.
 
-
-(style)ifTrue:[<config={attributes: true, attributeFilter:[self._attr()] }>.]
-                       ifFalse:[<config={characterData: true, attributes: true, attributeFilter:[self._attr()] }>.].
+<config={characterData: true, attributes: true, attributeFilter:[self._attr()] }>.
                        
 selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
            
@@ -732,16 +631,15 @@ selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
 
 selector:aSelector attr: anAttr
 
-style:=false.
 attr:=anAttr.
 selector:=aSelector.
-!
+! !
 
-selector:aSelector styleAttr: anAttr
+!AttrBool methodsFor: 'updating'!
 
-style:=true.
-attr:=anAttr.
-selector:=aSelector.
+updateSelf
+
+selector asJQuery attr:attr to: val.
 ! !
 
 !AttrBool class methodsFor: 'instance creation'!
@@ -749,10 +647,1038 @@ selector:=aSelector.
 selector: aSelector attr: anAttr
 
 ^ self new selector: aSelector attr: anAttr
+! !
+
+VarBool subclass: #StyleAttrBool
+	instanceVariableNames: 'selector attr'
+	package: 'DomBinding'!
+
+!StyleAttrBool methodsFor: 'accessing'!
+
+attr
+
+^attr
 !
 
-selector: aSelector styleAttr: anAttr
+bool
 
-^ self new selector: aSelector styleAttr: anAttr
+^val
+!
+
+selector
+
+^selector
+! !
+
+!StyleAttrBool methodsFor: 'assigning'!
+
+dBind
+|mutationObserver myObserver config mutationHandler|
+
+mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| 
+                                <temp=($(each.target).css(self._attr()));>.self is:temp.]].
+
+(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]
+                                            ifFalse:[mutationObserver:=window MutationObserver.].
+                                            
+ "mutation observer is native code, thus it is not a BlockClosure"
+<myObserver= new mutationObserver(mutationHandler);>.
+
+
+<config={attributes: true, attributeFilter:[self._attr()] }>.
+
+                       
+selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
+           
+
+^self
+! !
+
+!StyleAttrBool methodsFor: 'initializing'!
+
+selector:aSelector attr: anAttr
+
+attr:=anAttr.
+selector:=aSelector.
+! !
+
+!StyleAttrBool methodsFor: 'updating'!
+
+updateSelf
+
+selector asJQuery css:attr to: val.
+! !
+
+!StyleAttrBool class methodsFor: 'instance creation'!
+
+selector: aSelector attr: anAttr
+
+^ self new selector: aSelector attr: anAttr
+! !
+
+Var subclass: #VarNumb
+	instanceVariableNames: ''
+	package: 'DomBinding'!
+
+!VarNumb methodsFor: 'accessing'!
+
+numb
+
+^val
+! !
+
+!VarNumb methodsFor: 'arithmetic'!
+
+* anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+
+	"Inlined in the Compiler"
+	<return self._numb() * aNumber>
+!
+
++ anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+                                                     
+	"Inlined in the Compiler"
+	<return self._numb() + aNumber>
+!
+
+-  anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+	"Inlined in the Compiler"
+	<return self._numb() - aNumber>
+!
+
+/ anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+	"Inlined in the Compiler"
+	<return self._numb() / aNumber>
+!
+
+\\ anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+	<return self.numb() % aNumber>
+!
+
+abs
+	^ <Math.abs(self._numb());>
+!
+
+max: anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+	<return Math.max(self._numb(), aNumber);>
+!
+
+min: anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+                                                     
+	<return Math.min(self._numb(), aNumber);>
+!
+
+negated
+	^0 - self numb.
+!
+
+sqrt
+	<return Math.sqrt(self._numb())>
+!
+
+squared
+	^self numb * self numb
+! !
+
+!VarNumb methodsFor: 'comparing'!
+
+< anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+	"Inlined in the Compiler"
+	<return self._numb() < aNumber>
+!
+
+<= anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+	"Inlined in the Compiler"
+	<return self._numb() <= aNumber>
+!
+
+= anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+	aNumber isNumber ifFalse: [^false]. 
+	<return Number(self._numb()) == aNumber>.
+!
+
+>anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+	"Inlined in the Compiler"
+	<return self._numb() >> aNumber>
+!
+
+>= anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+	"Inlined in the Compiler"
+	<return self._numb() >>= aNumber>
+! !
+
+!VarNumb methodsFor: 'converting'!
+
+& anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+	<return self._numb() & aNumber>
+!
+
+asJSON
+	^self numb
+!
+
+asString
+	^self printString
+!
+
+atRandom
+    ^(Random new next * self numb) truncated + 1
+!
+
+rounded
+	<return Math.round(self._numb());>
+!
+
+to: aNumber
+	| array first last count |
+	first := self truncated.
+	last := aNumber truncated + 1.
+	count := 1.
+	array := Array new.
+	(last - first) timesRepeat: [
+	    array at: count put: first.
+	    count := count + 1.
+	    first := first + 1].
+	^array
+!
+
+to: stop by: step
+	| array value pos |
+	value := self numb.
+	array := Array new.
+	pos := 1.
+	step = 0 ifTrue: [self error: 'step must be non-zero'].
+	step < 0
+		ifTrue: [[ value >= stop ] whileTrue: [
+	    			array at: pos put: value.
+	    			pos := pos + 1.
+	    			value := value + step]]
+		ifFalse: [[ value <= stop ] whileTrue: [
+	    			array at: pos put: value.
+	  			pos := pos + 1.
+	    			value := value + step]].
+	^array
+!
+
+truncated
+|result|
+
+    self numb >= 0 
+        ifTrue: [<result = Math.floor(self._numb());>]
+        ifFalse: [<result = (Math.floor(self._numb()* (-1)) * (-1));>].
+
+    ^ result
+!
+
+| anObject
+
+|aNumber|
+
+	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
+                                                     ifFalse:[aNumber:= anObject].
+	<return self._numb() | aNumber>
+! !
+
+!VarNumb methodsFor: 'enumerating'!
+
+timesRepeat: aBlock
+	| count |
+	count := 1.
+	[count > self numb] whileFalse: [
+	    aBlock value.
+	    count := count + 1]
+!
+
+to: stop by: step do: aBlock
+	| value |
+	value := self numb.
+	step = 0 ifTrue: [self error: 'step must be non-zero'].
+	step < 0
+		ifTrue: [[ value >= stop ] whileTrue: [
+	    			aBlock value: value.
+	    			value := value + step]]
+		ifFalse: [[ value <= stop ] whileTrue: [
+	    			aBlock value: value.
+	    			value := value + step]]
+!
+
+to: stop do: aBlock
+	"Evaluate aBlock for each number from self to aNumber."
+	| nextValue |
+	nextValue := self numb.
+	[nextValue <= stop]
+		whileTrue: 
+			[aBlock value: nextValue.
+			nextValue := nextValue + 1]
+! !
+
+!VarNumb methodsFor: 'testing'!
+
+even
+	^ 0 = (self numb \\ 2)
+!
+
+isZero
+	^self numb = 0
+!
+
+negative
+	"Answer whether the receiver is mathematically negative."
+
+	^ self numb< 0
+!
+
+odd
+	^ self even not
+!
+
+positive
+	"Answer whether the receiver is positive or equal to 0. (ST-80 protocol)."
+
+	^ self >= 0
+! !
+
+VarNumb subclass: #AttrNumb
+	instanceVariableNames: 'selector attr unit'
+	package: 'DomBinding'!
+
+!AttrNumb methodsFor: 'accessing'!
+
+attr
+
+^attr
+!
+
+numb
+
+^val
+!
+
+selector
+
+^selector
+! !
+
+!AttrNumb methodsFor: 'assigning'!
+
+dBind
+|mutationObserver myObserver config mutationHandler|
+
+mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| 
+ <temp=($(each.target).attr(self._attr()));>. self is:(temp copyFrom:0 to: temp size- unit size ) asNumber.
+                     ]].
+
+(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]
+                                            ifFalse:[mutationObserver:=window MutationObserver.].
+                                            
+ 
+<myObserver= new mutationObserver(mutationHandler);>.
+
+
+<config={characterData: true, attributes: true, attributeFilter:[self._attr()] }>.
+                       
+selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
+           
+
+^self
+!
+
+updateSelf
+
+selector asJQuery attr:attr to: val asString,unit.
+! !
+
+!AttrNumb methodsFor: 'initializing'!
+
+selector:aSelector attr: anAttr
+
+
+attr:=anAttr.
+selector:=aSelector.
+unit:=''.
+!
+
+selector:aSelector attr: anAttr unit:aUnit
+
+
+attr:=anAttr.
+selector:=aSelector.
+unit:=aUnit.
+! !
+
+!AttrNumb class methodsFor: 'instance creation'!
+
+selector: aSelector attr: anAttr
+^ self new selector: aSelector attr: anAttr.
+!
+
+selector: aSelector attr: anAttr unit:aUnit
+
+^ self new selector: aSelector attr: anAttr unit:aUnit
+! !
+
+VarNumb subclass: #StyleAttrNumb
+	instanceVariableNames: 'selector attr unit'
+	package: 'DomBinding'!
+
+!StyleAttrNumb methodsFor: 'accessing'!
+
+attr
+
+^attr
+!
+
+numb
+
+^val
+!
+
+selector
+
+^selector
+! !
+
+!StyleAttrNumb methodsFor: 'assigning'!
+
+dBind
+|mutationObserver myObserver config mutationHandler|
+
+mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| 
+<temp=($(each.target).css(self._attr()));>.self is:(temp copyFrom:0 to: temp size- unit size ) asNumber.]].
+
+(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]
+                                            ifFalse:[mutationObserver:=window MutationObserver.].
+                                            
+ 
+<myObserver= new mutationObserver(mutationHandler);>.
+
+<config={attributes: true, attributeFilter:[self._attr()] }>.
+
+                       
+selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
+           
+
+^self
+!
+
+updateSelf
+
+
+selector asJQuery css:attr to: val asString,unit.
+! !
+
+!StyleAttrNumb methodsFor: 'initializing'!
+
+selector:aSelector attr: anAttr
+
+
+attr:=anAttr.
+selector:=aSelector.
+unit:=''.
+!
+
+selector:aSelector attr: anAttr unit:aUnit
+
+
+attr:=anAttr.
+selector:=aSelector.
+unit:=aUnit.
+! !
+
+!StyleAttrNumb class methodsFor: 'instance creation'!
+
+selector: aSelector attr: anAttr
+
+^ self new selector: aSelector attr: anAttr.
+!
+
+selector: aSelector attr: anAttr unit:aUnit
+
+^ self new selector: aSelector attr: anAttr unit:aUnit
+! !
+
+Var subclass: #VarString
+	instanceVariableNames: ''
+	package: 'DomBinding'!
+
+!VarString methodsFor: 'accessing'!
+
+asciiValue
+	<return self._string().charCodeAt(0);>
+!
+
+at: anIndex ifAbsent: aBlock
+	<return String(self._string()).charAt(anIndex - 1) || aBlock()>
+!
+
+escaped
+	<return escape(self._string())>
+!
+
+size
+	<return self._string().length>
+!
+
+string
+
+^val
+!
+
+unescaped
+	<return unescape(self)>
+! !
+
+!VarString methodsFor: 'comparing'!
+
+< aString
+	<return String(self._string()) < aString._asString()>
+!
+
+<= aString
+	<return String(self._string()) <= aString._asString()>
+!
+
+= aString
+	aString class = self string class ifFalse: [^false].
+	<return String(self._string()) === String(aString)>
+!
+
+== aString
+	^self string = aString
+!
+
+> aString
+	<return String(self._string()) >> aString._asString()>
+!
+
+>= aString
+	<return String(self._string()) >>= aString._asString()>
+! !
+
+!VarString methodsFor: 'converting'!
+
+asJSON
+	^self string.
+!
+
+asJavaScriptSelector
+	^(self string asSelector replace: '^_' with: '') replace: '_.*' with: ''.
+!
+
+asJavascript
+	<
+		if(self._string().search(/^[a-zA-Z0-9_:.$ ]*$/) == -1)
+			return "\"" + self.replace(/[\x00-\x1f"\\\x7f-\x9f]/g, function(ch){var c=ch.charCodeAt(0);return "\\x"+("0"+c.toString(16)).slice(-2)}) + "\"";
+		else
+			return "\"" + self._string() + "\"";
+	>
+!
+
+asLowercase
+	<return self._string().toLowerCase()>
+!
+
+asNumber
+	<return Number(self._string())>
+!
+
+asSelector
+	"If you change this method, change smalltalk.convertSelector too (see js/boot.js file)"
+
+	| selector |
+	selector := '_', self string.
+	selector := selector replace: ':' with: '_'.
+	selector := selector replace: '[+]' with: '_plus'.
+	selector := selector replace: '-' with: '_minus'.
+	selector := selector replace: '[*]' with: '_star'.
+	selector := selector replace: '[/]' with: '_slash'.
+	selector := selector replace: '>' with: '_gt'.
+	selector := selector replace: '<' with: '_lt'.
+	selector := selector replace: '=' with: '_eq'.
+	selector := selector replace: ',' with: '_comma'.
+	selector := selector replace: '[@]' with: '_at'.
+	^selector
+!
+
+asString
+	^self string.
+!
+
+asSymbol
+	^Symbol lookup: self string.
+!
+
+asUppercase
+	<return self._string().toUpperCase()>
+!
+
+reversed
+	<return self._string().split("").reverse().join("")>
+!
+
+tokenize: aString
+	<return self._string().split(aString)>
+! !
+
+!VarString methodsFor: 'copying'!
+
+, aString
+	<return self._string() + aString>
+!
+
+copyFrom: anIndex to: anotherIndex
+	<return self._string().substring(anIndex - 1, anotherIndex)>
+! !
+
+!VarString methodsFor: 'enumerating'!
+
+do: aBlock
+	<for(var i=0;i<self._string().length;i++){aBlock(self._string().charAt(i));}>
+!
+
+withIndexDo: aBlock
+	<for(var i=0;i<self._string().length;i++){aBlock(self._string().charAt(i), i+1);}>
+! !
+
+!VarString methodsFor: 'printing'!
+
+printNl
+	<console.log(self._string())>
+!
+
+printString
+	^'''', self string, ''''
+! !
+
+!VarString methodsFor: 'regular expressions'!
+
+match: aRegexp
+	<return self._string().search(aRegexp) !!= -1>
+!
+
+matchesOf: aRegularExpression
+      <return self._string().match(aRegularExpression)>
+!
+
+replace: aString with: anotherString
+	^self replaceRegexp: (RegularExpression fromString: aString flag: 'g') with: anotherString
+!
+
+replaceRegexp: aRegexp with: aString
+	<return self._string().replace(aRegexp, aString)>
+!
+
+trimBoth
+	^self trimBoth: '\s'
+!
+
+trimBoth: separators
+
+	^(self trimLeft: separators) trimRight: separators
+!
+
+trimLeft
+	^self trimLeft: '\s'
+!
+
+trimLeft: separators
+
+	^self replaceRegexp: (RegularExpression fromString: '^[', separators, ']+' flag: 'g') with: ''
+!
+
+trimRight
+	^self trimRight: '\s'
+!
+
+trimRight: separators
+
+	^self replaceRegexp: (RegularExpression fromString: '[', separators, ']+$' flag: 'g') with: ''
+! !
+
+!VarString methodsFor: 'split join'!
+
+join: aCollection 
+	^ String
+		streamContents: [:stream | aCollection
+				do: [:each | stream nextPutAll: each asString] 
+				separatedBy: [stream nextPutAll: self string]]
+!
+
+lineIndicesDo: aBlock
+	"execute aBlock with 3 arguments for each line:
+	- start index of line
+	- end index of line without line delimiter
+	- end index of line including line delimiter(s) CR, LF or CRLF"
+	
+	| cr lf start sz nextLF nextCR |
+	start := 1.
+	sz := self size.
+	cr := String cr.
+	nextCR := self indexOf: cr startingAt: 1.
+	lf := String lf.
+	nextLF := self indexOf: lf startingAt: 1.
+	[ start <= sz ] whileTrue: [
+		(nextLF = 0 and: [ nextCR = 0 ])
+			ifTrue: [ "No more CR, nor LF, the string is over"
+					aBlock value: start value: sz value: sz.
+					^self string].
+		(nextCR = 0 or: [ 0 < nextLF and: [ nextLF < nextCR ] ])
+			ifTrue: [ "Found a LF"
+					aBlock value: start value: nextLF - 1 value: nextLF.
+					start := 1 + nextLF.
+					nextLF := self indexOf: lf startingAt: start ]
+			ifFalse: [ 1 + nextCR = nextLF
+				ifTrue: [ "Found a CR-LF pair"
+					aBlock value: start value: nextCR - 1 value: nextLF.
+					start := 1 + nextLF.
+					nextCR := self indexOf: cr startingAt: start.
+					nextLF := self indexOf: lf startingAt: start ]
+				ifFalse: [ "Found a CR"
+					aBlock value: start value: nextCR - 1 value: nextCR.
+					start := 1 + nextCR.
+					nextCR := self indexOf: cr startingAt: start ]]]
+!
+
+lineNumber: anIndex
+	"Answer a string containing the characters in the given line number."
+
+	| lineCount |
+	lineCount := 0.
+	self lineIndicesDo: [:start :endWithoutDelimiters :end |
+		(lineCount := lineCount + 1) = anIndex ifTrue: [^self copyFrom: start to: endWithoutDelimiters]].
+	^nil
+!
+
+lines
+	"Answer an array of lines composing this receiver without the line ending delimiters."
+
+	| lines |
+	lines := Array new.
+	self linesDo: [:aLine | lines add: aLine].
+	^lines
+!
+
+linesDo: aBlock
+	"Execute aBlock with each line in this string. The terminating line
+	delimiters CR, LF or CRLF pairs are not included in what is passed to aBlock"
+
+	self lineIndicesDo: [:start :endWithoutDelimiters :end |
+		aBlock value: (self copyFrom: start to: endWithoutDelimiters)]
+! !
+
+!VarString methodsFor: 'testing'!
+
+includesSubString: subString
+	< return self._string().indexOf(subString) !!= -1 >
+!
+
+isString
+	^true
+! !
+
+!VarString class methodsFor: 'accessing'!
+
+cr
+	<return '\r'>
+!
+
+crlf
+	<return '\r\n'>
+!
+
+lf
+	<return '\n'>
+!
+
+space
+	<return ' '>
+!
+
+streamClass
+	    ^StringStream
+!
+
+tab
+	<return '\t'>
+! !
+
+!VarString class methodsFor: 'instance creation'!
+
+fromCharCode: anInteger
+	<return String.fromCharCode(anInteger)>
+!
+
+fromString: aString
+	    <return new self.fn(aString)>
+!
+
+streamContents: blockWithArg
+	|stream|
+	stream := (self streamClass on: String new).
+	blockWithArg value: stream.
+	^ stream contents
+!
+
+value: aUTFCharCode
+
+	<return String.fromCharCode(aUTFCharCode);>
+! !
+
+VarString subclass: #AttrString
+	instanceVariableNames: 'selector attr'
+	package: 'DomBinding'!
+
+!AttrString methodsFor: 'accessing'!
+
+attr
+
+^attr
+!
+
+selector
+
+^selector
+!
+
+string
+
+^val
+! !
+
+!AttrString methodsFor: 'assigning'!
+
+dBind
+|mutationObserver myObserver config mutationHandler|
+
+mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| 
+<temp=($(each.target).attr(self._attr()));>. self is:temp.
+                                      ]].
+(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]
+                                            ifFalse:[mutationObserver:=window MutationObserver.].
+                                            
+ 
+<myObserver= new mutationObserver(mutationHandler);>.
+
+<config={attributes: true, attributeFilter:[self._attr()] }>.
+
+                       
+selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
+           
+
+^self
+!
+
+updateSelf
+
+selector asJQuery attr:attr to: val.
+! !
+
+!AttrString methodsFor: 'initializing'!
+
+selector:aSelector attr: anAttr
+
+
+attr:=anAttr.
+selector:=aSelector.
+! !
+
+!AttrString class methodsFor: 'instance creation'!
+
+selector: aSelector attr: anAttr
+
+^ self new selector: aSelector attr: anAttr
+! !
+
+VarString subclass: #ContentString
+	instanceVariableNames: 'selector'
+	package: 'DomBinding'!
+
+!ContentString methodsFor: 'accessing'!
+
+attr
+
+^attr
+!
+
+selector
+
+^selector
+!
+
+string
+
+^val
+! !
+
+!ContentString methodsFor: 'assigning'!
+
+dBind
+|mutationObserver myObserver config mutationHandler|
+
+mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| 
+                                  <temp=($(each.target).prop("textContent"));>. self is:temp. 
+                                    ]].
+(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]
+                                            ifFalse:[mutationObserver:=window MutationObserver.].
+                                            
+ 
+<myObserver= new mutationObserver(mutationHandler);>.
+
+<config={characterData: true }>.
+                       
+selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
+           
+
+^self
+!
+
+updateSelf
+
+selector asJQuery prop:'textContent' to: val.
+! !
+
+!ContentString methodsFor: 'initializing'!
+
+selector:aSelector
+
+selector:=aSelector.
+! !
+
+!ContentString class methodsFor: 'instance creation'!
+
+selector: aSelector 
+
+^ self new selector: aSelector.
+! !
+
+VarString subclass: #StyleAttrString
+	instanceVariableNames: 'selector attr'
+	package: 'DomBinding'!
+
+!StyleAttrString methodsFor: 'accessing'!
+
+attr
+
+^attr
+!
+
+selector
+
+^selector
+!
+
+string
+
+^val
+! !
+
+!StyleAttrString methodsFor: 'assigning'!
+
+dBind
+|mutationObserver myObserver config mutationHandler|
+
+mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| 
+                               <temp=($(each.target).css(self._attr()));>.self is:temp.]].
+(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]
+                                            ifFalse:[mutationObserver:=window MutationObserver.].
+                                            
+ 
+<myObserver= new mutationObserver(mutationHandler);>.
+
+
+<config={attributes: true, attributeFilter:[self._attr()] }>.
+ 
+                       
+selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
+           
+
+^self
+!
+
+updateSelf
+
+
+selector asJQuery css:attr to: val.
+! !
+
+!StyleAttrString methodsFor: 'initializing'!
+
+selector:aSelector attr: anAttr
+
+
+attr:=anAttr.
+selector:=aSelector.
+! !
+
+!StyleAttrString class methodsFor: 'instance creation'!
+
+selector: aSelector attr: anAttr
+
+^ self new selector: aSelector attr: anAttr
 ! !
 
