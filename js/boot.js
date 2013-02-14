@@ -530,10 +530,10 @@ function Smalltalk() {
 				st.thisContext = undefined;
 				if(error.smalltalkError) {
 					handleError(error);
-					return nil;
-				} else {
-					throw(error);
-				}
+                }
+                // Throw the exception anyway, as we want to stop
+                // the execution to avoid infinite loops
+				throw(error);
 			}
 		}
 	};
@@ -816,9 +816,9 @@ smalltalk.wrapClassName("Boolean", "Kernel", Boolean, smalltalk.Object);
 smalltalk.wrapClassName("Date", "Kernel", Date, smalltalk.Object);
 smalltalk.wrapClassName("UndefinedObject", "Kernel", SmalltalkNil, smalltalk.Object, false);
 
-smalltalk.wrapClassName("Collection", "Kernel", null, smalltalk.Object, false);
-smalltalk.wrapClassName("SequenceableCollection", "Kernel", null, smalltalk.Collection, false);
-smalltalk.wrapClassName("CharacterArray", "Kernel", null, smalltalk.SequenceableCollection, false);
+smalltalk.addClass("Collection", smalltalk.Object, null, "Kernel");
+smalltalk.addClass("SequenceableCollection", smalltalk.Collection, null, "Kernel");
+smalltalk.addClass("CharacterArray", smalltalk.SequenceableCollection, null, "Kernel");
 smalltalk.wrapClassName("String", "Kernel", String, smalltalk.CharacterArray);
 smalltalk.wrapClassName("Symbol", "Kernel", SmalltalkSymbol, smalltalk.CharacterArray, false);
 smalltalk.wrapClassName("Array", "Kernel", Array, smalltalk.SequenceableCollection);

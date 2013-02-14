@@ -101,6 +101,32 @@ referencedClasses: ["Error"]
 smalltalk.BlockClosureTest);
 
 smalltalk.addMethod(
+"_testExceptionSemantics",
+smalltalk.method({
+selector: "testExceptionSemantics",
+category: 'tests',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._timeout_((100));
+_st(_st(self)._async_((function(){
+return smalltalk.withContext(function($ctx2) {return _st((function(){
+return smalltalk.withContext(function($ctx3) {_st(self)._assert_(true);
+_st((smalltalk.Error || Error))._signal();
+_st(self)._deny_(true);
+return _st(self)._finished();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._on_do_((smalltalk.Error || Error),(function(ex){
+return smalltalk.withContext(function($ctx3) {return _st(self)._finished();
+}, function($ctx3) {$ctx3.fillBlock({ex:ex},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})})))._valueWithTimeout_((0));
+return self}, function($ctx1) {$ctx1.fill(self,"testExceptionSemantics",{}, smalltalk.BlockClosureTest)})},
+args: [],
+source: "testExceptionSemantics\x0a\x09\x22See https://github.com/NicolasPetton/amber/issues/314\x22\x0a    self timeout: 100.\x0a    \x0a    (self async:  [ \x0a    \x09[ \x0a        \x09self assert: true. \x0a            Error signal. \x0a            \x22The following should *not* be run\x22\x0a            self deny: true.\x0a            self finished.\x0a  \x09\x09] on: Error do: [ :ex | self finished ] \x0a\x09]) valueWithTimeout: 0",
+messageSends: ["timeout:", "valueWithTimeout:", "async:", "on:do:", "finished", "assert:", "signal", "deny:"],
+referencedClasses: ["Error"]
+}),
+smalltalk.BlockClosureTest);
+
+smalltalk.addMethod(
 "_testNumArgs",
 smalltalk.method({
 selector: "testNumArgs",
@@ -666,6 +692,51 @@ args: [],
 source: "testClassMigration\x0a\x09| instance oldClass |\x0a    \x0a    oldClass := builder copyClass: ObjectMock named: 'ObjectMock2'.\x0a    instance := (Smalltalk  current at: 'ObjectMock2') new.\x0a    \x0a    \x22Change the superclass of ObjectMock2\x22\x0a    ObjectMock subclass: (Smalltalk current at: 'ObjectMock2')\x0a    \x09instanceVariableNames: ''\x0a        package: 'Kernel-Tests'.\x0a    \x0a    self deny: oldClass == ObjectMock2.\x0a    \x0a\x09self assert: ObjectMock2 superclass == ObjectMock.\x0a\x09self assert: ObjectMock2 instanceVariableNames isEmpty.\x0a\x09self assert: ObjectMock2 selectors equals: oldClass selectors.\x0a    self assert: ObjectMock2 comment equals: oldClass comment.\x0a    self assert: ObjectMock2 package name equals: 'Kernel-Tests'.\x0a    \x0a\x09self deny: instance class == ObjectMock2.\x0a    self assert: instance class name equals: 'OldObjectMock2'.\x0a    \x0a    self assert: (Smalltalk current at: 'OldObjectMock2') isNil.\x0a    \x0a    Smalltalk current removeClass: ObjectMock2",
 messageSends: ["copyClass:named:", "new", "at:", "current", "subclass:instanceVariableNames:package:", "deny:", "==", "assert:", "superclass", "isEmpty", "instanceVariableNames", "assert:equals:", "selectors", "comment", "name", "package", "class", "isNil", "removeClass:"],
 referencedClasses: ["ObjectMock", "Smalltalk", "ObjectMock2"]
+}),
+smalltalk.ClassBuilderTest);
+
+smalltalk.addMethod(
+"_testClassMigrationWithClassInstanceVariables",
+smalltalk.method({
+selector: "testClassMigrationWithClassInstanceVariables",
+category: 'running',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self["@builder"])._copyClass_named_((smalltalk.ObjectMock || ObjectMock),"ObjectMock2");
+_st(_st((smalltalk.ObjectMock2 || ObjectMock2))._class())._instanceVariableNames_("foo bar");
+_st((smalltalk.ObjectMock || ObjectMock))._subclass_instanceVariableNames_package_(_st(_st((smalltalk.Smalltalk || Smalltalk))._current())._at_("ObjectMock2"),"","Kernel-Tests");
+_st(self)._assert_equals_(_st(_st((smalltalk.ObjectMock2 || ObjectMock2))._class())._instanceVariableNames(),["foo", "bar"]);
+_st(_st((smalltalk.Smalltalk || Smalltalk))._current())._removeClass_((smalltalk.ObjectMock2 || ObjectMock2));
+return self}, function($ctx1) {$ctx1.fill(self,"testClassMigrationWithClassInstanceVariables",{}, smalltalk.ClassBuilderTest)})},
+args: [],
+source: "testClassMigrationWithClassInstanceVariables\x0a    \x0a    builder copyClass: ObjectMock named: 'ObjectMock2'.\x0a    ObjectMock2 class instanceVariableNames: 'foo bar'.\x0a    \x0a    \x22Change the superclass of ObjectMock2\x22\x0a    ObjectMock subclass: (Smalltalk current at: 'ObjectMock2')\x0a    \x09instanceVariableNames: ''\x0a        package: 'Kernel-Tests'.\x0a    \x0a    self assert: ObjectMock2 class instanceVariableNames equals: #('foo' 'bar').\x0a    \x0a    Smalltalk current removeClass: ObjectMock2",
+messageSends: ["copyClass:named:", "instanceVariableNames:", "class", "subclass:instanceVariableNames:package:", "at:", "current", "assert:equals:", "instanceVariableNames", "removeClass:"],
+referencedClasses: ["ObjectMock", "ObjectMock2", "Smalltalk"]
+}),
+smalltalk.ClassBuilderTest);
+
+smalltalk.addMethod(
+"_testClassMigrationWithSubclasses",
+smalltalk.method({
+selector: "testClassMigrationWithSubclasses",
+category: 'running',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self["@builder"])._copyClass_named_((smalltalk.ObjectMock || ObjectMock),"ObjectMock2");
+_st((smalltalk.ObjectMock2 || ObjectMock2))._subclass_instanceVariableNames_package_("ObjectMock3","","Kernel-Tests");
+_st((smalltalk.ObjectMock3 || ObjectMock3))._subclass_instanceVariableNames_package_("ObjectMock4","","Kernel-Tests");
+_st((smalltalk.ObjectMock || ObjectMock))._subclass_instanceVariableNames_package_(_st(_st((smalltalk.Smalltalk || Smalltalk))._current())._at_("ObjectMock2"),"","Kernel-Tests");
+_st(self)._assert_(_st(_st((smalltalk.ObjectMock || ObjectMock))._subclasses())._includes_((smalltalk.ObjectMock2 || ObjectMock2)));
+_st(self)._assert_(_st(_st((smalltalk.ObjectMock2 || ObjectMock2))._subclasses())._includes_((smalltalk.ObjectMock3 || ObjectMock3)));
+_st(self)._assert_(_st(_st((smalltalk.ObjectMock3 || ObjectMock3))._subclasses())._includes_((smalltalk.ObjectMock4 || ObjectMock4)));
+_st(_st((smalltalk.ObjectMock || ObjectMock))._allSubclasses())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(_st((smalltalk.Smalltalk || Smalltalk))._current())._removeClass_(each);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"testClassMigrationWithSubclasses",{}, smalltalk.ClassBuilderTest)})},
+args: [],
+source: "testClassMigrationWithSubclasses\x0a    \x0a    builder copyClass: ObjectMock named: 'ObjectMock2'.\x0a    ObjectMock2 subclass: 'ObjectMock3' instanceVariableNames: '' package: 'Kernel-Tests'.\x0a    ObjectMock3 subclass: 'ObjectMock4' instanceVariableNames: '' package: 'Kernel-Tests'.\x0a    \x0a    \x22Change the superclass of ObjectMock2\x22\x0a    ObjectMock subclass: (Smalltalk current at: 'ObjectMock2')\x0a    \x09instanceVariableNames: ''\x0a        package: 'Kernel-Tests'.\x0a    \x0a    self assert: (ObjectMock subclasses includes: ObjectMock2).\x0a    self assert: (ObjectMock2 subclasses includes: ObjectMock3).\x0a    self assert: (ObjectMock3 subclasses includes: ObjectMock4).\x0a    \x0a    ObjectMock allSubclasses do: [ :each | Smalltalk current removeClass: each ]",
+messageSends: ["copyClass:named:", "subclass:instanceVariableNames:package:", "at:", "current", "assert:", "includes:", "subclasses", "do:", "removeClass:", "allSubclasses"],
+referencedClasses: ["ObjectMock", "ObjectMock2", "ObjectMock3", "Smalltalk", "ObjectMock4"]
 }),
 smalltalk.ClassBuilderTest);
 

@@ -1,10 +1,10 @@
 smalltalk.addPackage('Compiler-Interpreter', {});
-smalltalk.addClass('AIContext', smalltalk.NodeVisitor, ['outerContext', 'pc', 'locals', 'receiver', 'selector'], 'Compiler-Interpreter');
+smalltalk.addClass('AIContext', smalltalk.NodeVisitor, ['outerContext', 'pc', 'locals', 'selector'], 'Compiler-Interpreter');
 smalltalk.addMethod(
 "_initializeFromMethodContext_",
 smalltalk.method({
 selector: "initializeFromMethodContext:",
-category: 'accessing',
+category: 'initialization',
 fn: function (aMethodContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
@@ -170,12 +170,12 @@ category: 'accessing',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
-$1=self["@receiver"];
+$1=_st(self)._localAt_("self");
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"receiver",{}, smalltalk.AIContext)})},
 args: [],
-source: "receiver\x0a\x09^ receiver",
-messageSends: [],
+source: "receiver\x0a\x09^ self localAt: 'self'",
+messageSends: ["localAt:"],
 referencedClasses: []
 }),
 smalltalk.AIContext);
@@ -187,70 +187,15 @@ selector: "receiver:",
 category: 'accessing',
 fn: function (anObject){
 var self=this;
-return smalltalk.withContext(function($ctx1) { self["@receiver"]=anObject;
+return smalltalk.withContext(function($ctx1) { _st(self)._localAt_put_("self",anObject);
 return self}, function($ctx1) {$ctx1.fill(self,"receiver:",{anObject:anObject}, smalltalk.AIContext)})},
 args: ["anObject"],
-source: "receiver: anObject\x0a\x09receiver := anObject",
-messageSends: [],
+source: "receiver: anObject\x0a\x09self localAt: 'self' put: anObject",
+messageSends: ["localAt:put:"],
 referencedClasses: []
 }),
 smalltalk.AIContext);
 
-smalltalk.addMethod(
-"_selector",
-smalltalk.method({
-selector: "selector",
-category: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=self["@selector"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"selector",{}, smalltalk.AIContext)})},
-args: [],
-source: "selector\x0a\x09^ selector",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.AIContext);
-
-smalltalk.addMethod(
-"_selector_",
-smalltalk.method({
-selector: "selector:",
-category: 'accessing',
-fn: function (aString){
-var self=this;
-return smalltalk.withContext(function($ctx1) { self["@selector"]=aString;
-return self}, function($ctx1) {$ctx1.fill(self,"selector:",{aString:aString}, smalltalk.AIContext)})},
-args: ["aString"],
-source: "selector: aString\x0a\x09selector := aString",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.AIContext);
-
-
-smalltalk.addMethod(
-"_fromMethodContext_",
-smalltalk.method({
-selector: "fromMethodContext:",
-category: 'instance creation',
-fn: function (aMethodContext){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
-$2=_st(self)._new();
-_st($2)._initializeFromMethodContext_(aMethodContext);
-$3=_st($2)._yourself();
-$1=$3;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"fromMethodContext:",{aMethodContext:aMethodContext}, smalltalk.AIContext.klass)})},
-args: ["aMethodContext"],
-source: "fromMethodContext: aMethodContext\x0a\x09^ self new \x0a    \x09initializeFromMethodContext: aMethodContext;\x0a        yourself",
-messageSends: ["initializeFromMethodContext:", "new", "yourself"],
-referencedClasses: []
-}),
-smalltalk.AIContext.klass);
 
 
 smalltalk.addClass('ASTInterpreter', smalltalk.NodeVisitor, ['currentNode', 'context', 'shouldReturn', 'currentValue'], 'Compiler-Interpreter');
@@ -444,7 +389,7 @@ self["@currentValue"];
 _st(aBlock)._value_(_st(self)._currentValue());
 return self}, function($ctx1) {$ctx1.fill(self,"interpret:continue:",{aNode:aNode,aBlock:aBlock}, smalltalk.ASTInterpreter)})},
 args: ["aNode", "aBlock"],
-source: "interpret: aNode continue: aBlock\x0a\x0a\x09shouldReturn ifTrue: [ ^ self ].\x0a\x0a\x09aNode isNode \x0a    \x09ifTrue: [ self visit: aNode ]\x0a        ifFalse: [ currentValue := aNode ].\x0a\x09aBlock value: self currentValue",
+source: "interpret: aNode continue: aBlock\x0a\x09shouldReturn ifTrue: [ ^ self ].\x0a\x0a\x09aNode isNode \x0a    \x09ifTrue: [ self visit: aNode ]\x0a        ifFalse: [ currentValue := aNode ].\x0a\x09aBlock value: self currentValue",
 messageSends: ["ifTrue:", "ifTrue:ifFalse:", "visit:", "isNode", "value:", "currentValue"],
 referencedClasses: []
 }),
@@ -547,7 +492,7 @@ return $2;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"visitBlockNode:",{aNode:aNode}, smalltalk.ASTInterpreter)})},
 args: ["aNode"],
-source: "visitBlockNode: aNode\x0a\x09\x22TODO: Context should be set\x22\x0a    self continue: [ self interpret: aNode nodes first; currentValue ]",
+source: "visitBlockNode: aNode\x0a\x09\x22TODO: Context should be set\x22\x0a    \x0a    self continue: [ self interpret: aNode nodes first; currentValue ]",
 messageSends: ["continue:", "interpret:", "first", "nodes", "currentValue"],
 referencedClasses: []
 }),
@@ -606,7 +551,7 @@ return smalltalk.withContext(function($ctx2) {return _st(self)._continue_(array
 }, function($ctx2) {$ctx2.fillBlock({array:array},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"visitDynamicArrayNode:",{aNode:aNode}, smalltalk.ASTInterpreter)})},
 args: ["aNode"],
-source: "visitDynamicArrayNode: aNode\x0a\x0a\x09self interpretAll: aNode nodes continue: [ :array |\x0a    \x09self continue: array ]",
+source: "visitDynamicArrayNode: aNode\x0a\x09self interpretAll: aNode nodes continue: [ :array |\x0a    \x09self continue: array ]",
 messageSends: ["interpretAll:continue:", "nodes", "continue:"],
 referencedClasses: []
 }),
@@ -630,7 +575,7 @@ return _st(self)._continue_(hashedCollection);
 }, function($ctx2) {$ctx2.fillBlock({array:array,hashedCollection:hashedCollection},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"visitDynamicDictionaryNode:",{aNode:aNode}, smalltalk.ASTInterpreter)})},
 args: ["aNode"],
-source: "visitDynamicDictionaryNode: aNode\x0a\x09\x0a    self interpretAll: aNode nodes continue: [ :array | | hashedCollection |\x0a    \x09hashedCollection := HashedCollection new.\x0a        array do: [ :each | hashedCollection add: each ].\x0a        self continue: hashedCollection ]",
+source: "visitDynamicDictionaryNode: aNode\x0a    self interpretAll: aNode nodes continue: [ :array | | hashedCollection |\x0a    \x09hashedCollection := HashedCollection new.\x0a        array do: [ :each | hashedCollection add: each ].\x0a        self continue: hashedCollection ]",
 messageSends: ["interpretAll:continue:", "nodes", "new", "do:", "add:", "continue:"],
 referencedClasses: ["HashedCollection"]
 }),
@@ -724,6 +669,30 @@ return self}, function($ctx1) {$ctx1.fill(self,"visitValueNode:",{aNode:aNode}, 
 args: ["aNode"],
 source: "visitValueNode: aNode\x0a\x09self continue: aNode value",
 messageSends: ["continue:", "value"],
+referencedClasses: []
+}),
+smalltalk.ASTInterpreter);
+
+smalltalk.addMethod(
+"_visitVariableNode_",
+smalltalk.method({
+selector: "visitVariableNode:",
+category: 'visiting',
+fn: function (aNode){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1,$3,$2;
+$1=self;
+$3=_st(_st(aNode)._binding())._isInstanceVar();
+if(smalltalk.assert($3)){
+$2=_st(_st(_st(self)._context())._receiver())._instVarAt_(_st(aNode)._value());
+} else {
+$2=_st(_st(self)._context())._localAt_(_st(aNode)._value());
+};
+_st($1)._continue_($2);
+return self}, function($ctx1) {$ctx1.fill(self,"visitVariableNode:",{aNode:aNode}, smalltalk.ASTInterpreter)})},
+args: ["aNode"],
+source: "visitVariableNode: aNode\x0a    self continue: (aNode binding isInstanceVar\x0a\x09\x09ifTrue: [ self context receiver instVarAt: aNode value ]\x0a\x09\x09ifFalse: [ self context localAt: aNode value ])",
+messageSends: ["continue:", "ifTrue:ifFalse:", "instVarAt:", "value", "receiver", "context", "localAt:", "isInstanceVar", "binding"],
 referencedClasses: []
 }),
 smalltalk.ASTInterpreter);

@@ -1,19 +1,9 @@
 Smalltalk current createPackage: 'Compiler-Interpreter' properties: #{}!
 NodeVisitor subclass: #AIContext
-	instanceVariableNames: 'outerContext pc locals receiver selector'
+	instanceVariableNames: 'outerContext pc locals selector'
 	package: 'Compiler-Interpreter'!
 
 !AIContext methodsFor: 'accessing'!
-
-initializeFromMethodContext: aMethodContext
-	self pc: aMethodContext pc.
-    self receiver: aMethodContext receiver.
-    self selector: aMethodContext selector.
-    aMethodContext outerContext ifNotNil: [
-		self outerContext: (self class fromMethodContext: aMethodContext outerContext) ].
-    aMethodContext locals keysAndValuesDo: [ :key :value |
-    	self locals at: key put: value ]
-!
 
 localAt: aString
 	^ self locals at: aString ifAbsent: [ nil ]
@@ -44,27 +34,23 @@ pc: anInteger
 !
 
 receiver
-	^ receiver
+	^ self localAt: 'self'
 !
 
 receiver: anObject
-	receiver := anObject
-!
-
-selector
-	^ selector
-!
-
-selector: aString
-	selector := aString
+	self localAt: 'self' put: anObject
 ! !
 
-!AIContext class methodsFor: 'instance creation'!
+!AIContext methodsFor: 'initialization'!
 
-fromMethodContext: aMethodContext
-	^ self new 
-    	initializeFromMethodContext: aMethodContext;
-        yourself
+initializeFromMethodContext: aMethodContext
+	self pc: aMethodContext pc.
+    self receiver: aMethodContext receiver.
+    self selector: aMethodContext selector.
+    aMethodContext outerContext ifNotNil: [
+		self outerContext: (self class fromMethodContext: aMethodContext outerContext) ].
+    aMethodContext locals keysAndValuesDo: [ :key :value |
+    	self locals at: key put: value ]
 ! !
 
 NodeVisitor subclass: #ASTInterpreter
@@ -132,7 +118,6 @@ interpret: aNode
 !
 
 interpret: aNode continue: aBlock
-
 	shouldReturn ifTrue: [ ^ self ].
 
 	aNode isNode 
@@ -176,6 +161,7 @@ visitAssignmentNode: aNode
 
 visitBlockNode: aNode
 	"TODO: Context should be set"
+    
     self continue: [ self interpret: aNode nodes first; currentValue ]
 !
 
@@ -199,13 +185,11 @@ visitClassReferenceNode: aNode
 !
 
 visitDynamicArrayNode: aNode
-
 	self interpretAll: aNode nodes continue: [ :array |
     	self continue: array ]
 !
 
 visitDynamicDictionaryNode: aNode
-	
     self interpretAll: aNode nodes continue: [ :array | | hashedCollection |
     	hashedCollection := HashedCollection new.
         array do: [ :each | hashedCollection add: each ].
@@ -239,6 +223,12 @@ visitSequenceNode: aNode
 
 visitValueNode: aNode
 	self continue: aNode value
+!
+
+visitVariableNode: aNode
+    self continue: (aNode binding isInstanceVar
+		ifTrue: [ self context receiver instVarAt: aNode value ]
+		ifFalse: [ self context localAt: aNode value ])
 ! !
 
 ASTInterpreter subclass: #ASTDebugger
