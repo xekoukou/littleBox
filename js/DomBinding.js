@@ -321,6 +321,22 @@ referencedClasses: []
 smalltalk.AttrBool);
 
 smalltalk.addMethod(
+"_bool_",
+smalltalk.method({
+selector: "bool:",
+category: 'accessing',
+fn: function (aBool){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@val"]=aBool;
+return self}, function($ctx1) {$ctx1.fill(self,"bool:",{aBool:aBool}, smalltalk.AttrBool)})},
+args: ["aBool"],
+source: "bool:aBool\x0a\x0aval:=aBool.",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.AttrBool);
+
+smalltalk.addMethod(
 "_dBind",
 smalltalk.method({
 selector: "dBind",
@@ -332,9 +348,9 @@ return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
 return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(_st(each)._target())._attr())._self())._attr();
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(each)._target())._asJQuery())._attr_(_st(self)._attr());
 temp;
-return _st(self)._is_(temp);
+return _st(self)._bool_(temp);
 }, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
 $1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
@@ -345,11 +361,11 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-_st(_st(myObserver).__eq((smalltalk.NativeFunction || NativeFunction)))._class_value_("mutationObserver",mutationHandler);
-config=_st((smalltalk.Dictionary || Dictionary))._new();
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("characterData",true);
 _st(config)._at_put_("attributes",true);
-_st(config)._at_put_add_("attributeFilter",_st((smalltalk.Array || Array))._new(),_st(self)._attr());
+_st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
 _st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
@@ -357,9 +373,9 @@ $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrBool)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                 temp:=each target attr self attr. self is:temp.\x0a                                        ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver= NativeFunction class:'mutationObserver' value:mutationHandler.\x0a\x0aconfig:=Dictionary new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: Array new add: self attr.\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "attr", "self", "target", "is:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "=", "new", "at:put:", "at:put:add:", "observe:with:", "toArray", "asJQuery"],
-referencedClasses: ["HTMLCanvas", "NativeFunction", "Dictionary", "Array"]
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                 temp:=each target asJQuery attr: self attr. self bool:temp.\x0a                                        ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "bool:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.AttrBool);
 
@@ -468,6 +484,22 @@ referencedClasses: []
 smalltalk.StyleAttrBool);
 
 smalltalk.addMethod(
+"_bool_",
+smalltalk.method({
+selector: "bool:",
+category: 'accessing',
+fn: function (aBool){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@val"]=aBool;
+return self}, function($ctx1) {$ctx1.fill(self,"bool:",{aBool:aBool}, smalltalk.StyleAttrBool)})},
+args: ["aBool"],
+source: "bool:aBool\x0a\x0aval:=aBool.",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.StyleAttrBool);
+
+smalltalk.addMethod(
 "_dBind",
 smalltalk.method({
 selector: "dBind",
@@ -479,9 +511,9 @@ return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
 return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-return smalltalk.withContext(function($ctx3) {temp=_st(_st(each)._target())._css_(_st(self)._attr());
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(each)._target())._asJQuery())._css_(_st(self)._attr());
 temp;
-return _st(self)._is_(temp);
+return _st(self)._bool_(temp);
 }, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
 $1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
@@ -492,10 +524,10 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-_st(_st(myObserver).__eq((smalltalk.NativeFunction || NativeFunction)))._class_value_("mutationObserver",mutationHandler);
-config=_st((smalltalk.Dictionary || Dictionary))._new();
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
-_st(config)._at_put_add_("attributeFilter",_st((smalltalk.Array || Array))._new(),_st(self)._attr());
+_st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
 _st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
@@ -503,9 +535,9 @@ $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrBool)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                temp:=each target css: self attr.self is:temp.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver= NativeFunction class:'mutationObserver' value:mutationHandler.\x0a\x0aconfig:=Dictionary new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: Array new add: self attr.\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "css:", "attr", "target", "is:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "=", "new", "at:put:", "at:put:add:", "observe:with:", "toArray", "asJQuery"],
-referencedClasses: ["HTMLCanvas", "NativeFunction", "Dictionary", "Array"]
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                temp:=each target asJQuery css: self attr.self bool:temp.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "css:", "attr", "asJQuery", "target", "bool:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.StyleAttrBool);
 
@@ -1416,271 +1448,6 @@ smalltalk.VarNumb);
 
 smalltalk.addClass('AttrNumb', smalltalk.VarNumb, ['selector', 'attr', 'unit'], 'DomBinding');
 smalltalk.addMethod(
-"__and",
-smalltalk.method({
-selector: "&",
-category: 'converting',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() & aNumber;
-return self;},
-args: ["anObject"],
-source: "& anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a\x09<return self._numb() & aNumber>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__star",
-smalltalk.method({
-selector: "*",
-category: 'arithmetic',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() * aNumber;
-return self;},
-args: ["anObject"],
-source: "* anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a\x0a\x09\x22Inlined in the Compiler\x22\x0a\x09<return self._numb() * aNumber>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__plus",
-smalltalk.method({
-selector: "+",
-category: 'arithmetic',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() + aNumber;
-return self;},
-args: ["anObject"],
-source: "+ anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a                                                     \x0a\x09\x22Inlined in the Compiler\x22\x0a\x09<return self._numb() + aNumber>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__minus",
-smalltalk.method({
-selector: "-",
-category: 'arithmetic',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() - aNumber;
-return self;},
-args: ["anObject"],
-source: "-  anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a\x09\x22Inlined in the Compiler\x22\x0a\x09<return self._numb() - aNumber>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__slash",
-smalltalk.method({
-selector: "/",
-category: 'arithmetic',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() / aNumber;
-return self;},
-args: ["anObject"],
-source: "/ anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a\x09\x22Inlined in the Compiler\x22\x0a\x09<return self._numb() / aNumber>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__lt",
-smalltalk.method({
-selector: "<",
-category: 'comparing',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() < aNumber;
-return self;},
-args: ["anObject"],
-source: "< anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a\x09\x22Inlined in the Compiler\x22\x0a\x09<return self._numb() < aNumber>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__lt_eq",
-smalltalk.method({
-selector: "<=",
-category: 'comparing',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() <= aNumber;
-return self;},
-args: ["anObject"],
-source: "<= anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a\x09\x22Inlined in the Compiler\x22\x0a\x09<return self._numb() <= aNumber>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__eq",
-smalltalk.method({
-selector: "=",
-category: 'comparing',
-fn: function (anObject){
-var self=this;
-var $early={};
-try{var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-((($receiver = smalltalk.send(aNumber, "_isNumber", [])).klass === smalltalk.Boolean) ? (! $receiver ? (function(){return (function(){throw $early=[false]})();})() : nil) : smalltalk.send($receiver, "_ifFalse_", [(function(){return (function(){throw $early=[false]})();})]));
-return Number(self._numb()) == aNumber;
-return self;
-} catch(e) {if(e===$early)return e[0]; throw e}},
-args: ["anObject"],
-source: "= anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a\x09aNumber isNumber ifFalse: [^false]. \x0a\x09<return Number(self._numb()) == aNumber>.",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb", "ifFalse:", "isNumber"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__gt",
-smalltalk.method({
-selector: ">",
-category: 'comparing',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() > aNumber;
-return self;},
-args: ["anObject"],
-source: ">anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a\x09\x22Inlined in the Compiler\x22\x0a\x09<return self._numb() >> aNumber>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__gt_eq",
-smalltalk.method({
-selector: ">=",
-category: 'comparing',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() >= aNumber;
-return self;},
-args: ["anObject"],
-source: ">= anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a\x09\x22Inlined in the Compiler\x22\x0a\x09<return self._numb() >>= aNumber>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__backslash_backslash",
-smalltalk.method({
-selector: "\x5c\x5c",
-category: 'arithmetic',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self.numb() % aNumber;
-return self;},
-args: ["anObject"],
-source: "\x5c\x5c anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a\x09<return self.numb() % aNumber>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_abs",
-smalltalk.method({
-selector: "abs",
-category: 'arithmetic',
-fn: function (){
-var self=this;
-return Math.abs(self._numb());;
-return self;},
-args: [],
-source: "abs\x0a\x09^ <Math.abs(self._numb());>",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_asJSON",
-smalltalk.method({
-selector: "asJSON",
-category: 'converting',
-fn: function (){
-var self=this;
-return smalltalk.send(self, "_numb", []);
-return self;},
-args: [],
-source: "asJSON\x0a\x09^self numb",
-messageSends: ["numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_asString",
-smalltalk.method({
-selector: "asString",
-category: 'converting',
-fn: function (){
-var self=this;
-return smalltalk.send(self, "_printString", []);
-return self;},
-args: [],
-source: "asString\x0a\x09^self printString",
-messageSends: ["printString"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_atRandom",
-smalltalk.method({
-selector: "atRandom",
-category: 'converting',
-fn: function (){
-var self=this;
-return ((($receiver = smalltalk.send(((($receiver = smalltalk.send(smalltalk.send((smalltalk.Random || Random), "_new", []), "_next", [])).klass === smalltalk.Number) ? $receiver *smalltalk.send(self, "_numb", []) : smalltalk.send($receiver, "__star", [smalltalk.send(self, "_numb", [])])), "_truncated", [])).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)]));
-return self;},
-args: [],
-source: "atRandom\x0a    ^(Random new next * self numb) truncated + 1",
-messageSends: ["+", "truncated", "*", "next", "new", "numb"],
-referencedClasses: ["Random"]
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
 "_attr",
 smalltalk.method({
 selector: "attr",
@@ -1710,9 +1477,9 @@ return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
 return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-return smalltalk.withContext(function($ctx3) {temp=_st(_st(each)._target())._attr_(_st(self)._attr());
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(each)._target())._asJQuery())._attr_(_st(self)._attr());
 temp;
-return _st(self)._is_(_st(_st(temp)._copyFrom_to_((0),_st(_st(temp)._size()).__minus(_st(self["@unit"])._size())))._asNumber());
+return _st(self)._numb_(_st(_st(temp)._copyFrom_to_((0),_st(_st(temp)._size()).__minus(_st(self["@unit"])._size())))._asNumber());
 }, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
 $1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
@@ -1723,11 +1490,11 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-_st(_st(myObserver).__eq((smalltalk.NativeFunction || NativeFunction)))._class_value_("mutationObserver",mutationHandler);
-config=_st((smalltalk.Dictionary || Dictionary))._new();
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("characterData",true);
 _st(config)._at_put_("attributes",true);
-_st(config)._at_put_add_("attributeFilter",_st((smalltalk.Array || Array))._new(),_st(self)._attr());
+_st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
 _st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
@@ -1735,109 +1502,9 @@ $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrNumb)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a temp:=each target attr: self attr. self is:(temp copyFrom:0 to: temp size- unit size ) asNumber.\x0a                     ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver= NativeFunction class:'mutationObserver' value:mutationHandler.\x0a\x0aconfig:=Dictionary new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: Array new add: self attr.\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "attr:", "attr", "target", "is:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "class:value:", "=", "new", "at:put:", "at:put:add:", "observe:with:", "toArray", "asJQuery"],
-referencedClasses: ["HTMLCanvas", "NativeFunction", "Dictionary", "Array"]
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_even",
-smalltalk.method({
-selector: "even",
-category: 'testing',
-fn: function (){
-var self=this;
-return smalltalk.send((0), "__eq", [smalltalk.send(smalltalk.send(self, "_numb", []), "_\\\\", [(2)])]);
-return self;},
-args: [],
-source: "even\x0a\x09^ 0 = (self numb \x5c\x5c 2)",
-messageSends: ["=", "\x5c\x5c\x5c\x5c", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_isZero",
-smalltalk.method({
-selector: "isZero",
-category: 'testing',
-fn: function (){
-var self=this;
-return smalltalk.send(smalltalk.send(self, "_numb", []), "__eq", [(0)]);
-return self;},
-args: [],
-source: "isZero\x0a\x09^self numb = 0",
-messageSends: ["=", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_max_",
-smalltalk.method({
-selector: "max:",
-category: 'arithmetic',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return Math.max(self._numb(), aNumber);;
-return self;},
-args: ["anObject"],
-source: "max: anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a\x09<return Math.max(self._numb(), aNumber);>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_min_",
-smalltalk.method({
-selector: "min:",
-category: 'arithmetic',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return Math.min(self._numb(), aNumber);;
-return self;},
-args: ["anObject"],
-source: "min: anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a                                                     \x0a\x09<return Math.min(self._numb(), aNumber);>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_negated",
-smalltalk.method({
-selector: "negated",
-category: 'arithmetic',
-fn: function (){
-var self=this;
-return (0) - smalltalk.send(self, "_numb", []);
-return self;},
-args: [],
-source: "negated\x0a\x09^0 - self numb.",
-messageSends: ["-", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_negative",
-smalltalk.method({
-selector: "negative",
-category: 'testing',
-fn: function (){
-var self=this;
-return ((($receiver = smalltalk.send(self, "_numb", [])).klass === smalltalk.Number) ? $receiver <(0) : smalltalk.send($receiver, "__lt", [(0)]));
-return self;},
-args: [],
-source: "negative\x0a\x09\x22Answer whether the receiver is mathematically negative.\x22\x0a\x0a\x09^ self numb< 0",
-messageSends: ["<", "numb"],
-referencedClasses: []
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp|\x0a temp:=each target asJQuery attr: self attr. self numb:(temp copyFrom:0 to: temp size- unit size ) asNumber.\x0a                     ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "numb:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.AttrNumb);
 
@@ -1860,48 +1527,16 @@ referencedClasses: []
 smalltalk.AttrNumb);
 
 smalltalk.addMethod(
-"_odd",
+"_numb_",
 smalltalk.method({
-selector: "odd",
-category: 'testing',
-fn: function (){
+selector: "numb:",
+category: 'accessing',
+fn: function (aNumb){
 var self=this;
-return smalltalk.send(smalltalk.send(self, "_even", []), "_not", []);
-return self;},
-args: [],
-source: "odd\x0a\x09^ self even not",
-messageSends: ["not", "even"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_positive",
-smalltalk.method({
-selector: "positive",
-category: 'testing',
-fn: function (){
-var self=this;
-return ((($receiver = self).klass === smalltalk.Number) ? $receiver >=(0) : smalltalk.send($receiver, "__gt_eq", [(0)]));
-return self;},
-args: [],
-source: "positive\x0a\x09\x22Answer whether the receiver is positive or equal to 0. (ST-80 protocol).\x22\x0a\x0a\x09^ self >= 0",
-messageSends: [">="],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_rounded",
-smalltalk.method({
-selector: "rounded",
-category: 'converting',
-fn: function (){
-var self=this;
-return Math.round(self._numb());;
-return self;},
-args: [],
-source: "rounded\x0a\x09<return Math.round(self._numb());>",
+return smalltalk.withContext(function($ctx1) { self["@val"]=aNumb;
+return self}, function($ctx1) {$ctx1.fill(self,"numb:",{aNumb:aNumb}, smalltalk.AttrNumb)})},
+args: ["aNumb"],
+source: "numb: aNumb\x0a\x0aval:=aNumb.",
 messageSends: [],
 referencedClasses: []
 }),
@@ -2000,160 +1635,6 @@ referencedClasses: []
 smalltalk.AttrNumb);
 
 smalltalk.addMethod(
-"_sqrt",
-smalltalk.method({
-selector: "sqrt",
-category: 'arithmetic',
-fn: function (){
-var self=this;
-return Math.sqrt(self._numb());
-return self;},
-args: [],
-source: "sqrt\x0a\x09<return Math.sqrt(self._numb())>",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_squared",
-smalltalk.method({
-selector: "squared",
-category: 'arithmetic',
-fn: function (){
-var self=this;
-return ((($receiver = smalltalk.send(self, "_numb", [])).klass === smalltalk.Number) ? $receiver *smalltalk.send(self, "_numb", []) : smalltalk.send($receiver, "__star", [smalltalk.send(self, "_numb", [])]));
-return self;},
-args: [],
-source: "squared\x0a\x09^self numb * self numb",
-messageSends: ["*", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_timesRepeat_",
-smalltalk.method({
-selector: "timesRepeat:",
-category: 'enumerating',
-fn: function (aBlock){
-var self=this;
-var count=nil;
-(count=(1));
-(function(){while(!(function(){return ((($receiver = count).klass === smalltalk.Number) ? $receiver >smalltalk.send(self, "_numb", []) : smalltalk.send($receiver, "__gt", [smalltalk.send(self, "_numb", [])]));})()) {(function(){smalltalk.send(aBlock, "_value", []);return (count=((($receiver = count).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));})()}})();
-return self;},
-args: ["aBlock"],
-source: "timesRepeat: aBlock\x0a\x09| count |\x0a\x09count := 1.\x0a\x09[count > self numb] whileFalse: [\x0a\x09    aBlock value.\x0a\x09    count := count + 1]",
-messageSends: ["whileFalse:", ">", "numb", "value", "+"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_to_",
-smalltalk.method({
-selector: "to:",
-category: 'converting',
-fn: function (aNumber){
-var self=this;
-var array=nil;
-var first=nil;
-var last=nil;
-var count=nil;
-(first=smalltalk.send(self, "_truncated", []));
-(last=((($receiver = smalltalk.send(aNumber, "_truncated", [])).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));
-(count=(1));
-(array=smalltalk.send((smalltalk.Array || Array), "_new", []));
-smalltalk.send(((($receiver = last).klass === smalltalk.Number) ? $receiver -first : smalltalk.send($receiver, "__minus", [first])), "_timesRepeat_", [(function(){smalltalk.send(array, "_at_put_", [count, first]);(count=((($receiver = count).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));return (first=((($receiver = first).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));})]);
-return array;
-return self;},
-args: ["aNumber"],
-source: "to: aNumber\x0a\x09| array first last count |\x0a\x09first := self truncated.\x0a\x09last := aNumber truncated + 1.\x0a\x09count := 1.\x0a\x09array := Array new.\x0a\x09(last - first) timesRepeat: [\x0a\x09    array at: count put: first.\x0a\x09    count := count + 1.\x0a\x09    first := first + 1].\x0a\x09^array",
-messageSends: ["truncated", "+", "new", "timesRepeat:", "-", "at:put:"],
-referencedClasses: ["Array"]
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_to_by_",
-smalltalk.method({
-selector: "to:by:",
-category: 'converting',
-fn: function (stop, step){
-var self=this;
-var array=nil;
-var value=nil;
-var pos=nil;
-(value=smalltalk.send(self, "_numb", []));
-(array=smalltalk.send((smalltalk.Array || Array), "_new", []));
-(pos=(1));
-((($receiver = smalltalk.send(step, "__eq", [(0)])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return smalltalk.send(self, "_error_", ["step must be non-zero"]);})() : nil) : smalltalk.send($receiver, "_ifTrue_", [(function(){return smalltalk.send(self, "_error_", ["step must be non-zero"]);})]));
-((($receiver = ((($receiver = step).klass === smalltalk.Number) ? $receiver <(0) : smalltalk.send($receiver, "__lt", [(0)]))).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver >=stop : smalltalk.send($receiver, "__gt_eq", [stop]));})()) {(function(){smalltalk.send(array, "_at_put_", [pos, value]);(pos=((($receiver = pos).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();})() : (function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver <=stop : smalltalk.send($receiver, "__lt_eq", [stop]));})()) {(function(){smalltalk.send(array, "_at_put_", [pos, value]);(pos=((($receiver = pos).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver >=stop : smalltalk.send($receiver, "__gt_eq", [stop]));})()) {(function(){smalltalk.send(array, "_at_put_", [pos, value]);(pos=((($receiver = pos).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();}), (function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver <=stop : smalltalk.send($receiver, "__lt_eq", [stop]));})()) {(function(){smalltalk.send(array, "_at_put_", [pos, value]);(pos=((($receiver = pos).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();})]));
-return array;
-return self;},
-args: ["stop", "step"],
-source: "to: stop by: step\x0a\x09| array value pos |\x0a\x09value := self numb.\x0a\x09array := Array new.\x0a\x09pos := 1.\x0a\x09step = 0 ifTrue: [self error: 'step must be non-zero'].\x0a\x09step < 0\x0a\x09\x09ifTrue: [[ value >= stop ] whileTrue: [\x0a\x09    \x09\x09\x09array at: pos put: value.\x0a\x09    \x09\x09\x09pos := pos + 1.\x0a\x09    \x09\x09\x09value := value + step]]\x0a\x09\x09ifFalse: [[ value <= stop ] whileTrue: [\x0a\x09    \x09\x09\x09array at: pos put: value.\x0a\x09  \x09\x09\x09pos := pos + 1.\x0a\x09    \x09\x09\x09value := value + step]].\x0a\x09^array",
-messageSends: ["numb", "new", "ifTrue:", "=", "error:", "ifTrue:ifFalse:", "<", "whileTrue:", ">=", "at:put:", "+", "<="],
-referencedClasses: ["Array"]
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_to_by_do_",
-smalltalk.method({
-selector: "to:by:do:",
-category: 'enumerating',
-fn: function (stop, step, aBlock){
-var self=this;
-var value=nil;
-(value=smalltalk.send(self, "_numb", []));
-((($receiver = smalltalk.send(step, "__eq", [(0)])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return smalltalk.send(self, "_error_", ["step must be non-zero"]);})() : nil) : smalltalk.send($receiver, "_ifTrue_", [(function(){return smalltalk.send(self, "_error_", ["step must be non-zero"]);})]));
-((($receiver = ((($receiver = step).klass === smalltalk.Number) ? $receiver <(0) : smalltalk.send($receiver, "__lt", [(0)]))).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver >=stop : smalltalk.send($receiver, "__gt_eq", [stop]));})()) {(function(){smalltalk.send(aBlock, "_value_", [value]);return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();})() : (function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver <=stop : smalltalk.send($receiver, "__lt_eq", [stop]));})()) {(function(){smalltalk.send(aBlock, "_value_", [value]);return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver >=stop : smalltalk.send($receiver, "__gt_eq", [stop]));})()) {(function(){smalltalk.send(aBlock, "_value_", [value]);return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();}), (function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver <=stop : smalltalk.send($receiver, "__lt_eq", [stop]));})()) {(function(){smalltalk.send(aBlock, "_value_", [value]);return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();})]));
-return self;},
-args: ["stop", "step", "aBlock"],
-source: "to: stop by: step do: aBlock\x0a\x09| value |\x0a\x09value := self numb.\x0a\x09step = 0 ifTrue: [self error: 'step must be non-zero'].\x0a\x09step < 0\x0a\x09\x09ifTrue: [[ value >= stop ] whileTrue: [\x0a\x09    \x09\x09\x09aBlock value: value.\x0a\x09    \x09\x09\x09value := value + step]]\x0a\x09\x09ifFalse: [[ value <= stop ] whileTrue: [\x0a\x09    \x09\x09\x09aBlock value: value.\x0a\x09    \x09\x09\x09value := value + step]]",
-messageSends: ["numb", "ifTrue:", "=", "error:", "ifTrue:ifFalse:", "<", "whileTrue:", ">=", "value:", "+", "<="],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_to_do_",
-smalltalk.method({
-selector: "to:do:",
-category: 'enumerating',
-fn: function (stop, aBlock){
-var self=this;
-var nextValue=nil;
-(nextValue=smalltalk.send(self, "_numb", []));
-(function(){while((function(){return ((($receiver = nextValue).klass === smalltalk.Number) ? $receiver <=stop : smalltalk.send($receiver, "__lt_eq", [stop]));})()) {(function(){smalltalk.send(aBlock, "_value_", [nextValue]);return (nextValue=((($receiver = nextValue).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));})()}})();
-return self;},
-args: ["stop", "aBlock"],
-source: "to: stop do: aBlock\x0a\x09\x22Evaluate aBlock for each number from self to aNumber.\x22\x0a\x09| nextValue |\x0a\x09nextValue := self numb.\x0a\x09[nextValue <= stop]\x0a\x09\x09whileTrue: \x0a\x09\x09\x09[aBlock value: nextValue.\x0a\x09\x09\x09nextValue := nextValue + 1]",
-messageSends: ["numb", "whileTrue:", "<=", "value:", "+"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_truncated",
-smalltalk.method({
-selector: "truncated",
-category: 'converting',
-fn: function (){
-var self=this;
-var result=nil;
-((($receiver = ((($receiver = smalltalk.send(self, "_numb", [])).klass === smalltalk.Number) ? $receiver >=(0) : smalltalk.send($receiver, "__gt_eq", [(0)]))).klass === smalltalk.Boolean) ? ($receiver ? (function(){return result = Math.floor(self.val);;})() : (function(){return result = (Math.floor(self.val * (-1)) * (-1));;})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return result = Math.floor(self.val);;}), (function(){return result = (Math.floor(self.val * (-1)) * (-1));;})]));
-return result;
-return self;},
-args: [],
-source: "truncated\x0a|result|\x0a\x0a    self numb >= 0 \x0a        ifTrue: [<result = Math.floor(self.val);>]\x0a        ifFalse: [<result = (Math.floor(self.val * (-1)) * (-1));>].\x0a\x0a    ^ result",
-messageSends: ["ifTrue:ifFalse:", ">=", "numb"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
 "_updateSelf",
 smalltalk.method({
 selector: "updateSelf",
@@ -2165,24 +1646,6 @@ return self},
 args: [],
 source: "updateSelf\x0a\x0aselector asJQuery attr:attr to: val asString,unit.\x0a",
 messageSends: ["attr:to:", ",", "asString", "asJQuery"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__or",
-smalltalk.method({
-selector: "|",
-category: 'converting',
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self.val | aNumber;
-return self;},
-args: ["anObject"],
-source: "| anObject\x0a\x0a|aNumber|\x0a\x0a\x09(anObject class == self class) ifTrue:[aNumber:=anObject numb]\x0a                                                     ifFalse:[aNumber:= anObject].\x0a\x09<return self.val | aNumber>",
-messageSends: ["ifTrue:ifFalse:", "==", "class", "numb"],
 referencedClasses: []
 }),
 smalltalk.AttrNumb);
@@ -2267,41 +1730,38 @@ selector: "dBind",
 category: 'assigning',
 fn: function (){
 var self=this;
-var $1,$2;
-var mutationObserver;
-var myObserver;
-var config;
-var mutationHandler;
+var mutationObserver,myObserver,config,mutationHandler;
+return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
-return smalltalk.send(mutationRecords,"_do_",[(function(each){
+return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-temp=($(each.target).css(self._attr()));;
-;
-return smalltalk.send(self,"_is_",[smalltalk.send(smalltalk.send(temp,"_copyFrom_to_",[(0),smalltalk.send(smalltalk.send(temp,"_size",[]),"__minus",[smalltalk.send(self["@unit"],"_size",[])])]),"_asNumber",[])]);
-})]);
-});
-$1=smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_isWebkit",[]);
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(each)._target())._asJQuery())._css_(_st(self)._attr());
+temp;
+return _st(self)._numb_(_st(_st(temp)._copyFrom_to_((0),_st(_st(temp)._size()).__minus(_st(self["@unit"])._size())))._asNumber());
+}, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
+$1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
 if(smalltalk.assert($1)){
-mutationObserver=smalltalk.send(window,"_WebKitMutationObserver",[]);
+mutationObserver="WebKitMutationObserver";
 mutationObserver;
 } else {
-mutationObserver=smalltalk.send(window,"_MutationObserver",[]);
+mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver= new mutationObserver(mutationHandler);;
-;
-config={attributes: true, attributeFilter:[self._attr()] };
-;
-smalltalk.send(smalltalk.send(smalltalk.send(self["@selector"],"_asJQuery",[]),"_toArray",[]),"_do_",[(function(each){
-return smalltalk.send(myObserver,"_observe_with_",[each,config]);
-})]);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
+_st(config)._at_put_("attributes",true);
+_st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
+_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
-},
+}, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrNumb)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a<temp=($(each.target).css(self._attr()));>.self is:(temp copyFrom:0 to: temp size- unit size ) asNumber.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]\x0a                                            ifFalse:[mutationObserver:=window MutationObserver.].\x0a                                            \x0a \x0a<myObserver= new mutationObserver(mutationHandler);>.\x0a\x0a<config={attributes: true, attributeFilter:[self._attr()] }>.\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "is:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "WebKitMutationObserver", "MutationObserver", "isWebkit", "observe:with:", "toArray", "asJQuery"],
-referencedClasses: ["HTMLCanvas"]
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0atemp:=each target asJQuery css: self attr.self numb:(temp copyFrom:0 to: temp size- unit size ) asNumber.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a\x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "css:", "attr", "asJQuery", "target", "numb:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.StyleAttrNumb);
 
@@ -2318,6 +1778,22 @@ return $1;
 },
 args: [],
 source: "numb\x0a\x0a^val",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.StyleAttrNumb);
+
+smalltalk.addMethod(
+"_numb_",
+smalltalk.method({
+selector: "numb:",
+category: 'accessing',
+fn: function (aNumb){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@val"]=aNumb;
+return self}, function($ctx1) {$ctx1.fill(self,"numb:",{aNumb:aNumb}, smalltalk.StyleAttrNumb)})},
+args: ["aNumb"],
+source: "numb:aNumb\x0a\x0aval:=aNumb",
 messageSends: [],
 referencedClasses: []
 }),
@@ -3535,41 +3011,38 @@ selector: "dBind",
 category: 'assigning',
 fn: function (){
 var self=this;
-var $1,$2;
-var mutationObserver;
-var myObserver;
-var config;
-var mutationHandler;
+var mutationObserver,myObserver,config,mutationHandler;
+return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
-return smalltalk.send(mutationRecords,"_do_",[(function(each){
+return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-temp=($(each.target).attr(self._attr()));;
-;
-return smalltalk.send(self,"_is_",[temp]);
-})]);
-});
-$1=smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_isWebkit",[]);
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(each)._target())._asJQuery())._attr_(_st(self)._attr());
+temp;
+return _st(self)._string_(temp);
+}, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
+$1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
 if(smalltalk.assert($1)){
-mutationObserver=smalltalk.send(window,"_WebKitMutationObserver",[]);
+mutationObserver="WebKitMutationObserver";
 mutationObserver;
 } else {
-mutationObserver=smalltalk.send(window,"_MutationObserver",[]);
+mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver= new mutationObserver(mutationHandler);;
-;
-config={attributes: true, attributeFilter:[self._attr()] };
-;
-smalltalk.send(smalltalk.send(smalltalk.send(self["@selector"],"_asJQuery",[]),"_toArray",[]),"_do_",[(function(each){
-return smalltalk.send(myObserver,"_observe_with_",[each,config]);
-})]);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
+_st(config)._at_put_("attributes",true);
+_st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
+_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
-},
+}, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrString)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a<temp=($(each.target).attr(self._attr()));>. self is:temp.\x0a                                      ]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]\x0a                                            ifFalse:[mutationObserver:=window MutationObserver.].\x0a                                            \x0a \x0a<myObserver= new mutationObserver(mutationHandler);>.\x0a\x0a<config={attributes: true, attributeFilter:[self._attr()] }>.\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "is:", "ifTrue:ifFalse:", "WebKitMutationObserver", "MutationObserver", "isWebkit", "observe:with:", "toArray", "asJQuery"],
-referencedClasses: ["HTMLCanvas"]
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0atemp:=each target asJQuery attr: self attr. self string:temp.\x0a                                      ]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                  \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.AttrString);
 
@@ -3617,6 +3090,22 @@ return self['@val'];
 return self;},
 args: [],
 source: "string\x0a\x0a^val",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.AttrString);
+
+smalltalk.addMethod(
+"_string_",
+smalltalk.method({
+selector: "string:",
+category: 'accessing',
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@val"]=aString;
+return self}, function($ctx1) {$ctx1.fill(self,"string:",{aString:aString}, smalltalk.AttrString)})},
+args: ["aString"],
+source: "string: aString\x0a\x0aval:=aString",
 messageSends: [],
 referencedClasses: []
 }),
@@ -3682,41 +3171,37 @@ selector: "dBind",
 category: 'assigning',
 fn: function (){
 var self=this;
-var $1,$2;
-var mutationObserver;
-var myObserver;
-var config;
-var mutationHandler;
+var mutationObserver,myObserver,config,mutationHandler;
+return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
-return smalltalk.send(mutationRecords,"_do_",[(function(each){
+return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-temp=($(each.target).prop("textContent"));;
-;
-return smalltalk.send(self,"_is_",[temp]);
-})]);
-});
-$1=smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_isWebkit",[]);
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(each)._target())._asJQuery())._prop_("textContent");
+temp;
+return _st(self)._string_(temp);
+}, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
+$1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
 if(smalltalk.assert($1)){
-mutationObserver=smalltalk.send(window,"_WebKitMutationObserver",[]);
+mutationObserver="WebKitMutationObserver";
 mutationObserver;
 } else {
-mutationObserver=smalltalk.send(window,"_MutationObserver",[]);
+mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver= new mutationObserver(mutationHandler);;
-;
-config={characterData: true };
-;
-smalltalk.send(smalltalk.send(smalltalk.send(self["@selector"],"_asJQuery",[]),"_toArray",[]),"_do_",[(function(each){
-return smalltalk.send(myObserver,"_observe_with_",[each,config]);
-})]);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
+_st(config)._at_put_("characterData",true);
+_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
-},
+}, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.ContentString)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                  <temp=($(each.target).prop(\x22textContent\x22));>. self is:temp. \x0a                                    ]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]\x0a                                            ifFalse:[mutationObserver:=window MutationObserver.].\x0a                                            \x0a \x0a<myObserver= new mutationObserver(mutationHandler);>.\x0a\x0a<config={characterData: true }>.\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "is:", "ifTrue:ifFalse:", "WebKitMutationObserver", "MutationObserver", "isWebkit", "observe:with:", "toArray", "asJQuery"],
-referencedClasses: ["HTMLCanvas"]
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                  temp:=each target asJQuery prop: 'textContent'. self string:temp. \x0a                                    ]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "prop:", "asJQuery", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "observe:with:", "toArray"],
+referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection"]
 }),
 smalltalk.ContentString);
 
@@ -3767,6 +3252,22 @@ return $1;
 },
 args: [],
 source: "string\x0a\x0a^val",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.ContentString);
+
+smalltalk.addMethod(
+"_string_",
+smalltalk.method({
+selector: "string:",
+category: 'accessing',
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@val"]=aString;
+return self}, function($ctx1) {$ctx1.fill(self,"string:",{aString:aString}, smalltalk.ContentString)})},
+args: ["aString"],
+source: "string: aString\x0a\x0aval:=aString",
 messageSends: [],
 referencedClasses: []
 }),
@@ -3834,41 +3335,38 @@ selector: "dBind",
 category: 'assigning',
 fn: function (){
 var self=this;
-var $1,$2;
-var mutationObserver;
-var myObserver;
-var config;
-var mutationHandler;
+var mutationObserver,myObserver,config,mutationHandler;
+return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
-return smalltalk.send(mutationRecords,"_do_",[(function(each){
+return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-temp=($(each.target).css(self._attr()));;
-;
-return smalltalk.send(self,"_is_",[temp]);
-})]);
-});
-$1=smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_isWebkit",[]);
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(each)._target())._css_(_st(self)._attr());
+temp;
+return _st(self)._string_(temp);
+}, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
+$1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
 if(smalltalk.assert($1)){
-mutationObserver=smalltalk.send(window,"_WebKitMutationObserver",[]);
+mutationObserver="WebKitMutationObserver";
 mutationObserver;
 } else {
-mutationObserver=smalltalk.send(window,"_MutationObserver",[]);
+mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver= new mutationObserver(mutationHandler);;
-;
-config={attributes: true, attributeFilter:[self._attr()] };
-;
-smalltalk.send(smalltalk.send(smalltalk.send(self["@selector"],"_asJQuery",[]),"_toArray",[]),"_do_",[(function(each){
-return smalltalk.send(myObserver,"_observe_with_",[each,config]);
-})]);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
+_st(config)._at_put_("attributes",true);
+_st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
+_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
-},
+}, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrString)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                               <temp=($(each.target).css(self._attr()));>.self is:temp.]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:=window WebKitMutationObserver.]\x0a                                            ifFalse:[mutationObserver:=window MutationObserver.].\x0a                                            \x0a \x0a<myObserver= new mutationObserver(mutationHandler);>.\x0a\x0a\x0a<config={attributes: true, attributeFilter:[self._attr()] }>.\x0a \x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "is:", "ifTrue:ifFalse:", "WebKitMutationObserver", "MutationObserver", "isWebkit", "observe:with:", "toArray", "asJQuery"],
-referencedClasses: ["HTMLCanvas"]
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                               temp:=each target css: self attr.self string:temp.]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "css:", "attr", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "add:", "observe:with:", "toArray", "asJQuery"],
+referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.StyleAttrString);
 
@@ -3920,6 +3418,22 @@ return $1;
 },
 args: [],
 source: "string\x0a\x0a^val",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.StyleAttrString);
+
+smalltalk.addMethod(
+"_string_",
+smalltalk.method({
+selector: "string:",
+category: 'accessing',
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@val"]=aString;
+return self}, function($ctx1) {$ctx1.fill(self,"string:",{aString:aString}, smalltalk.StyleAttrString)})},
+args: ["aString"],
+source: "string: aString\x0a\x0aval:=aString",
 messageSends: [],
 referencedClasses: []
 }),

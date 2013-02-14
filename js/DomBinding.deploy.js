@@ -231,6 +231,17 @@ return self;}
 smalltalk.AttrBool);
 
 smalltalk.addMethod(
+"_bool_",
+smalltalk.method({
+selector: "bool:",
+fn: function (aBool){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@val"]=aBool;
+return self}, function($ctx1) {$ctx1.fill(self,"bool:",{aBool:aBool}, smalltalk.AttrBool)})}
+}),
+smalltalk.AttrBool);
+
+smalltalk.addMethod(
 "_dBind",
 smalltalk.method({
 selector: "dBind",
@@ -241,9 +252,9 @@ return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
 return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(_st(each)._target())._attr())._self())._attr();
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(each)._target())._asJQuery())._attr_(_st(self)._attr());
 temp;
-return _st(self)._is_(temp);
+return _st(self)._bool_(temp);
 }, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
 $1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
@@ -254,11 +265,11 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-_st(_st(myObserver).__eq((smalltalk.NativeFunction || NativeFunction)))._class_value_("mutationObserver",mutationHandler);
-config=_st((smalltalk.Dictionary || Dictionary))._new();
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("characterData",true);
 _st(config)._at_put_("attributes",true);
-_st(config)._at_put_add_("attributeFilter",_st((smalltalk.Array || Array))._new(),_st(self)._attr());
+_st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
 _st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
@@ -343,6 +354,17 @@ return $1;
 smalltalk.StyleAttrBool);
 
 smalltalk.addMethod(
+"_bool_",
+smalltalk.method({
+selector: "bool:",
+fn: function (aBool){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@val"]=aBool;
+return self}, function($ctx1) {$ctx1.fill(self,"bool:",{aBool:aBool}, smalltalk.StyleAttrBool)})}
+}),
+smalltalk.StyleAttrBool);
+
+smalltalk.addMethod(
 "_dBind",
 smalltalk.method({
 selector: "dBind",
@@ -353,9 +375,9 @@ return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
 return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-return smalltalk.withContext(function($ctx3) {temp=_st(_st(each)._target())._css_(_st(self)._attr());
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(each)._target())._asJQuery())._css_(_st(self)._attr());
 temp;
-return _st(self)._is_(temp);
+return _st(self)._bool_(temp);
 }, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
 $1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
@@ -366,10 +388,10 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-_st(_st(myObserver).__eq((smalltalk.NativeFunction || NativeFunction)))._class_value_("mutationObserver",mutationHandler);
-config=_st((smalltalk.Dictionary || Dictionary))._new();
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
-_st(config)._at_put_add_("attributeFilter",_st((smalltalk.Array || Array))._new(),_st(self)._attr());
+_st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
 _st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
@@ -1096,196 +1118,6 @@ smalltalk.VarNumb);
 
 smalltalk.addClass('AttrNumb', smalltalk.VarNumb, ['selector', 'attr', 'unit'], 'DomBinding');
 smalltalk.addMethod(
-"__and",
-smalltalk.method({
-selector: "&",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() & aNumber;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__star",
-smalltalk.method({
-selector: "*",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() * aNumber;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__plus",
-smalltalk.method({
-selector: "+",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() + aNumber;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__minus",
-smalltalk.method({
-selector: "-",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() - aNumber;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__slash",
-smalltalk.method({
-selector: "/",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() / aNumber;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__lt",
-smalltalk.method({
-selector: "<",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() < aNumber;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__lt_eq",
-smalltalk.method({
-selector: "<=",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() <= aNumber;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__eq",
-smalltalk.method({
-selector: "=",
-fn: function (anObject){
-var self=this;
-var $early={};
-try{var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-((($receiver = smalltalk.send(aNumber, "_isNumber", [])).klass === smalltalk.Boolean) ? (! $receiver ? (function(){return (function(){throw $early=[false]})();})() : nil) : smalltalk.send($receiver, "_ifFalse_", [(function(){return (function(){throw $early=[false]})();})]));
-return Number(self._numb()) == aNumber;
-return self;
-} catch(e) {if(e===$early)return e[0]; throw e}}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__gt",
-smalltalk.method({
-selector: ">",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() > aNumber;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__gt_eq",
-smalltalk.method({
-selector: ">=",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self._numb() >= aNumber;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__backslash_backslash",
-smalltalk.method({
-selector: "\x5c\x5c",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self.numb() % aNumber;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_abs",
-smalltalk.method({
-selector: "abs",
-fn: function (){
-var self=this;
-return Math.abs(self._numb());;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_asJSON",
-smalltalk.method({
-selector: "asJSON",
-fn: function (){
-var self=this;
-return smalltalk.send(self, "_numb", []);
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_asString",
-smalltalk.method({
-selector: "asString",
-fn: function (){
-var self=this;
-return smalltalk.send(self, "_printString", []);
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_atRandom",
-smalltalk.method({
-selector: "atRandom",
-fn: function (){
-var self=this;
-return ((($receiver = smalltalk.send(((($receiver = smalltalk.send(smalltalk.send((smalltalk.Random || Random), "_new", []), "_next", [])).klass === smalltalk.Number) ? $receiver *smalltalk.send(self, "_numb", []) : smalltalk.send($receiver, "__star", [smalltalk.send(self, "_numb", [])])), "_truncated", [])).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)]));
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
 "_attr",
 smalltalk.method({
 selector: "attr",
@@ -1309,9 +1141,9 @@ return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
 return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-return smalltalk.withContext(function($ctx3) {temp=_st(_st(each)._target())._attr_(_st(self)._attr());
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(each)._target())._asJQuery())._attr_(_st(self)._attr());
 temp;
-return _st(self)._is_(_st(_st(temp)._copyFrom_to_((0),_st(_st(temp)._size()).__minus(_st(self["@unit"])._size())))._asNumber());
+return _st(self)._numb_(_st(_st(temp)._copyFrom_to_((0),_st(_st(temp)._size()).__minus(_st(self["@unit"])._size())))._asNumber());
 }, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
 $1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
@@ -1322,87 +1154,17 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-_st(_st(myObserver).__eq((smalltalk.NativeFunction || NativeFunction)))._class_value_("mutationObserver",mutationHandler);
-config=_st((smalltalk.Dictionary || Dictionary))._new();
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("characterData",true);
 _st(config)._at_put_("attributes",true);
-_st(config)._at_put_add_("attributeFilter",_st((smalltalk.Array || Array))._new(),_st(self)._attr());
+_st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
 _st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrNumb)})}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_even",
-smalltalk.method({
-selector: "even",
-fn: function (){
-var self=this;
-return smalltalk.send((0), "__eq", [smalltalk.send(smalltalk.send(self, "_numb", []), "_\\\\", [(2)])]);
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_isZero",
-smalltalk.method({
-selector: "isZero",
-fn: function (){
-var self=this;
-return smalltalk.send(smalltalk.send(self, "_numb", []), "__eq", [(0)]);
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_max_",
-smalltalk.method({
-selector: "max:",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return Math.max(self._numb(), aNumber);;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_min_",
-smalltalk.method({
-selector: "min:",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return Math.min(self._numb(), aNumber);;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_negated",
-smalltalk.method({
-selector: "negated",
-fn: function (){
-var self=this;
-return (0) - smalltalk.send(self, "_numb", []);
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_negative",
-smalltalk.method({
-selector: "negative",
-fn: function (){
-var self=this;
-return ((($receiver = smalltalk.send(self, "_numb", [])).klass === smalltalk.Number) ? $receiver <(0) : smalltalk.send($receiver, "__lt", [(0)]));
-return self;}
 }),
 smalltalk.AttrNumb);
 
@@ -1420,35 +1182,13 @@ return $1;
 smalltalk.AttrNumb);
 
 smalltalk.addMethod(
-"_odd",
+"_numb_",
 smalltalk.method({
-selector: "odd",
-fn: function (){
+selector: "numb:",
+fn: function (aNumb){
 var self=this;
-return smalltalk.send(smalltalk.send(self, "_even", []), "_not", []);
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_positive",
-smalltalk.method({
-selector: "positive",
-fn: function (){
-var self=this;
-return ((($receiver = self).klass === smalltalk.Number) ? $receiver >=(0) : smalltalk.send($receiver, "__gt_eq", [(0)]));
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_rounded",
-smalltalk.method({
-selector: "rounded",
-fn: function (){
-var self=this;
-return Math.round(self._numb());;
-return self;}
+return smalltalk.withContext(function($ctx1) { self["@val"]=aNumb;
+return self}, function($ctx1) {$ctx1.fill(self,"numb:",{aNumb:aNumb}, smalltalk.AttrNumb)})}
 }),
 smalltalk.AttrNumb);
 
@@ -1520,120 +1260,6 @@ return self;}
 smalltalk.AttrNumb);
 
 smalltalk.addMethod(
-"_sqrt",
-smalltalk.method({
-selector: "sqrt",
-fn: function (){
-var self=this;
-return Math.sqrt(self._numb());
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_squared",
-smalltalk.method({
-selector: "squared",
-fn: function (){
-var self=this;
-return ((($receiver = smalltalk.send(self, "_numb", [])).klass === smalltalk.Number) ? $receiver *smalltalk.send(self, "_numb", []) : smalltalk.send($receiver, "__star", [smalltalk.send(self, "_numb", [])]));
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_timesRepeat_",
-smalltalk.method({
-selector: "timesRepeat:",
-fn: function (aBlock){
-var self=this;
-var count=nil;
-(count=(1));
-(function(){while(!(function(){return ((($receiver = count).klass === smalltalk.Number) ? $receiver >smalltalk.send(self, "_numb", []) : smalltalk.send($receiver, "__gt", [smalltalk.send(self, "_numb", [])]));})()) {(function(){smalltalk.send(aBlock, "_value", []);return (count=((($receiver = count).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));})()}})();
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_to_",
-smalltalk.method({
-selector: "to:",
-fn: function (aNumber){
-var self=this;
-var array=nil;
-var first=nil;
-var last=nil;
-var count=nil;
-(first=smalltalk.send(self, "_truncated", []));
-(last=((($receiver = smalltalk.send(aNumber, "_truncated", [])).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));
-(count=(1));
-(array=smalltalk.send((smalltalk.Array || Array), "_new", []));
-smalltalk.send(((($receiver = last).klass === smalltalk.Number) ? $receiver -first : smalltalk.send($receiver, "__minus", [first])), "_timesRepeat_", [(function(){smalltalk.send(array, "_at_put_", [count, first]);(count=((($receiver = count).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));return (first=((($receiver = first).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));})]);
-return array;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_to_by_",
-smalltalk.method({
-selector: "to:by:",
-fn: function (stop, step){
-var self=this;
-var array=nil;
-var value=nil;
-var pos=nil;
-(value=smalltalk.send(self, "_numb", []));
-(array=smalltalk.send((smalltalk.Array || Array), "_new", []));
-(pos=(1));
-((($receiver = smalltalk.send(step, "__eq", [(0)])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return smalltalk.send(self, "_error_", ["step must be non-zero"]);})() : nil) : smalltalk.send($receiver, "_ifTrue_", [(function(){return smalltalk.send(self, "_error_", ["step must be non-zero"]);})]));
-((($receiver = ((($receiver = step).klass === smalltalk.Number) ? $receiver <(0) : smalltalk.send($receiver, "__lt", [(0)]))).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver >=stop : smalltalk.send($receiver, "__gt_eq", [stop]));})()) {(function(){smalltalk.send(array, "_at_put_", [pos, value]);(pos=((($receiver = pos).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();})() : (function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver <=stop : smalltalk.send($receiver, "__lt_eq", [stop]));})()) {(function(){smalltalk.send(array, "_at_put_", [pos, value]);(pos=((($receiver = pos).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver >=stop : smalltalk.send($receiver, "__gt_eq", [stop]));})()) {(function(){smalltalk.send(array, "_at_put_", [pos, value]);(pos=((($receiver = pos).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();}), (function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver <=stop : smalltalk.send($receiver, "__lt_eq", [stop]));})()) {(function(){smalltalk.send(array, "_at_put_", [pos, value]);(pos=((($receiver = pos).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();})]));
-return array;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_to_by_do_",
-smalltalk.method({
-selector: "to:by:do:",
-fn: function (stop, step, aBlock){
-var self=this;
-var value=nil;
-(value=smalltalk.send(self, "_numb", []));
-((($receiver = smalltalk.send(step, "__eq", [(0)])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return smalltalk.send(self, "_error_", ["step must be non-zero"]);})() : nil) : smalltalk.send($receiver, "_ifTrue_", [(function(){return smalltalk.send(self, "_error_", ["step must be non-zero"]);})]));
-((($receiver = ((($receiver = step).klass === smalltalk.Number) ? $receiver <(0) : smalltalk.send($receiver, "__lt", [(0)]))).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver >=stop : smalltalk.send($receiver, "__gt_eq", [stop]));})()) {(function(){smalltalk.send(aBlock, "_value_", [value]);return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();})() : (function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver <=stop : smalltalk.send($receiver, "__lt_eq", [stop]));})()) {(function(){smalltalk.send(aBlock, "_value_", [value]);return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver >=stop : smalltalk.send($receiver, "__gt_eq", [stop]));})()) {(function(){smalltalk.send(aBlock, "_value_", [value]);return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();}), (function(){return (function(){while((function(){return ((($receiver = value).klass === smalltalk.Number) ? $receiver <=stop : smalltalk.send($receiver, "__lt_eq", [stop]));})()) {(function(){smalltalk.send(aBlock, "_value_", [value]);return (value=((($receiver = value).klass === smalltalk.Number) ? $receiver +step : smalltalk.send($receiver, "__plus", [step])));})()}})();})]));
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_to_do_",
-smalltalk.method({
-selector: "to:do:",
-fn: function (stop, aBlock){
-var self=this;
-var nextValue=nil;
-(nextValue=smalltalk.send(self, "_numb", []));
-(function(){while((function(){return ((($receiver = nextValue).klass === smalltalk.Number) ? $receiver <=stop : smalltalk.send($receiver, "__lt_eq", [stop]));})()) {(function(){smalltalk.send(aBlock, "_value_", [nextValue]);return (nextValue=((($receiver = nextValue).klass === smalltalk.Number) ? $receiver +(1) : smalltalk.send($receiver, "__plus", [(1)])));})()}})();
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_truncated",
-smalltalk.method({
-selector: "truncated",
-fn: function (){
-var self=this;
-var result=nil;
-((($receiver = ((($receiver = smalltalk.send(self, "_numb", [])).klass === smalltalk.Number) ? $receiver >=(0) : smalltalk.send($receiver, "__gt_eq", [(0)]))).klass === smalltalk.Boolean) ? ($receiver ? (function(){return result = Math.floor(self.val);;})() : (function(){return result = (Math.floor(self.val * (-1)) * (-1));;})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return result = Math.floor(self.val);;}), (function(){return result = (Math.floor(self.val * (-1)) * (-1));;})]));
-return result;
-return self;}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
 "_updateSelf",
 smalltalk.method({
 selector: "updateSelf",
@@ -1641,19 +1267,6 @@ fn: function (){
 var self=this;
 smalltalk.send(smalltalk.send(self["@selector"],"_asJQuery",[]),"_attr_to_",[self["@attr"],smalltalk.send(smalltalk.send(self["@val"],"_asString",[]),"__comma",[self["@unit"]])]);
 return self}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"__or",
-smalltalk.method({
-selector: "|",
-fn: function (anObject){
-var self=this;
-var aNumber=nil;
-((($receiver = smalltalk.send(smalltalk.send(anObject, "_class", []), "__eq_eq", [smalltalk.send(self, "_class", [])])).klass === smalltalk.Boolean) ? ($receiver ? (function(){return (aNumber=smalltalk.send(anObject, "_numb", []));})() : (function(){return (aNumber=anObject);})()) : smalltalk.send($receiver, "_ifTrue_ifFalse_", [(function(){return (aNumber=smalltalk.send(anObject, "_numb", []));}), (function(){return (aNumber=anObject);})]));
-return self.val | aNumber;
-return self;}
 }),
 smalltalk.AttrNumb);
 
@@ -1716,37 +1329,34 @@ smalltalk.method({
 selector: "dBind",
 fn: function (){
 var self=this;
-var $1,$2;
-var mutationObserver;
-var myObserver;
-var config;
-var mutationHandler;
+var mutationObserver,myObserver,config,mutationHandler;
+return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
-return smalltalk.send(mutationRecords,"_do_",[(function(each){
+return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-temp=($(each.target).css(self._attr()));;
-;
-return smalltalk.send(self,"_is_",[smalltalk.send(smalltalk.send(temp,"_copyFrom_to_",[(0),smalltalk.send(smalltalk.send(temp,"_size",[]),"__minus",[smalltalk.send(self["@unit"],"_size",[])])]),"_asNumber",[])]);
-})]);
-});
-$1=smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_isWebkit",[]);
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(each)._target())._asJQuery())._css_(_st(self)._attr());
+temp;
+return _st(self)._numb_(_st(_st(temp)._copyFrom_to_((0),_st(_st(temp)._size()).__minus(_st(self["@unit"])._size())))._asNumber());
+}, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
+$1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
 if(smalltalk.assert($1)){
-mutationObserver=smalltalk.send(window,"_WebKitMutationObserver",[]);
+mutationObserver="WebKitMutationObserver";
 mutationObserver;
 } else {
-mutationObserver=smalltalk.send(window,"_MutationObserver",[]);
+mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver= new mutationObserver(mutationHandler);;
-;
-config={attributes: true, attributeFilter:[self._attr()] };
-;
-smalltalk.send(smalltalk.send(smalltalk.send(self["@selector"],"_asJQuery",[]),"_toArray",[]),"_do_",[(function(each){
-return smalltalk.send(myObserver,"_observe_with_",[each,config]);
-})]);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
+_st(config)._at_put_("attributes",true);
+_st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
+_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
-}
+}, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrNumb)})}
 }),
 smalltalk.StyleAttrNumb);
 
@@ -1760,6 +1370,17 @@ var $1;
 $1=self["@val"];
 return $1;
 }
+}),
+smalltalk.StyleAttrNumb);
+
+smalltalk.addMethod(
+"_numb_",
+smalltalk.method({
+selector: "numb:",
+fn: function (aNumb){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@val"]=aNumb;
+return self}, function($ctx1) {$ctx1.fill(self,"numb:",{aNumb:aNumb}, smalltalk.StyleAttrNumb)})}
 }),
 smalltalk.StyleAttrNumb);
 
@@ -2659,37 +2280,34 @@ smalltalk.method({
 selector: "dBind",
 fn: function (){
 var self=this;
-var $1,$2;
-var mutationObserver;
-var myObserver;
-var config;
-var mutationHandler;
+var mutationObserver,myObserver,config,mutationHandler;
+return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
-return smalltalk.send(mutationRecords,"_do_",[(function(each){
+return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-temp=($(each.target).attr(self._attr()));;
-;
-return smalltalk.send(self,"_is_",[temp]);
-})]);
-});
-$1=smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_isWebkit",[]);
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(each)._target())._asJQuery())._attr_(_st(self)._attr());
+temp;
+return _st(self)._string_(temp);
+}, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
+$1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
 if(smalltalk.assert($1)){
-mutationObserver=smalltalk.send(window,"_WebKitMutationObserver",[]);
+mutationObserver="WebKitMutationObserver";
 mutationObserver;
 } else {
-mutationObserver=smalltalk.send(window,"_MutationObserver",[]);
+mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver= new mutationObserver(mutationHandler);;
-;
-config={attributes: true, attributeFilter:[self._attr()] };
-;
-smalltalk.send(smalltalk.send(smalltalk.send(self["@selector"],"_asJQuery",[]),"_toArray",[]),"_do_",[(function(each){
-return smalltalk.send(myObserver,"_observe_with_",[each,config]);
-})]);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
+_st(config)._at_put_("attributes",true);
+_st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
+_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
-}
+}, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrString)})}
 }),
 smalltalk.AttrString);
 
@@ -2724,6 +2342,17 @@ fn: function (){
 var self=this;
 return self['@val'];
 return self;}
+}),
+smalltalk.AttrString);
+
+smalltalk.addMethod(
+"_string_",
+smalltalk.method({
+selector: "string:",
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@val"]=aString;
+return self}, function($ctx1) {$ctx1.fill(self,"string:",{aString:aString}, smalltalk.AttrString)})}
 }),
 smalltalk.AttrString);
 
@@ -2771,37 +2400,33 @@ smalltalk.method({
 selector: "dBind",
 fn: function (){
 var self=this;
-var $1,$2;
-var mutationObserver;
-var myObserver;
-var config;
-var mutationHandler;
+var mutationObserver,myObserver,config,mutationHandler;
+return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
-return smalltalk.send(mutationRecords,"_do_",[(function(each){
+return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-temp=($(each.target).prop("textContent"));;
-;
-return smalltalk.send(self,"_is_",[temp]);
-})]);
-});
-$1=smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_isWebkit",[]);
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(_st(each)._target())._asJQuery())._prop_("textContent");
+temp;
+return _st(self)._string_(temp);
+}, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
+$1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
 if(smalltalk.assert($1)){
-mutationObserver=smalltalk.send(window,"_WebKitMutationObserver",[]);
+mutationObserver="WebKitMutationObserver";
 mutationObserver;
 } else {
-mutationObserver=smalltalk.send(window,"_MutationObserver",[]);
+mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver= new mutationObserver(mutationHandler);;
-;
-config={characterData: true };
-;
-smalltalk.send(smalltalk.send(smalltalk.send(self["@selector"],"_asJQuery",[]),"_toArray",[]),"_do_",[(function(each){
-return smalltalk.send(myObserver,"_observe_with_",[each,config]);
-})]);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
+_st(config)._at_put_("characterData",true);
+_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
-}
+}, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.ContentString)})}
 }),
 smalltalk.ContentString);
 
@@ -2839,6 +2464,17 @@ var $1;
 $1=self["@val"];
 return $1;
 }
+}),
+smalltalk.ContentString);
+
+smalltalk.addMethod(
+"_string_",
+smalltalk.method({
+selector: "string:",
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@val"]=aString;
+return self}, function($ctx1) {$ctx1.fill(self,"string:",{aString:aString}, smalltalk.ContentString)})}
 }),
 smalltalk.ContentString);
 
@@ -2888,37 +2524,34 @@ smalltalk.method({
 selector: "dBind",
 fn: function (){
 var self=this;
-var $1,$2;
-var mutationObserver;
-var myObserver;
-var config;
-var mutationHandler;
+var mutationObserver,myObserver,config,mutationHandler;
+return smalltalk.withContext(function($ctx1) { var $1,$2;
 mutationHandler=(function(mutationRecords){
-return smalltalk.send(mutationRecords,"_do_",[(function(each){
+return smalltalk.withContext(function($ctx2) {return _st(mutationRecords)._do_((function(each){
 var temp;
-temp=($(each.target).css(self._attr()));;
-;
-return smalltalk.send(self,"_is_",[temp]);
-})]);
-});
-$1=smalltalk.send((smalltalk.HTMLCanvas || HTMLCanvas),"_isWebkit",[]);
+return smalltalk.withContext(function($ctx3) {temp=_st(_st(each)._target())._css_(_st(self)._attr());
+temp;
+return _st(self)._string_(temp);
+}, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({mutationRecords:mutationRecords},$ctx1)})});
+$1=_st((smalltalk.HTMLCanvas || HTMLCanvas))._isWebkit();
 if(smalltalk.assert($1)){
-mutationObserver=smalltalk.send(window,"_WebKitMutationObserver",[]);
+mutationObserver="WebKitMutationObserver";
 mutationObserver;
 } else {
-mutationObserver=smalltalk.send(window,"_MutationObserver",[]);
+mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver= new mutationObserver(mutationHandler);;
-;
-config={attributes: true, attributeFilter:[self._attr()] };
-;
-smalltalk.send(smalltalk.send(smalltalk.send(self["@selector"],"_asJQuery",[]),"_toArray",[]),"_do_",[(function(each){
-return smalltalk.send(myObserver,"_observe_with_",[each,config]);
-})]);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+config=_st((smalltalk.HashedCollection || HashedCollection))._new();
+_st(config)._at_put_("attributes",true);
+_st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
+_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
-}
+}, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrString)})}
 }),
 smalltalk.StyleAttrString);
 
@@ -2957,6 +2590,17 @@ var $1;
 $1=self["@val"];
 return $1;
 }
+}),
+smalltalk.StyleAttrString);
+
+smalltalk.addMethod(
+"_string_",
+smalltalk.method({
+selector: "string:",
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@val"]=aString;
+return self}, function($ctx1) {$ctx1.fill(self,"string:",{aString:aString}, smalltalk.StyleAttrString)})}
 }),
 smalltalk.StyleAttrString);
 
