@@ -1476,6 +1476,15 @@ removeClass: aClass
 
 !Smalltalk methodsFor: 'error handling'!
 
+asSmalltalkException: anObject
+	"A JavaScript exception may be thrown.
+    We then need to convert it back to a Smalltalk object"
+    
+    ^ ((self isSmalltalkObject: anObject) and: [ anObject isKindOf: Error ])
+    	ifTrue: [ anObject ]
+      	ifFalse: [ JavaScriptException on: anObject ]
+!
+
 parseError: anException parsing: aString
 	^ ParseError new messageText: 'Parse error on line ', (anException basicAt: 'line') ,' column ' , (anException basicAt: 'column') ,' : Unexpected character ', (anException basicAt: 'found')
 ! !
@@ -1547,6 +1556,15 @@ createPackage: packageName properties: aDict
     ^ self createPackage: packageName
 ! !
 
+!Smalltalk methodsFor: 'testing'!
+
+isSmalltalkObject: anObject
+	"Consider anObject a Smalltalk object if it has a 'klass' property.
+    Note that this may be unaccurate"
+    
+    <return typeof anObject.klass !!== 'undefined'>
+! !
+
 Smalltalk class instanceVariableNames: 'current'!
 
 !Smalltalk class methodsFor: 'accessing'!
@@ -1613,7 +1631,7 @@ subclass: aString instanceVariableNames: aString2 category: aString3
 
 subclass: aString instanceVariableNames: aString2 package: aString3
 	^ClassBuilder new
-	    superclass: self subclass: aString instanceVariableNames: aString2 package: aString3
+	    superclass: self subclass: aString asString instanceVariableNames: aString2 package: aString3
 ! !
 
 !UndefinedObject methodsFor: 'converting'!
@@ -1673,8 +1691,4 @@ notNil
 new
 	    self error: 'You cannot create new instances of UndefinedObject. Use nil'
 ! !
-
-nil subclass: #[object Object]
-	instanceVariableNames: ''
-	package: 'Kernel-Objects'!
 

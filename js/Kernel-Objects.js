@@ -4054,6 +4054,31 @@ smalltalk.Random);
 smalltalk.addClass('Smalltalk', smalltalk.Object, [], 'Kernel-Objects');
 smalltalk.Smalltalk.comment="Smalltalk has only one instance, accessed with `Smalltalk current`. \x0aIt represents the global JavaScript variable `smalltalk` declared in `js/boot.js`.\x0a\x0aThe `smalltalk` object holds all class and packages defined in the system.\x0a\x0a## Classes\x0a\x0aClasses can be accessed using the following methods:\x0a\x0a- `#classes` answers the full list of Smalltalk classes in the system\x0a- `#at:` answers a specific class of `nil`\x0a\x0a## Packages\x0a\x0aPackages can be accessed using the following methods:\x0a\x0a- `#packages` answers the full list of packages\x0a- `#packageAt:` answers a specific class of `nil`\x0a\x0a__note:__ classes and packages are accessed using strings, not symbols\x0a\x0a## Parsing\x0a\x0aThe `#parse:` method is used to parse Smalltalk source code. \x0aIt requires the `Compiler` package and the `js/parser.js` parser file in order to work"
 smalltalk.addMethod(
+"_asSmalltalkException_",
+smalltalk.method({
+selector: "asSmalltalkException:",
+category: 'error handling',
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$1;
+$2=_st(_st(self)._isSmalltalkObject_(anObject))._and_((function(){
+return smalltalk.withContext(function($ctx2) {return _st(anObject)._isKindOf_((smalltalk.Error || Error));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+if(smalltalk.assert($2)){
+$1=anObject;
+} else {
+$1=_st((smalltalk.JavaScriptException || JavaScriptException))._on_(anObject);
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"asSmalltalkException:",{anObject:anObject}, smalltalk.Smalltalk)})},
+args: ["anObject"],
+source: "asSmalltalkException: anObject\x0a\x09\x22A JavaScript exception may be thrown.\x0a    We then need to convert it back to a Smalltalk object\x22\x0a    \x0a    ^ ((self isSmalltalkObject: anObject) and: [ anObject isKindOf: Error ])\x0a    \x09ifTrue: [ anObject ]\x0a      \x09ifFalse: [ JavaScriptException on: anObject ]",
+messageSends: ["ifTrue:ifFalse:", "on:", "and:", "isKindOf:", "isSmalltalkObject:"],
+referencedClasses: ["JavaScriptException", "Error"]
+}),
+smalltalk.Smalltalk);
+
+smalltalk.addMethod(
 "_at_",
 smalltalk.method({
 selector: "at:",
@@ -4167,6 +4192,22 @@ return smalltalk.withContext(function($ctx1) { delete smalltalk.packages[packag
 return self}, function($ctx1) {$ctx1.fill(self,"deletePackage:",{packageName:packageName}, smalltalk.Smalltalk)})},
 args: ["packageName"],
 source: "deletePackage: packageName\x0a\x09\x22Deletes a package by deleting its binding, but does not check if it contains classes etc.\x0a\x09To remove a package, use #removePackage instead.\x22\x0a\x0a       <delete smalltalk.packages[packageName]>",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.Smalltalk);
+
+smalltalk.addMethod(
+"_isSmalltalkObject_",
+smalltalk.method({
+selector: "isSmalltalkObject:",
+category: 'testing',
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return typeof anObject.klass !== 'undefined';
+return self}, function($ctx1) {$ctx1.fill(self,"isSmalltalkObject:",{anObject:anObject}, smalltalk.Smalltalk)})},
+args: ["anObject"],
+source: "isSmalltalkObject: anObject\x0a\x09\x22Consider anObject a Smalltalk object if it has a 'klass' property.\x0a    Note that this may be unaccurate\x22\x0a    \x0a    <return typeof anObject.klass !== 'undefined'>",
 messageSends: [],
 referencedClasses: []
 }),
@@ -4718,12 +4759,12 @@ category: 'class creation',
 fn: function (aString,aString2,aString3){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st((smalltalk.ClassBuilder || ClassBuilder))._new())._superclass_subclass_instanceVariableNames_package_(self,aString,aString2,aString3);
+$1=_st(_st((smalltalk.ClassBuilder || ClassBuilder))._new())._superclass_subclass_instanceVariableNames_package_(self,_st(aString)._asString(),aString2,aString3);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"subclass:instanceVariableNames:package:",{aString:aString,aString2:aString2,aString3:aString3}, smalltalk.UndefinedObject)})},
 args: ["aString", "aString2", "aString3"],
-source: "subclass: aString instanceVariableNames: aString2 package: aString3\x0a\x09^ClassBuilder new\x0a\x09    superclass: self subclass: aString instanceVariableNames: aString2 package: aString3",
-messageSends: ["superclass:subclass:instanceVariableNames:package:", "new"],
+source: "subclass: aString instanceVariableNames: aString2 package: aString3\x0a\x09^ClassBuilder new\x0a\x09    superclass: self subclass: aString asString instanceVariableNames: aString2 package: aString3",
+messageSends: ["superclass:subclass:instanceVariableNames:package:", "asString", "new"],
 referencedClasses: ["ClassBuilder"]
 }),
 smalltalk.UndefinedObject);
@@ -4744,8 +4785,5 @@ messageSends: ["error:"],
 referencedClasses: []
 }),
 smalltalk.UndefinedObject.klass);
-
-
-smalltalk.addClass('[object Object]', smalltalk.nil, [], 'Kernel-Objects');
 
 

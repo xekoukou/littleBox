@@ -2940,6 +2940,26 @@ smalltalk.Random);
 
 smalltalk.addClass('Smalltalk', smalltalk.Object, [], 'Kernel-Objects');
 smalltalk.addMethod(
+"_asSmalltalkException_",
+smalltalk.method({
+selector: "asSmalltalkException:",
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$1;
+$2=_st(_st(self)._isSmalltalkObject_(anObject))._and_((function(){
+return smalltalk.withContext(function($ctx2) {return _st(anObject)._isKindOf_((smalltalk.Error || Error));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+if(smalltalk.assert($2)){
+$1=anObject;
+} else {
+$1=_st((smalltalk.JavaScriptException || JavaScriptException))._on_(anObject);
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"asSmalltalkException:",{anObject:anObject}, smalltalk.Smalltalk)})}
+}),
+smalltalk.Smalltalk);
+
+smalltalk.addMethod(
 "_at_",
 smalltalk.method({
 selector: "at:",
@@ -3020,6 +3040,17 @@ fn: function (packageName){
 var self=this;
 return smalltalk.withContext(function($ctx1) { delete smalltalk.packages[packageName];
 return self}, function($ctx1) {$ctx1.fill(self,"deletePackage:",{packageName:packageName}, smalltalk.Smalltalk)})}
+}),
+smalltalk.Smalltalk);
+
+smalltalk.addMethod(
+"_isSmalltalkObject_",
+smalltalk.method({
+selector: "isSmalltalkObject:",
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return typeof anObject.klass !== 'undefined';
+return self}, function($ctx1) {$ctx1.fill(self,"isSmalltalkObject:",{anObject:anObject}, smalltalk.Smalltalk)})}
 }),
 smalltalk.Smalltalk);
 
@@ -3426,7 +3457,7 @@ selector: "subclass:instanceVariableNames:package:",
 fn: function (aString,aString2,aString3){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st((smalltalk.ClassBuilder || ClassBuilder))._new())._superclass_subclass_instanceVariableNames_package_(self,aString,aString2,aString3);
+$1=_st(_st((smalltalk.ClassBuilder || ClassBuilder))._new())._superclass_subclass_instanceVariableNames_package_(self,_st(aString)._asString(),aString2,aString3);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"subclass:instanceVariableNames:package:",{aString:aString,aString2:aString2,aString3:aString3}, smalltalk.UndefinedObject)})}
 }),
@@ -3443,8 +3474,5 @@ return smalltalk.withContext(function($ctx1) { _st(self)._error_("You cannot cr
 return self}, function($ctx1) {$ctx1.fill(self,"new",{}, smalltalk.UndefinedObject.klass)})}
 }),
 smalltalk.UndefinedObject.klass);
-
-
-smalltalk.addClass('[object Object]', smalltalk.nil, [], 'Kernel-Objects');
 
 
