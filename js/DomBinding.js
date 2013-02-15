@@ -361,7 +361,7 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_(mutationObserver,mutationHandler);
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("characterData",true);
 _st(config)._at_put_("attributes",true);
@@ -373,8 +373,8 @@ $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrBool)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                 temp:=each target asJQuery attr: self attr. self bool:temp.\x0a                                        ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "bool:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                 temp:=each target asJQuery attr: self attr. self bool:temp.\x0a                                        ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "bool:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.AttrBool);
@@ -524,7 +524,7 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_(mutationObserver,mutationHandler);
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
@@ -535,8 +535,8 @@ $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrBool)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                temp:=each target asJQuery css: self attr.self bool:temp.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "css:", "attr", "asJQuery", "target", "bool:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                temp:=each target asJQuery css: self attr.self bool:temp.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "css:", "attr", "asJQuery", "target", "bool:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.StyleAttrBool);
@@ -1490,7 +1490,7 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_(mutationObserver,mutationHandler);
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("characterData",true);
 _st(config)._at_put_("attributes",true);
@@ -1502,8 +1502,8 @@ $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrNumb)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp|\x0a temp:=each target asJQuery attr: self attr. self numb:(temp copyFrom:0 to: temp size- unit size ) asNumber.\x0a                     ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "numb:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp|\x0a temp:=each target asJQuery attr: self attr. self numb:(temp copyFrom:0 to: temp size- unit size ) asNumber.\x0a                     ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "numb:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.AttrNumb);
@@ -1748,7 +1748,7 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_(mutationObserver,mutationHandler);
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
@@ -1759,8 +1759,8 @@ $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrNumb)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0atemp:=each target asJQuery css: self attr.self numb:(temp copyFrom:0 to: temp size- unit size ) asNumber.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a\x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "css:", "attr", "asJQuery", "target", "numb:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0atemp:=each target asJQuery css: self attr.self numb:(temp copyFrom:0 to: temp size- unit size ) asNumber.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a\x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "css:", "attr", "asJQuery", "target", "numb:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.StyleAttrNumb);
@@ -3029,7 +3029,7 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_(mutationObserver,mutationHandler);
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
@@ -3040,8 +3040,8 @@ $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrString)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0atemp:=each target asJQuery attr: self attr. self string:temp.\x0a                                      ]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                  \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0atemp:=each target asJQuery attr: self attr. self string:temp.\x0a                                      ]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                  \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.AttrString);
@@ -3189,7 +3189,7 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_(mutationObserver,mutationHandler);
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("characterData",true);
 _st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
@@ -3199,8 +3199,8 @@ $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.ContentString)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                  temp:=each target asJQuery prop: 'textContent'. self string:temp. \x0a                                    ]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "prop:", "asJQuery", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "observe:with:", "toArray"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                  temp:=each target asJQuery prop: 'textContent'. self string:temp. \x0a                                    ]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "prop:", "asJQuery", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "observe:with:", "toArray"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection"]
 }),
 smalltalk.ContentString);
@@ -3353,7 +3353,7 @@ mutationObserver;
 mutationObserver="MutationObserver";
 mutationObserver;
 };
-myObserver=_st((smalltalk.NativeFunction || NativeFunction))._class_value_(mutationObserver,mutationHandler);
+myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_(mutationObserver,mutationHandler);
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
@@ -3364,8 +3364,8 @@ $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrString)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                               temp:=each target css: self attr.self string:temp.]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction class:mutationObserver value:mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "css:", "attr", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "class:value:", "new", "at:put:", "add:", "observe:with:", "toArray", "asJQuery"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                               temp:=each target css: self attr.self string:temp.]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "css:", "attr", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray", "asJQuery"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.StyleAttrString);

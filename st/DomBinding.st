@@ -172,7 +172,7 @@ mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp|
                                             ifFalse:[mutationObserver:='MutationObserver'.].
                                             
  "mutation observer is native code, thus it is not a BlockClosure"
-myObserver:= NativeFunction class:mutationObserver value:mutationHandler.
+myObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.
 
 config:=HashedCollection new.
 config at:'characterData' put:true.
@@ -245,7 +245,7 @@ mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp|
                                             ifFalse:[mutationObserver:='MutationObserver'.].
                                             
  "mutation observer is native code, thus it is not a BlockClosure"
-myObserver:= NativeFunction class:mutationObserver value:mutationHandler.
+myObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.
 
 config:=HashedCollection new.
 config at:'attributes' put:true.
@@ -606,7 +606,7 @@ mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp|
                                             ifFalse:[mutationObserver:='MutationObserver'.].
                                             
  "mutation observer is native code, thus it is not a BlockClosure"
-myObserver:= NativeFunction class:mutationObserver value:mutationHandler.
+myObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.
 
 config:=HashedCollection new.
 config at:'characterData' put:true.
@@ -712,7 +712,7 @@ temp:=each target asJQuery css: self attr.self numb:(temp copyFrom:0 to: temp si
                                             ifFalse:[mutationObserver:='MutationObserver'.].
                                             
  "mutation observer is native code, thus it is not a BlockClosure"
-myObserver:= NativeFunction class:mutationObserver value:mutationHandler.
+myObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.
 
 config:=HashedCollection new.
 config at:'attributes' put:true.
@@ -1126,7 +1126,7 @@ temp:=each target asJQuery attr: self attr. self string:temp.
                                             ifFalse:[mutationObserver:='MutationObserver'.].
                                             
  "mutation observer is native code, thus it is not a BlockClosure"
-myObserver:= NativeFunction class:mutationObserver value:mutationHandler.
+myObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.
 
 config:=HashedCollection new.
 config at:'attributes' put:true.
@@ -1198,7 +1198,7 @@ mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp|
                                             ifFalse:[mutationObserver:='MutationObserver'.].
                                             
  "mutation observer is native code, thus it is not a BlockClosure"
-myObserver:= NativeFunction class:mutationObserver value:mutationHandler.
+myObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.
 
 config:=HashedCollection new.
 config at:'characterData' put:true.
@@ -1266,7 +1266,7 @@ mutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp|
                                             ifFalse:[mutationObserver:='MutationObserver'.].
                                             
  "mutation observer is native code, thus it is not a BlockClosure"
-myObserver:= NativeFunction class:mutationObserver value:mutationHandler.
+myObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.
 
 config:=HashedCollection new.
 config at:'attributes' put:true.
