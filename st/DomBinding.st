@@ -49,14 +49,15 @@ bool
 
 = anObject
 
-|aBoolean|
-
-	(anObject class == self class) ifTrue:[aBoolean:=anObject bool]
-                                                     ifFalse:[aBoolean:= anObject].
-
-
-	aBoolean class = self bool class ifFalse: [^false].
-	<return Boolean(self._bool() == true) == aBoolean>
+<
+var aBoolean;
+if(anObject._class() == self._class()) 
+	{aBoolean = anObject._bool()}
+    else{aBoolean = anObject}
+if(!! aBoolean._isBoolean || !! aBoolean._isBoolean()) {
+        	return false;
+            }
+	return Boolean(self._bool() == true) == aBoolean>
 !
 
 == anObject
@@ -70,15 +71,9 @@ bool
 |aBoolean|
 
 	(anObject class == self class) ifTrue:[aBoolean:=anObject bool]
-                                                     ifFalse:[aBoolean:= anObject].
-
-	<
-	    if(self._bool() == true) {
-		return aBoolean;
-	    } else {
-		return false;
-	    }
-	>
+                                       		              ifFalse:[aBoolean:= anObject].
+ 	(self bool == true) ifTrue:[^ aBoolean]
+      									ifFalse:[^false]
 !
 
 and: aBlock
@@ -131,6 +126,13 @@ or: aBlock
 		return aBoolean;
 	    }
 	>
+! !
+
+!VarBool methodsFor: 'testing'!
+
+isBoolean
+
+^true
 ! !
 
 VarBool subclass: #AttrBool
@@ -295,76 +297,73 @@ numb
 
 * anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
-
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
 	"Inlined in the Compiler"
-	<return self._numb() * aNumber>
+	return self._numb() * aNumber>
 !
 
 + anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
-                                                     
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
 	"Inlined in the Compiler"
-	<return self._numb() + aNumber>
+	return self._numb() + aNumber>
 !
 
 -  anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
 	"Inlined in the Compiler"
-	<return self._numb() - aNumber>
+	return self._numb() - aNumber>
 !
 
 / anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
 	"Inlined in the Compiler"
-	<return self._numb() / aNumber>
+	return self._numb() / aNumber>
 !
 
 \\ anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
-	<return self.numb() % aNumber>
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
+	return self.numb() % aNumber>
 !
 
 abs
-	^ <Math.abs(self._numb());>
+	<return Math.abs(self._numb());>
 !
 
 max: anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
-	<return Math.max(self._numb(), aNumber);>
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
+	return Math.max(self._numb(), aNumber);>
 !
 
 min: anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
-                                                     
-	<return Math.min(self._numb(), aNumber);>
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
+	return Math.min(self._numb(), aNumber);>
 !
 
 negated
@@ -383,63 +382,65 @@ squared
 
 < anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
 	"Inlined in the Compiler"
-	<return self._numb() < aNumber>
+	return self._numb() < aNumber>
 !
 
 <= anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
 	"Inlined in the Compiler"
-	<return self._numb() <= aNumber>
+	return self._numb() <= aNumber>
 !
 
 = anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
-	aNumber isNumber ifFalse: [^false]. 
-	<return Number(self._numb()) == aNumber>.
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
+    	if(!! aNumber._isNumber || !! aNumber._isNumber()) {
+        	return false;
+        }
+	return Number(self._numb()) == aNumber>
 !
 
 >anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
 	"Inlined in the Compiler"
-	<return self._numb() >> aNumber>
+	return self._numb() >> aNumber>
 !
 
 >= anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
 	"Inlined in the Compiler"
-	<return self._numb() >>= aNumber>
+	return self._numb() >>= aNumber>
 ! !
 
 !VarNumb methodsFor: 'converting'!
 
 & anObject
-
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
-	<return self._numb() & aNumber>
+                                                     
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
+	return self._numb() & aNumber>
 !
 
 asJSON
@@ -490,22 +491,24 @@ to: stop by: step
 !
 
 truncated
-|result|
 
-    self numb >= 0 
-        ifTrue: [<result = Math.floor(self._numb());>]
-        ifFalse: [<result = (Math.floor(self._numb()* (-1)) * (-1));>].
 
-    ^ result
+	<
+    	if(self._numb() >>= 0) {
+        	return Math.floor(self._numb());
+        } else {
+        	return Math.floor(self._numb() * (-1)) * (-1);
+        };
+    >
 !
 
 | anObject
 
-|aNumber|
-
-	(anObject class == self class) ifTrue:[aNumber:=anObject numb]
-                                                     ifFalse:[aNumber:= anObject].
-	<return self._numb() | aNumber>
+<var aNumber;
+if(anObject._class() == self._class()) 
+	{aNumber = anObject._numbl()}
+    else{aNumber = anObject}
+	return self._numb() | aNumber>
 ! !
 
 !VarNumb methodsFor: 'enumerating'!
@@ -644,7 +647,6 @@ unit:=aUnit.
 
 selector:aSelector styleAttr: anAttr
 
-style:=true.
 attr:=anAttr.
 selector:=aSelector.
 unit:=''.
@@ -652,7 +654,6 @@ unit:=''.
 
 selector:aSelector styleAttr: anAttr unit:aUnit
 
-style:=true.
 attr:=anAttr.
 selector:=aSelector.
 unit:=aUnit.
@@ -803,8 +804,11 @@ unescaped
 !
 
 = aString
-	aString class = self string class ifFalse: [^false].
-	<return String(self._string()) === String(aString)>
+		<
+    	if(!! aString._isString || !! aString._isString()) {
+        	return false;
+        }
+	return String(self._string()) === String(aString)>
 !
 
 == aString
@@ -1165,11 +1169,6 @@ VarString subclass: #ContentString
 	package: 'DomBinding'!
 
 !ContentString methodsFor: 'accessing'!
-
-attr
-
-^attr
-!
 
 selector
 

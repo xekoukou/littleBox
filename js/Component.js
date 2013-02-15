@@ -1,5 +1,5 @@
 smalltalk.addPackage('Component', {});
-smalltalk.addClass('Component', smalltalk.Object, ['attachedCon', 'parent', 'pid', 'mid', 'position', 'connectors', 'variables'], 'Component');
+smalltalk.addClass('Component', smalltalk.Object, ['attachedConPosition', 'parent', 'pid', 'mid', 'position', 'connectors', 'variables'], 'Component');
 smalltalk.addMethod(
 "_assignId",
 smalltalk.method({
@@ -26,25 +26,23 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "connect:at:to:",
 category: 'initializing',
-fn: function (aConnector,aPosition,aParent){
+fn: function (aConnectorPosition,aPosition,aParent){
 var self=this;
 var ids;
-return smalltalk.withContext(function($ctx1) { var $1;
-self["@attachedCon"]=aConnector;
+return smalltalk.withContext(function($ctx1) { self["@attachedConPosition"]=aConnectorPosition;
 self["@parent"]=aParent;
 self["@pid"]=_st(self["@parent"])._assignId();
 self["@mid"]=(0);
 self["@position"]=aPosition;
-_st(aConnector)._at_at_put_("connected",aPosition,self);
+_st(_st(self["@parent"])._connectors())._at_at_at_put_(aConnectorPosition,"connected",aPosition,self);
 ids=_st(self)._realize();
 _st(self)._setConnectorsFrom_(ids);
 _st(self)._setVariablesFrom_(ids);
-$1=self["@variables"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnector:aConnector,aPosition:aPosition,aParent:aParent,ids:ids}, smalltalk.Component)})},
-args: ["aConnector", "aPosition", "aParent"],
-source: "connect: aConnector at: aPosition to: aParent\x0a\x0a|ids|\x0a\x0aattachedCon := aConnector.\x0aparent := aParent.\x0apid := parent assignId.\x0amid := 0.\x0aposition:=aPosition.\x0a\x0aaConnector at: 'connected' at:aPosition put: self.\x0a\x0aids:=self realize.\x0aself setConnectorsFrom:ids.\x0aself setVariablesFrom:ids.\x0a\x0a\x0a\x0a\x0a^variables",
-messageSends: ["assignId", "at:at:put:", "realize", "setConnectorsFrom:", "setVariablesFrom:"],
+_st(self["@parent"])._connectVarsTo_to_(aConnectorPosition,aPosition);
+return self}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorPosition:aConnectorPosition,aPosition:aPosition,aParent:aParent,ids:ids}, smalltalk.Component)})},
+args: ["aConnectorPosition", "aPosition", "aParent"],
+source: "connect: aConnectorPosition at: aPosition to: aParent\x0a\x0a|ids|\x0a\x0aattachedConPosition := aConnectorPosition.\x0aparent := aParent.\x0apid := parent assignId.\x0amid := 0.\x0aposition:=aPosition.\x0a\x0aparent connectors at: aConnectorPosition at: 'connected' at:aPosition put: self.\x0a\x0aids:=self realize.\x0aself setConnectorsFrom:ids.\x0aself setVariablesFrom:ids.\x0a\x0a\x0a\x0aparent connectVarsTo: aConnectorPosition to: aPosition.",
+messageSends: ["assignId", "at:at:at:put:", "connectors", "realize", "setConnectorsFrom:", "setVariablesFrom:", "connectVarsTo:to:"],
 referencedClasses: []
 }),
 smalltalk.Component);
@@ -54,29 +52,47 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "connect:to:",
 category: 'initializing',
-fn: function (aConnector,aParent){
+fn: function (aConnectorPosition,aParent){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._connect_at_to_(aConnector,_st(_st(aConnector)._at_(_st("connected")._size())).__plus((1)),aParent);
-return self}, function($ctx1) {$ctx1.fill(self,"connect:to:",{aConnector:aConnector,aParent:aParent}, smalltalk.Component)})},
-args: ["aConnector", "aParent"],
-source: "connect: aConnector to: aParent\x0a\x0a\x0aself connect: aConnector at: ((aConnector at: 'connected' size)+1) to: aParent",
-messageSends: ["connect:at:to:", "+", "at:", "size"],
+return smalltalk.withContext(function($ctx1) { _st(self)._connect_at_to_(aConnectorPosition,_st(_st(_st(self["@parent"])._connectors())._at_at_(aConnectorPosition,_st("connected")._size())).__plus((1)),aParent);
+return self}, function($ctx1) {$ctx1.fill(self,"connect:to:",{aConnectorPosition:aConnectorPosition,aParent:aParent}, smalltalk.Component)})},
+args: ["aConnectorPosition", "aParent"],
+source: "connect: aConnectorPosition to: aParent\x0a\x0a\x0aself connect: aConnectorPosition at: ((parent connectors at: aConnectorPosition at: 'connected' size)+1) to: aParent",
+messageSends: ["connect:at:to:", "+", "at:at:", "size", "connectors"],
 referencedClasses: []
 }),
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_connectVarTo_to_",
+"_connectVarsTo_to_",
 smalltalk.method({
-selector: "connectVarTo:to:",
-category: 'variable api',
+selector: "connectVarsTo:to:",
+category: 'connecting variables',
 fn: function (aConnectorPosition,aPosition){
 var self=this;
 return smalltalk.withContext(function($ctx1) { _st(_st(self)._self())._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"connectVarTo:to:",{aConnectorPosition:aConnectorPosition,aPosition:aPosition}, smalltalk.Component)})},
+return self}, function($ctx1) {$ctx1.fill(self,"connectVarsTo:to:",{aConnectorPosition:aConnectorPosition,aPosition:aPosition}, smalltalk.Component)})},
 args: ["aConnectorPosition", "aPosition"],
-source: "connectVarTo: aConnectorPosition to:aPosition\x0a\x0a\x22position 1 is the position of the connector, position2 is the position inside the connector.\x0aAll variables must be connected or passed to the upper component.\x0a\x22\x0a\x0aself self subclassResponsibility",
+source: "connectVarsTo: aConnectorPosition to:aPosition\x0a\x0a\x22position 1 is the position of the connector, position2 is the position inside the connector.\x0aAll variables must be connected or passed to the upper component.\x0a\x22\x0a\x0aself self subclassResponsibility",
 messageSends: ["subclassResponsibility", "self"],
+referencedClasses: []
+}),
+smalltalk.Component);
+
+smalltalk.addMethod(
+"_connectors",
+smalltalk.method({
+selector: "connectors",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=self["@connectors"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"connectors",{}, smalltalk.Component)})},
+args: [],
+source: "connectors\x0a\x0a^connectors",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.Component);
@@ -124,7 +140,7 @@ fn: function (){
 var self=this;
 var html,css,ids;
 return smalltalk.withContext(function($ctx1) { var $1;
-_st(self["@attachedCon"])._at_after_(_st(_st(_st(_st("elementId").__comma(" ")).__comma(":nth-child(")).__comma(_st(self["@position"])._asString())).__comma(_st(")")._asJQuery()),_st(_st("<div id=").__comma(self["@pid"])).__comma("></div>"));
+_st(_st(self["@parent"])._attachedConPosition())._at_after_(_st(_st(_st(_st("elementId").__comma(" ")).__comma(":nth-child(")).__comma(_st(self["@position"])._asString())).__comma(_st(")")._asJQuery()),_st(_st("<div id=").__comma(self["@pid"])).__comma("></div>"));
 html=_st((smalltalk.HTMLCanvas || HTMLCanvas))._onJQuery_(_st("#").__comma(_st(self["@pid"])._asJQuery()));
 ids=_st(self)._renderOn_(html);
 css=_st((smalltalk.CSSCanvas || CSSCanvas))._new_(self);
@@ -133,8 +149,8 @@ $1=ids;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"realize",{html:html,css:css,ids:ids}, smalltalk.Component)})},
 args: [],
-source: "realize\x0a\x0a|html css ids|\x0a\x0aattachedCon at: 'elementId',' ',':nth-child(',position asString,')' asJQuery after: '<div id=',pid,'></div>'.\x0ahtml := HTMLCanvas onJQuery: '#',pid asJQuery.\x0aids:=self renderOn: html.\x0acss := CSSCanvas new:self.\x0aself paintOn:css from: ids.\x0a\x0a^ids.\x0a\x0a\x0a",
-messageSends: ["at:after:", ",", "asJQuery", "asString", "onJQuery:", "renderOn:", "new:", "paintOn:from:"],
+source: "realize\x0a\x0a|html css ids|\x0a\x0aparent attachedConPosition at: 'elementId',' ',':nth-child(',position asString,')' asJQuery after: '<div id=',pid,'></div>'.\x0ahtml := HTMLCanvas onJQuery: '#',pid asJQuery.\x0aids:=self renderOn: html.\x0acss := CSSCanvas new:self.\x0aself paintOn:css from: ids.\x0a\x0a^ids.\x0a\x0a\x0a",
+messageSends: ["at:after:", ",", "asJQuery", "asString", "attachedConPosition", "onJQuery:", "renderOn:", "new:", "paintOn:from:"],
 referencedClasses: ["HTMLCanvas", "CSSCanvas"]
 }),
 smalltalk.Component);
@@ -211,14 +227,14 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "connect:at:to:",
 category: 'not yet classified',
-fn: function (aConnector,aPosition,aParent){
+fn: function (aConnectorPosition,aPosition,aParent){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._connect_at_to_(aConnector,aPosition,aParent);
+$1=_st(_st(self)._new())._connect_at_to_(aConnectorPosition,aPosition,aParent);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnector:aConnector,aPosition:aPosition,aParent:aParent}, smalltalk.Component.klass)})},
-args: ["aConnector", "aPosition", "aParent"],
-source: "connect: aConnector at: aPosition to: aParent\x0a\x0a^ self new connect: aConnector at: aPosition to: aParent",
+}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorPosition:aConnectorPosition,aPosition:aPosition,aParent:aParent}, smalltalk.Component.klass)})},
+args: ["aConnectorPosition", "aPosition", "aParent"],
+source: "connect: aConnectorPosition at: aPosition to: aParent\x0a\x0a^ self new connect: aConnectorPosition at: aPosition to: aParent",
 messageSends: ["connect:at:to:", "new"],
 referencedClasses: []
 }),
@@ -229,14 +245,14 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "connect:to:",
 category: 'not yet classified',
-fn: function (aConnector,aParent){
+fn: function (aConnectorPosition,aParent){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._connect_to_(aConnector,aParent);
+$1=_st(_st(self)._new())._connect_to_(aConnectorPosition,aParent);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"connect:to:",{aConnector:aConnector,aParent:aParent}, smalltalk.Component.klass)})},
-args: ["aConnector", "aParent"],
-source: "connect: aConnector to: aParent\x0a\x0a^ self new connect: aConnector to: aParent.",
+}, function($ctx1) {$ctx1.fill(self,"connect:to:",{aConnectorPosition:aConnectorPosition,aParent:aParent}, smalltalk.Component.klass)})},
+args: ["aConnectorPosition", "aParent"],
+source: "connect: aConnectorPosition to: aParent\x0a\x0a^ self new connect: aConnectorPosition to: aParent.",
 messageSends: ["connect:to:", "new"],
 referencedClasses: []
 }),

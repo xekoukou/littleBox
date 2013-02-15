@@ -1,9 +1,14 @@
 Smalltalk current createPackage: 'Component' properties: #{}!
 Object subclass: #Component
-	instanceVariableNames: 'attachedCon parent pid mid position connectors variables'
+	instanceVariableNames: 'attachedConPosition parent pid mid position connectors variables'
 	package: 'Component'!
 
 !Component methodsFor: 'accessing'!
+
+connectors
+
+^connectors
+!
 
 pid
 ^pid
@@ -12,6 +17,17 @@ pid
 variables
 
 ^variables
+! !
+
+!Component methodsFor: 'connecting variables'!
+
+connectVarsTo: aConnectorPosition to:aPosition
+
+"position 1 is the position of the connector, position2 is the position inside the connector.
+All variables must be connected or passed to the upper component.
+"
+
+self self subclassResponsibility
 ! !
 
 !Component methodsFor: 'initializing'!
@@ -24,17 +40,17 @@ smid:=pid,mid asString,'0'.
 ^smid.
 !
 
-connect: aConnector at: aPosition to: aParent
+connect: aConnectorPosition at: aPosition to: aParent
 
 |ids|
 
-attachedCon := aConnector.
+attachedConPosition := aConnectorPosition.
 parent := aParent.
 pid := parent assignId.
 mid := 0.
 position:=aPosition.
 
-aConnector at: 'connected' at:aPosition put: self.
+parent connectors at: aConnectorPosition at: 'connected' at:aPosition put: self.
 
 ids:=self realize.
 self setConnectorsFrom:ids.
@@ -42,14 +58,13 @@ self setVariablesFrom:ids.
 
 
 
-
-^variables
+parent connectVarsTo: aConnectorPosition to: aPosition.
 !
 
-connect: aConnector to: aParent
+connect: aConnectorPosition to: aParent
 
 
-self connect: aConnector at: ((aConnector at: 'connected' size)+1) to: aParent
+self connect: aConnectorPosition at: ((parent connectors at: aConnectorPosition at: 'connected' size)+1) to: aParent
 ! !
 
 !Component methodsFor: 'private'!
@@ -64,7 +79,7 @@ realize
 
 |html css ids|
 
-attachedCon at: 'elementId',' ',':nth-child(',position asString,')' asJQuery after: '<div id=',pid,'></div>'.
+parent attachedConPosition at: 'elementId',' ',':nth-child(',position asString,')' asJQuery after: '<div id=',pid,'></div>'.
 html := HTMLCanvas onJQuery: '#',pid asJQuery.
 ids:=self renderOn: html.
 css := CSSCanvas new:self.
@@ -96,27 +111,16 @@ setVariablesFrom: anArray
 self subclassResponsibility
 ! !
 
-!Component methodsFor: 'variable api'!
-
-connectVarTo: aConnectorPosition to:aPosition
-
-"position 1 is the position of the connector, position2 is the position inside the connector.
-All variables must be connected or passed to the upper component.
-"
-
-self self subclassResponsibility
-! !
-
 !Component class methodsFor: 'not yet classified'!
 
-connect: aConnector at: aPosition to: aParent
+connect: aConnectorPosition at: aPosition to: aParent
 
-^ self new connect: aConnector at: aPosition to: aParent
+^ self new connect: aConnectorPosition at: aPosition to: aParent
 !
 
-connect: aConnector to: aParent
+connect: aConnectorPosition to: aParent
 
-^ self new connect: aConnector to: aParent.
+^ self new connect: aConnectorPosition to: aParent.
 ! !
 
 Dictionary subclass: #Connector
