@@ -229,10 +229,10 @@ selector: "messageText",
 category: 'accessing',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { return "A JavaScript exception occured while in the Smalltalk stack!";
-}, function($ctx1) {$ctx1.fill(self,"messageText",{}, smalltalk.JavaScriptException)})},
+return smalltalk.withContext(function($ctx1) { return 'JavaScript exception: ' + self["@exception"].toString();
+return self}, function($ctx1) {$ctx1.fill(self,"messageText",{}, smalltalk.JavaScriptException)})},
 args: [],
-source: "messageText\x0a\x09^ 'A JavaScript exception occured while in the Smalltalk stack!'",
+source: "messageText\x0a\x09<return 'JavaScript exception: ' + self[\x22@exception\x22].toString()>",
 messageSends: [],
 referencedClasses: []
 }),

@@ -87,7 +87,7 @@ exception: anException
 !
 
 messageText
-	^ 'A JavaScript exception occured while in the Smalltalk stack!!'
+	<return 'JavaScript exception: ' + self["@exception"].toString()>
 ! !
 
 !JavaScriptException class methodsFor: 'instance creation'!
