@@ -16,6 +16,11 @@ component: aComponent
 "the id of the component that was given by th parent"
 
 pid:=aComponent pid.
+!
+
+initialize
+
+super initialize
 ! !
 
 !CSSCanvas class methodsFor: 'not yet classified'!

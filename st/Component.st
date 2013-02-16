@@ -1,7 +1,13 @@
 Smalltalk current createPackage: 'Component' properties: #{}!
 Object subclass: #Component
-	instanceVariableNames: 'attachedConPosition parent pid mid position connectors variables'
+	instanceVariableNames: 'elementId position parent pid mid connectors variables'
 	package: 'Component'!
+!Component commentStamp!
+"
+Variables
+Dictionary
+	check output format
+"!
 
 !Component methodsFor: 'accessing'!
 
@@ -27,7 +33,30 @@ connectVarsTo: aConnectorPosition to:aPosition
 All variables must be connected or passed to the upper component.
 "
 
-self self subclassResponsibility
+self subclassResponsibility
+! !
+
+!Component methodsFor: 'diconnecting'!
+
+disconnect
+
+"needs to remove element from DOM tree first"
+
+parent disconnectCompFrom: elementId from: position.
+!
+
+disconnectCompFrom: anElementId from: aPosition
+! !
+
+!Component methodsFor: 'functioning'!
+
+function
+
+"here is the functionality of the component
+here it sets what to do with input from the user or the server
+here the component can also act as a creator of other components"
+
+self subclassResponsibility
 ! !
 
 !Component methodsFor: 'initializing'!
@@ -35,36 +64,44 @@ self self subclassResponsibility
 assignId
 "returns a unique id to be used by the connected subcomponent"
 |smid|
-mid:=mid+1.
-smid:=pid,mid asString,'0'.
-^smid.
+
+mid := mid + 1.
+( ( mid/10 ) truncated = (mid/10)) ifTrue: [mid := mid + 1.].
+smid := pid , mid asString, '0'.
+^ smid.
 !
 
-connect: aConnectorPosition at: aPosition to: aParent
+connect: anElementId at: aPosition to: aParent
 
+"the ElementId is the internal to the parent mid of the element we want"
 |ids|
 
-attachedConPosition := aConnectorPosition.
+elementId := anElementId.
 parent := aParent.
 pid := parent assignId.
 mid := 0.
 position:=aPosition.
 
-parent connectors at: aConnectorPosition at: 'connected' at:aPosition put: self.
+parent connectors at: anElementId at:aPosition put: self.
 
 ids:=self realize.
-self setConnectorsFrom:ids.
-self setVariablesFrom:ids.
+self setConnectors.
+self setVariables.
 
 
 
-parent connectVarsTo: aConnectorPosition to: aPosition.
+parent connectVarsTo: anElementId to: aPosition.
 !
 
-connect: aConnectorPosition to: aParent
+connect: anElementId to: aParent
 
 
-self connect: aConnectorPosition at: ((parent connectors at: aConnectorPosition at: 'connected' size)+1) to: aParent
+self connect: anElementId at: ((parent connectors at: anElementId size)+1) to: aParent
+!
+
+initialize
+
+super initialize
 ! !
 
 !Component methodsFor: 'private'!
@@ -79,32 +116,28 @@ realize
 
 |html css ids|
 
-parent attachedConPosition at: 'elementId',' ',':nth-child(',position asString,')' asJQuery after: '<div id=',pid,'></div>'.
+parent pid,'0',elementId,' ',':nth-child(',position asString,')' asJQuery after: '<div id=',pid,'></div>'.
 html := HTMLCanvas onJQuery: '#',pid asJQuery.
-ids:=self renderOn: html.
+self renderOn: html.
 css := CSSCanvas new:self.
-self paintOn:css from: ids.
-
-^ids.
+self paintOn:css
 !
 
 renderOn: html
 
-"Use the html canvas to render a component
-It should return the unique ids(array) that are created so as to be passed to setVariables and
-SetConnectors"
+"Use the html canvas to render a component"
 
 self subclassResponsibility
 !
 
-setConnectorsFrom: anArray
+setConnectors
 
 "Used to initializing the connectors"
 
 self subclassResponsibility
 !
 
-setVariablesFrom: anArray
+setVariables
 
 "Used to initializing the binding Variables"
 
@@ -113,31 +146,86 @@ self subclassResponsibility
 
 !Component class methodsFor: 'not yet classified'!
 
-connect: aConnectorPosition at: aPosition to: aParent
+connect: anElementId at: aPosition to: aParent
 
-^ self new connect: aConnectorPosition at: aPosition to: aParent
+^ self new connect: anElementId at: aPosition to: aParent
 !
 
-connect: aConnectorPosition to: aParent
+connect: anElementId to: aParent
 
-^ self new connect: aConnectorPosition to: aParent.
+^ self new connect: anElementId to: aParent.
 ! !
 
-Dictionary subclass: #Connector
+Dictionary subclass: #Connectors
 	instanceVariableNames: ''
 	package: 'Component'!
 
-!Connector methodsFor: 'initializing'!
+!Connectors methodsFor: 'initializing'!
 
 initialize
 
 super initialize
 ! !
 
-!Connector class methodsFor: 'instance creation'!
+!Connectors class methodsFor: 'instance creation'!
 
-position: anInteger elementId:anElementId
+elementId: anElementId
 
-^ self new at: 'position' put: anInteger; at: 'elementId' put: anElementId; at: 'connected' put: Array new; yourself.
+"ElementId should be the internal mid of a connector"
+^ self new at: anElementId put: Array new; yourself.
+! !
+
+Object subclass: #Equation
+	instanceVariableNames: 'input output connectionRules'
+	package: 'Component'!
+!Equation commentStamp!
+"An equation is a static part of a component that links its variables with the variables of the connected components variables
+
+input
+Dictionary dim 1 selector
+                  dim 2 child position or -1 that means any position
+                  dim 3 type of attribute/variable (attr, styleAttr, intermediary variable)
+                  dim 4 value of attribute (height, etc only if it is not an intermediary variable)
+                  dim 5 the actual variable
+
+output
+Dictionary dim 1 selector
+                  dim 3 type of attribute/variable (attr, styleAttr, intermediary variable)
+                  dim 4 value of attribute (height, etc only if it is not an intermediary variable)
+                  dim 5 the actual variable
+
+"!
+
+!Equation methodsFor: 'initializing'!
+
+compute
+
+"static function definition"
+
+self subclassResponsibility
+!
+
+defineConnectionRules
+
+"input Dictionary that is used to check whether an input varialbe (obtained through a connection) should be linked to this function 
+Dictionary dim 1 selector
+                  dim 2 child position or -1 that means any position
+                  dim 3 type of attribute/variable (attr, styleAttr, intermediary variable)
+                  dim 4 value of attribute (height, etc only if it is not an intermediary variable)
+"
+
+self subclassResponsibility
+!
+
+initialize
+
+super initialize
+!
+
+reverseCompute
+
+"static function definition"
+
+self subclassResponsibility
 ! !
 

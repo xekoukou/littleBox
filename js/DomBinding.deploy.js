@@ -1,5 +1,32 @@
 smalltalk.addPackage('DomBinding', {});
-smalltalk.addClass('Var', smalltalk.Object, ['val'], 'DomBinding');
+smalltalk.addClass('Var', smalltalk.Object, ['val', 'ancestors', 'descendents'], 'DomBinding');
+smalltalk.addMethod(
+"_addAncestor_",
+smalltalk.method({
+selector: "addAncestor:",
+fn: function (anAncestor){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(self["@ancestors"]).__eq_eq(_st(nil)._l());
+if(smalltalk.assert($1)){
+self["@ancestors"]=_st((smalltalk.Array || Array))._new();
+self["@ancestors"];
+};
+return self}, function($ctx1) {$ctx1.fill(self,"addAncestor:",{anAncestor:anAncestor}, smalltalk.Var)})}
+}),
+smalltalk.Var);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.Var)})}
+}),
+smalltalk.Var);
+
 smalltalk.addMethod(
 "_is_",
 smalltalk.method({
@@ -33,32 +60,6 @@ return $1;
 }),
 smalltalk.Var);
 
-
-smalltalk.addMethod(
-"_selector_attr_",
-smalltalk.method({
-selector: "selector:attr:",
-fn: function (aSelector,anAttr){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_attr_(aSelector,anAttr);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.Var.klass)})}
-}),
-smalltalk.Var.klass);
-
-smalltalk.addMethod(
-"_selector_styleAttr_",
-smalltalk.method({
-selector: "selector:styleAttr:",
-fn: function (aSelector,anAttr){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_styleAttr_(aSelector,anAttr);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"selector:styleAttr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.Var.klass)})}
-}),
-smalltalk.Var.klass);
 
 
 smalltalk.addClass('VarBool', smalltalk.Var, [], 'DomBinding');
@@ -212,6 +213,17 @@ return self}, function($ctx1) {$ctx1.fill(self,"ifTrue:ifFalse:",{aBlock:aBlock,
 smalltalk.VarBool);
 
 smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.Var.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.VarBool)})}
+}),
+smalltalk.VarBool);
+
+smalltalk.addMethod(
 "_isBoolean",
 smalltalk.method({
 selector: "isBoolean",
@@ -347,6 +359,17 @@ return $2;
 smalltalk.AttrBool);
 
 smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarBool.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.AttrBool)})}
+}),
+smalltalk.AttrBool);
+
+smalltalk.addMethod(
 "_selector",
 smalltalk.method({
 selector: "selector",
@@ -469,6 +492,17 @@ return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_w
 $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrBool)})}
+}),
+smalltalk.StyleAttrBool);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarBool.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.StyleAttrBool)})}
 }),
 smalltalk.StyleAttrBool);
 
@@ -760,6 +794,17 @@ return smalltalk.withContext(function($ctx1) { var $1;
 $1=_st((0)).__eq(_st(_st(self)._numb()).__backslash_backslash((2)));
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"even",{}, smalltalk.VarNumb)})}
+}),
+smalltalk.VarNumb);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.Var.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.VarNumb)})}
 }),
 smalltalk.VarNumb);
 
@@ -1134,6 +1179,17 @@ return $2;
 smalltalk.AttrNumb);
 
 smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarNumb.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.AttrNumb)})}
+}),
+smalltalk.AttrNumb);
+
+smalltalk.addMethod(
 "_numb",
 smalltalk.method({
 selector: "numb",
@@ -1322,6 +1378,17 @@ return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_w
 $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrNumb)})}
+}),
+smalltalk.StyleAttrNumb);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarNumb.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.StyleAttrNumb)})}
 }),
 smalltalk.StyleAttrNumb);
 
@@ -1700,6 +1767,17 @@ fn: function (subString){
 var self=this;
 return smalltalk.withContext(function($ctx1) {  return self._string().indexOf(subString) != -1 ;
 return self}, function($ctx1) {$ctx1.fill(self,"includesSubString:",{subString:subString}, smalltalk.VarString)})}
+}),
+smalltalk.VarString);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.Var.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.VarString)})}
 }),
 smalltalk.VarString);
 
@@ -2240,6 +2318,17 @@ return $2;
 smalltalk.AttrString);
 
 smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarString.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.AttrString)})}
+}),
+smalltalk.AttrString);
+
+smalltalk.addMethod(
 "_selector",
 smalltalk.method({
 selector: "selector",
@@ -2348,6 +2437,17 @@ return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_w
 $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.ContentString)})}
+}),
+smalltalk.ContentString);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarString.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.ContentString)})}
 }),
 smalltalk.ContentString);
 
@@ -2473,6 +2573,17 @@ return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_w
 $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrString)})}
+}),
+smalltalk.StyleAttrString);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarString.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.StyleAttrString)})}
 }),
 smalltalk.StyleAttrString);
 

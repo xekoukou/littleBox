@@ -17,6 +17,22 @@ referencedClasses: []
 smalltalk.CSSCanvas);
 
 smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+category: 'initializing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.CSSCanvas)})},
+args: [],
+source: "initialize\x0a\x0asuper initialize",
+messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.CSSCanvas);
+
+smalltalk.addMethod(
 "_selector_attr_val_",
 smalltalk.method({
 selector: "selector:attr:val:",

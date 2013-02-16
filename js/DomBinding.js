@@ -1,5 +1,42 @@
 smalltalk.addPackage('DomBinding', {});
-smalltalk.addClass('Var', smalltalk.Object, ['val'], 'DomBinding');
+smalltalk.addClass('Var', smalltalk.Object, ['val', 'ancestors', 'descendents'], 'DomBinding');
+smalltalk.addMethod(
+"_addAncestor_",
+smalltalk.method({
+selector: "addAncestor:",
+category: 'accessing',
+fn: function (anAncestor){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(self["@ancestors"]).__eq_eq(_st(nil)._l());
+if(smalltalk.assert($1)){
+self["@ancestors"]=_st((smalltalk.Array || Array))._new();
+self["@ancestors"];
+};
+return self}, function($ctx1) {$ctx1.fill(self,"addAncestor:",{anAncestor:anAncestor}, smalltalk.Var)})},
+args: ["anAncestor"],
+source: "addAncestor: anAncestor\x0a\x0a(ancestors == nill) ifTrue: [ ancestors := Array new. ].\x0a\x0a\x0a",
+messageSends: ["ifTrue:", "new", "==", "l"],
+referencedClasses: ["Array"]
+}),
+smalltalk.Var);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+category: 'initializing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.Var)})},
+args: [],
+source: "initialize\x0a\x0asuper initialize",
+messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.Var);
+
 smalltalk.addMethod(
 "_is_",
 smalltalk.method({
@@ -43,42 +80,6 @@ referencedClasses: []
 }),
 smalltalk.Var);
 
-
-smalltalk.addMethod(
-"_selector_attr_",
-smalltalk.method({
-selector: "selector:attr:",
-category: 'instance creation',
-fn: function (aSelector,anAttr){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_attr_(aSelector,anAttr);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.Var.klass)})},
-args: ["aSelector", "anAttr"],
-source: "selector: aSelector attr: anAttr\x0a\x0a^ self new selector: aSelector attr: anAttr",
-messageSends: ["selector:attr:", "new"],
-referencedClasses: []
-}),
-smalltalk.Var.klass);
-
-smalltalk.addMethod(
-"_selector_styleAttr_",
-smalltalk.method({
-selector: "selector:styleAttr:",
-category: 'instance creation',
-fn: function (aSelector,anAttr){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_styleAttr_(aSelector,anAttr);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"selector:styleAttr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.Var.klass)})},
-args: ["aSelector", "anAttr"],
-source: "selector: aSelector styleAttr: anAttr\x0a\x0a^ self new selector: aSelector styleAttr: anAttr",
-messageSends: ["selector:styleAttr:", "new"],
-referencedClasses: []
-}),
-smalltalk.Var.klass);
 
 
 smalltalk.addClass('VarBool', smalltalk.Var, [], 'DomBinding');
@@ -277,6 +278,22 @@ referencedClasses: []
 smalltalk.VarBool);
 
 smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+category: 'initializing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.Var.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.VarBool)})},
+args: [],
+source: "initialize\x0a\x0asuper initialize",
+messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.VarBool);
+
+smalltalk.addMethod(
 "_isBoolean",
 smalltalk.method({
 selector: "isBoolean",
@@ -452,6 +469,22 @@ referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 smalltalk.AttrBool);
 
 smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+category: 'initializing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarBool.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.AttrBool)})},
+args: [],
+source: "initialize\x0a\x0asuper initialize",
+messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.AttrBool);
+
+smalltalk.addMethod(
 "_selector",
 smalltalk.method({
 selector: "selector",
@@ -614,6 +647,22 @@ args: [],
 source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                temp:=each target asJQuery css: self attr.self bool:temp.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
 messageSends: ["do:", "css:", "attr", "asJQuery", "target", "bool:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
+}),
+smalltalk.StyleAttrBool);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+category: 'initializing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarBool.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.StyleAttrBool)})},
+args: [],
+source: "initialize\x0a\x0asuper initialize",
+messageSends: ["initialize"],
+referencedClasses: []
 }),
 smalltalk.StyleAttrBool);
 
@@ -1004,6 +1053,22 @@ return $1;
 args: [],
 source: "even\x0a\x09^ 0 = (self numb \x5c\x5c 2)",
 messageSends: ["=", "\x5c\x5c", "numb"],
+referencedClasses: []
+}),
+smalltalk.VarNumb);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+category: 'initializing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.Var.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.VarNumb)})},
+args: [],
+source: "initialize\x0a\x0asuper initialize",
+messageSends: ["initialize"],
 referencedClasses: []
 }),
 smalltalk.VarNumb);
@@ -1479,6 +1544,22 @@ referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 smalltalk.AttrNumb);
 
 smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+category: 'initializing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarNumb.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.AttrNumb)})},
+args: [],
+source: "initialize\x0a\x0asuper initialize",
+messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.AttrNumb);
+
+smalltalk.addMethod(
 "_numb",
 smalltalk.method({
 selector: "numb",
@@ -1732,6 +1813,22 @@ args: [],
 source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0atemp:=each target asJQuery css: self attr.self numb:(temp copyFrom:0 to: temp size- unit size ) asNumber.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a\x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
 messageSends: ["do:", "css:", "attr", "asJQuery", "target", "numb:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
+}),
+smalltalk.StyleAttrNumb);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+category: 'initializing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarNumb.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.StyleAttrNumb)})},
+args: [],
+source: "initialize\x0a\x0asuper initialize",
+messageSends: ["initialize"],
+referencedClasses: []
 }),
 smalltalk.StyleAttrNumb);
 
@@ -2259,6 +2356,22 @@ return self}, function($ctx1) {$ctx1.fill(self,"includesSubString:",{subString:s
 args: ["subString"],
 source: "includesSubString: subString\x0a\x09< return self._string().indexOf(subString) != -1 >",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.VarString);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+category: 'initializing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.Var.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.VarString)})},
+args: [],
+source: "initialize\x0a\x0asuper initialize",
+messageSends: ["initialize"],
 referencedClasses: []
 }),
 smalltalk.VarString);
@@ -2980,6 +3093,22 @@ referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 smalltalk.AttrString);
 
 smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+category: 'initializing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarString.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.AttrString)})},
+args: [],
+source: "initialize\x0a\x0asuper initialize",
+messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.AttrString);
+
+smalltalk.addMethod(
 "_selector",
 smalltalk.method({
 selector: "selector",
@@ -3123,6 +3252,22 @@ args: [],
 source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                  temp:=each target asJQuery prop: 'textContent'. self string:temp. \x0a                                    ]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
 messageSends: ["do:", "prop:", "asJQuery", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "observe:with:", "toArray"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection"]
+}),
+smalltalk.ContentString);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+category: 'initializing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarString.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.ContentString)})},
+args: [],
+source: "initialize\x0a\x0asuper initialize",
+messageSends: ["initialize"],
+referencedClasses: []
 }),
 smalltalk.ContentString);
 
@@ -3288,6 +3433,22 @@ args: [],
 source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                               temp:=each target css: self attr.self string:temp.]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
 messageSends: ["do:", "css:", "attr", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray", "asJQuery"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
+}),
+smalltalk.StyleAttrString);
+
+smalltalk.addMethod(
+"_initialize",
+smalltalk.method({
+selector: "initialize",
+category: 'initializing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.VarString.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.StyleAttrString)})},
+args: [],
+source: "initialize\x0a\x0asuper initialize",
+messageSends: ["initialize"],
+referencedClasses: []
 }),
 smalltalk.StyleAttrString);
 

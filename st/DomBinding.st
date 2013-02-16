@@ -1,9 +1,14 @@
 Smalltalk current createPackage: 'DomBinding' properties: #{}!
 Object subclass: #Var
-	instanceVariableNames: 'val'
+	instanceVariableNames: 'val ancestors descendents'
 	package: 'DomBinding'!
 
 !Var methodsFor: 'accessing'!
+
+addAncestor: anAncestor
+
+(ancestors == nill) ifTrue: [ ancestors := Array new. ].
+!
 
 val
 
@@ -22,16 +27,11 @@ is: anObject
    self updateSelf.
 ! !
 
-!Var class methodsFor: 'instance creation'!
+!Var methodsFor: 'initializing'!
 
-selector: aSelector attr: anAttr
+initialize
 
-^ self new selector: aSelector attr: anAttr
-!
-
-selector: aSelector styleAttr: anAttr
-
-^ self new selector: aSelector styleAttr: anAttr
+super initialize
 ! !
 
 Var subclass: #VarBool
@@ -128,6 +128,13 @@ or: aBlock
 	>
 ! !
 
+!VarBool methodsFor: 'initializing'!
+
+initialize
+
+super initialize
+! !
+
 !VarBool methodsFor: 'testing'!
 
 isBoolean
@@ -188,6 +195,11 @@ selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
 ! !
 
 !AttrBool methodsFor: 'initializing'!
+
+initialize
+
+super initialize
+!
 
 selector:aSelector attr: anAttr
 
@@ -261,6 +273,11 @@ selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
 ! !
 
 !StyleAttrBool methodsFor: 'initializing'!
+
+initialize
+
+super initialize
+!
 
 selector:aSelector attr: anAttr
 
@@ -544,6 +561,13 @@ to: stop do: aBlock
 			nextValue := nextValue + 1]
 ! !
 
+!VarNumb methodsFor: 'initializing'!
+
+initialize
+
+super initialize
+! !
+
 !VarNumb methodsFor: 'testing'!
 
 even
@@ -628,6 +652,11 @@ selector asJQuery attr:attr to: val asString,unit.
 ! !
 
 !AttrNumb methodsFor: 'initializing'!
+
+initialize
+
+super initialize
+!
 
 selector:aSelector attr: anAttr
 
@@ -733,6 +762,11 @@ selector asJQuery css:attr to: val asString,unit.
 ! !
 
 !StyleAttrNumb methodsFor: 'initializing'!
+
+initialize
+
+super initialize
+!
 
 selector:aSelector attr: anAttr
 
@@ -906,6 +940,13 @@ do: aBlock
 
 withIndexDo: aBlock
 	<for(var i=0;i<self._string().length;i++){aBlock(self._string().charAt(i), i+1);}>
+! !
+
+!VarString methodsFor: 'initializing'!
+
+initialize
+
+super initialize
 ! !
 
 !VarString methodsFor: 'printing'!
@@ -1150,6 +1191,11 @@ selector asJQuery attr:attr to: val.
 
 !AttrString methodsFor: 'initializing'!
 
+initialize
+
+super initialize
+!
+
 selector:aSelector attr: anAttr
 
 
@@ -1215,6 +1261,11 @@ selector asJQuery prop:'textContent' to: val.
 ! !
 
 !ContentString methodsFor: 'initializing'!
+
+initialize
+
+super initialize
+!
 
 selector:aSelector
 
@@ -1285,6 +1336,11 @@ selector asJQuery css:attr to: val.
 ! !
 
 !StyleAttrString methodsFor: 'initializing'!
+
+initialize
+
+super initialize
+!
 
 selector:aSelector attr: anAttr
 
