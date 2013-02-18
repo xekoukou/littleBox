@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'Compiler-Interpreter' properties: #{}!
 NodeVisitor subclass: #AIContext
-	instanceVariableNames: 'outerContext pc locals selector'
+	instanceVariableNames: 'outerContext pc locals method'
 	package: 'Compiler-Interpreter'!
 !AIContext commentStamp!
 AIContext is like a `MethodContext`, used by the `ASTInterpreter`.
@@ -20,6 +20,14 @@ localAt: aString put: anObject
 
 locals
 	^ locals ifNil: [ locals := Dictionary new ]
+!
+
+method
+	^ method
+!
+
+method: aCompiledMethod
+	method := aCompiledMethod
 !
 
 outerContext
@@ -44,6 +52,11 @@ receiver
 
 receiver: anObject
 	self localAt: 'self' put: anObject
+!
+
+selector
+	^ self metod
+    	ifNotNil: [ self method selector ]
 ! !
 
 !AIContext methodsFor: 'initialization'!
@@ -51,11 +64,121 @@ receiver: anObject
 initializeFromMethodContext: aMethodContext
 	self pc: aMethodContext pc.
     self receiver: aMethodContext receiver.
-    self selector: aMethodContext selector.
+    self method: aMethodContext method.
     aMethodContext outerContext ifNotNil: [
 		self outerContext: (self class fromMethodContext: aMethodContext outerContext) ].
     aMethodContext locals keysAndValuesDo: [ :key :value |
     	self locals at: key put: value ]
+! !
+
+!AIContext class methodsFor: 'instance creation'!
+
+fromMethodContext: aMethodContext
+	^ self new
+    	initializeFromMethodContext: aMethodContext;
+        yourself
+! !
+
+Object subclass: #ASTDebugger
+	instanceVariableNames: 'interpreter context'
+	package: 'Compiler-Interpreter'!
+!ASTDebugger commentStamp!
+ASTDebugger is a debugger to Amber.
+It uses an AST interpreter to step through the code.
+
+ASTDebugger instances are created from a `MethodContext` with `ASTDebugger class >> context:`.
+They hold an `AIContext` instance internally, recursive copy of the `MethodContext`.
+
+Use the methods of the 'stepping' protocol to do stepping.!
+
+!ASTDebugger methodsFor: 'accessing'!
+
+context: aContext
+	context := AIContext new.
+!
+
+interpreter
+	^ interpreter ifNil: [ interpreter := self defaultInterpreterClass new ]
+!
+
+interpreter: anInterpreter
+	interpreter := anInterpreter
+!
+
+method
+	^ self context method
+! !
+
+!ASTDebugger methodsFor: 'defaults'!
+
+defaultInterpreterClass
+	^ ASTSteppingInterpreter
+! !
+
+!ASTDebugger methodsFor: 'initialization'!
+
+buildAST
+	"Build the AST tree from the method source code.
+    The AST is annotated with a SemanticAnalyzer, 
+    to know the semantics and bindings of each node needed for later debugging"
+    
+    | ast |
+    
+    ast := Smalltalk current parse: self method source.
+    (SemanticAnalyzer on: self context receiver class)
+    	visit: ast.    
+    
+    ^ ast
+!
+
+initializeInterpreter
+	self interpreter interpret: self buildAST nodes first
+!
+
+initializeWithContext: aMethodContext
+	"TODO: do we need to handle block contexts?"
+    
+    self context: IAContext fromMethodContext: aMethodContext.
+    self initializeInterpreter
+! !
+
+!ASTDebugger methodsFor: 'stepping'!
+
+restart
+	self shouldBeImplemented
+!
+
+resume
+	self shouldBeImplemented
+!
+
+step
+	"The ASTSteppingInterpreter stops at each node interpretation. 
+    One step will interpret nodes until:
+    - we get at the end
+    - the next node is a stepping node (send, assignment, etc.)"
+    
+	[ (self interpreter nextNode notNil and: [ self interpreter nextNode stopOnStepping ])
+		or: [ self interpreter atEnd not ] ] 
+ 			whileFalse: [
+				self interpreter step. 
+                self step ]
+!
+
+stepInto
+	self shouldBeImplemented
+!
+
+stepOver
+	self step
+! !
+
+!ASTDebugger class methodsFor: 'instance creation'!
+
+context: aMethodContext
+	^ self new
+    	initializeWithContext: aMethodContext;
+        yourself
 ! !
 
 Object subclass: #ASTInterpreter
@@ -85,6 +208,10 @@ context: anAIContext
 	context := anAIContext
 !
 
+currentNode
+	^ currentNode
+!
+
 result
 	^ result
 ! !
@@ -111,7 +238,7 @@ interpret: aNode continue: aBlock
     	ifTrue: [ 	
         	currentNode := aNode.
             self interpretNode: aNode continue: [ :value |
-  				self continue: aBlock value: value] ]
+  				self continue: aBlock value: value ] ]
         ifFalse: [ self continue: aBlock value: aNode ]
 !
 
@@ -193,11 +320,15 @@ interpretSendNode: aNode continue: aBlock
 	"TODO: Handle super sends"
     
     self interpret: aNode receiver continue: [ :receiver |
-    	self messageFromSendNode: aNode do: [ :message |
-        	self context pc: self context pc + 1.
-        	self 
-            	continue: aBlock 
-                value: (message sendTo: receiver) ] ]
+    	self interpretAll: aNode arguments continue: [ :args |
+    		self 
+            	messageFromSendNode: aNode 
+                arguments: args
+                do: [ :message |
+        			self context pc: self context pc + 1.
+        			self 
+            			continue: aBlock 
+                		value: (message sendTo: receiver) ] ] ]
 !
 
 interpretSequenceNode: aNode continue: aBlock
@@ -260,7 +391,7 @@ interpretAll: aCollection continue: aBlock
 
 interpretAll: nodes continue: aBlock result: aCollection
 	nodes isEmpty 
-    	ifTrue: [ aBlock value: aCollection ]
+    	ifTrue: [ self continue: aBlock value: aCollection ]
     	ifFalse: [
     		self interpret: nodes first continue: [:value |
     			self 
@@ -269,74 +400,107 @@ interpretAll: nodes continue: aBlock result: aCollection
   					result: aCollection, { value } ] ]
 !
 
-messageFromSendNode: aSendNode do: aBlock
-	self interpretAll: aSendNode arguments continue: [ :args |
-    	aBlock value: (Message new
+messageFromSendNode: aSendNode arguments: aCollection do: aBlock
+    self 
+        continue: aBlock
+        value: (Message new
     		selector: aSendNode selector;
-        	arguments: args;
-        	yourself) ]
+        	arguments: aCollection;
+        	yourself)
 ! !
 
-ASTInterpreter subclass: #ASTDebugger
-	instanceVariableNames: 'continuation'
+!ASTInterpreter methodsFor: 'testing'!
+
+shouldReturn
+	^ shouldReturn ifNil: [ false ]
+! !
+
+ASTInterpreter subclass: #ASTSteppingInterpreter
+	instanceVariableNames: 'continuation nextNode'
 	package: 'Compiler-Interpreter'!
-!ASTDebugger commentStamp!
-ASTDebugger is an interpreter with stepping capabilities.
-Use `#stepOver` to actually interpret the next node.
+!ASTSteppingInterpreter commentStamp!
+ASTSteppingInterpreter is an interpreter with stepping capabilities.
+Use `#step` to actually interpret the next node.
 
 Usage example:
 
-    | ast debugger |
+    | ast interpreter |
     ast := Smalltalk current parse: 'foo 1+2+4'.
     (SemanticAnalyzer on: Object) visit: ast.
 
-    debugger := ASTDebugger new
+    interpreter := ASTSteppingInterpreter new
         interpret: ast nodes first;
         yourself.
         
-    debugger stepOver; stepOver.
-    debugger stepOver; stepOver.
+    debugger step; step.
+    debugger step; step.
     debugger result."Answers 1"
-    debugger stepOver.
+    debugger step.
     debugger result. "Answers 3"
-    debugger stepOver.
+    debugger step.
     debugger result. "Answers 7"!
 
-!ASTDebugger methodsFor: 'initialization'!
+!ASTSteppingInterpreter methodsFor: 'accessing'!
+
+nextNode
+	^ nextNode
+! !
+
+!ASTSteppingInterpreter methodsFor: 'initialization'!
 
 initialize
 	super initialize.
     continuation := [  ]
 ! !
 
-!ASTDebugger methodsFor: 'interpreting'!
+!ASTSteppingInterpreter methodsFor: 'interpreting'!
 
 interpret: aNode continue: aBlock
-	continuation := [ super interpret: aNode continue: aBlock ]
+	nextNode := aNode.
+	continuation := [ 
+    	super interpret: aNode continue: aBlock ]
 ! !
 
-!ASTDebugger methodsFor: 'stepping'!
+!ASTSteppingInterpreter methodsFor: 'stepping'!
 
 step
 	continuation value
+! !
+
+!ASTSteppingInterpreter methodsFor: 'testing'!
+
+atEnd
+	^ self shouldReturn or: [ self nextNode == self currentNode ]
 ! !
 
 !Node methodsFor: '*Compiler-Interpreter'!
 
 interpreter: anInterpreter continue: aBlock
 	^ anInterpreter interpretNode: self continue: aBlock
+!
+
+isSteppingNode
+	^ false
 ! !
 
 !AssignmentNode methodsFor: '*Compiler-Interpreter'!
 
 interpreter: anInterpreter continue: aBlock
 	^ anInterpreter interpretAssignmentNode: self continue: aBlock
+!
+
+isSteppingNode
+	^ true
 ! !
 
 !BlockNode methodsFor: '*Compiler-Interpreter'!
 
 interpreter: anInterpreter continue: aBlock
 	^ anInterpreter interpretBlockNode: self continue: aBlock
+!
+
+isSteppingNode
+	^ true
 ! !
 
 !CascadeNode methodsFor: '*Compiler-Interpreter'!
@@ -349,18 +513,30 @@ interpreter: anInterpreter continue: aBlock
 
 interpreter: anInterpreter continue: aBlock
 	^ anInterpreter interpretDynamicArrayNode: self continue: aBlock
+!
+
+isSteppingNode
+	^ true
 ! !
 
 !DynamicDictionaryNode methodsFor: '*Compiler-Interpreter'!
 
 interpreter: anInterpreter continue: aBlock
 	^ anInterpreter interpretDynamicDictionaryNode: self continue: aBlock
+!
+
+isSteppingNode
+	^ true
 ! !
 
 !JSStatementNode methodsFor: '*Compiler-Interpreter'!
 
 interpreter: anInterpreter continue: aBlock
 	^ anInterpreter interpretJSStatementNode: self continue: aBlock
+!
+
+isSteppingNode
+	^ true
 ! !
 
 !MethodNode methodsFor: '*Compiler-Interpreter'!
@@ -379,6 +555,10 @@ interpreter: anInterpreter continue: aBlock
 
 interpreter: anInterpreter continue: aBlock
 	^ anInterpreter interpretSendNode: self continue: aBlock
+!
+
+isSteppingNode
+	^ true
 ! !
 
 !SequenceNode methodsFor: '*Compiler-Interpreter'!

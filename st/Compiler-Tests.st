@@ -1,9 +1,15 @@
 Smalltalk current createPackage: 'Compiler-Tests' properties: #{}!
-TestCase subclass: #ASTInterpreterTest
+TestCase subclass: #AbstractASTInterpreterTest
 	instanceVariableNames: ''
 	package: 'Compiler-Tests'!
 
-!ASTInterpreterTest methodsFor: 'accessing'!
+!AbstractASTInterpreterTest methodsFor: 'accessing'!
+
+interpreter
+	^ self subclassResponsibility
+! !
+
+!AbstractASTInterpreterTest methodsFor: 'interpreting'!
 
 analyze: aNode forClass: aClass
 	(SemanticAnalyzer on: aClass) visit: aNode.
@@ -38,11 +44,9 @@ interpret: aString withArguments: aDictionary
     	interpret: aString 
         receiver: Object new
         withArguments: aDictionary
-!
+! !
 
-interpreter
-	^ ASTInterpreter new
-!
+!AbstractASTInterpreterTest methodsFor: 'parsing'!
 
 parse: aString
 	^ Smalltalk current parse: aString
@@ -50,6 +54,16 @@ parse: aString
 
 parse: aString forClass: aClass
 	^ self analyze: (self parse: aString) forClass: aClass
+! !
+
+AbstractASTInterpreterTest subclass: #ASTInterpreterTest
+	instanceVariableNames: ''
+	package: 'Compiler-Tests'!
+
+!ASTInterpreterTest methodsFor: 'accessing'!
+
+interpreter
+	^ ASTInterpreter new
 ! !
 
 !ASTInterpreterTest methodsFor: 'tests'!
@@ -119,6 +133,71 @@ testReceiver
 
 testTempAssignment
 	self assert: (self interpret: 'foo | a | a := 2. ^ a') equals: 2
+! !
+
+AbstractASTInterpreterTest subclass: #ASTSteppingInterpreterTest
+	instanceVariableNames: 'interpreter'
+	package: 'Compiler-Tests'!
+
+!ASTSteppingInterpreterTest methodsFor: 'accessing'!
+
+interpreter
+	^ interpreter ifNil: [ interpreter := ASTSteppingInterpreter new ]
+! !
+
+!ASTSteppingInterpreterTest methodsFor: 'tests'!
+
+testAtEnd
+	self interpret: 'foo 1 + 2'.
+    self deny: self interpreter atEnd.
+
+    self interpreter step.
+    self deny: self interpreter atEnd.
+    
+    self interpreter step.
+    self deny: self interpreter atEnd.
+    
+    self interpreter step.
+    self deny: self interpreter atEnd.
+    
+    self interpreter step.
+    self assert: self interpreter atEnd
+!
+
+testMessageSend
+	self interpret: 'foo 1 + 2'.
+    
+    "SequenceNode"
+    self interpreter step.
+    
+    "SendNode"
+    self interpreter step.
+    
+     "ValueNode"
+    self interpreter step.
+    self assert: self interpreter currentNode value equals: 1.
+    
+    "ValueNode"
+    self interpreter step.
+    self assert: self interpreter currentNode value equals: 2.
+    
+    "Result"
+    self interpreter step.
+    self assert: self interpreter result equals: 3
+!
+
+testSimpleStepping
+	self interpret: 'foo 1'.
+    
+    "SequenceNode"
+    self interpreter step.
+    
+    self assert: self interpreter result isNil.
+    
+    "ValueNode"
+    self interpreter step.
+    
+    self assert: self interpreter result equals: 1
 ! !
 
 TestCase subclass: #CodeGeneratorTest

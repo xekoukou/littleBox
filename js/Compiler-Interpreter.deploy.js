@@ -1,5 +1,5 @@
 smalltalk.addPackage('Compiler-Interpreter', {});
-smalltalk.addClass('AIContext', smalltalk.NodeVisitor, ['outerContext', 'pc', 'locals', 'selector'], 'Compiler-Interpreter');
+smalltalk.addClass('AIContext', smalltalk.NodeVisitor, ['outerContext', 'pc', 'locals', 'method'], 'Compiler-Interpreter');
 smalltalk.addMethod(
 "_initializeFromMethodContext_",
 smalltalk.method({
@@ -9,7 +9,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 _st(self)._pc_(_st(aMethodContext)._pc());
 _st(self)._receiver_(_st(aMethodContext)._receiver());
-_st(self)._selector_(_st(aMethodContext)._selector());
+_st(self)._method_(_st(aMethodContext)._method());
 $1=_st(aMethodContext)._outerContext();
 if(($receiver = $1) == nil || $receiver == undefined){
 $1;
@@ -65,6 +65,30 @@ $1=$2;
 };
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"locals",{}, smalltalk.AIContext)})}
+}),
+smalltalk.AIContext);
+
+smalltalk.addMethod(
+"_method",
+smalltalk.method({
+selector: "method",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=self["@method"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"method",{}, smalltalk.AIContext)})}
+}),
+smalltalk.AIContext);
+
+smalltalk.addMethod(
+"_method_",
+smalltalk.method({
+selector: "method:",
+fn: function (aCompiledMethod){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@method"]=aCompiledMethod;
+return self}, function($ctx1) {$ctx1.fill(self,"method:",{aCompiledMethod:aCompiledMethod}, smalltalk.AIContext)})}
 }),
 smalltalk.AIContext);
 
@@ -146,6 +170,229 @@ return self}, function($ctx1) {$ctx1.fill(self,"receiver:",{anObject:anObject}, 
 }),
 smalltalk.AIContext);
 
+smalltalk.addMethod(
+"_selector",
+smalltalk.method({
+selector: "selector",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$1;
+$2=_st(self)._metod();
+if(($receiver = $2) == nil || $receiver == undefined){
+$1=$2;
+} else {
+$1=_st(_st(self)._method())._selector();
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"selector",{}, smalltalk.AIContext)})}
+}),
+smalltalk.AIContext);
+
+
+smalltalk.addMethod(
+"_fromMethodContext_",
+smalltalk.method({
+selector: "fromMethodContext:",
+fn: function (aMethodContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._initializeFromMethodContext_(aMethodContext);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"fromMethodContext:",{aMethodContext:aMethodContext}, smalltalk.AIContext.klass)})}
+}),
+smalltalk.AIContext.klass);
+
+
+smalltalk.addClass('ASTDebugger', smalltalk.Object, ['interpreter', 'context'], 'Compiler-Interpreter');
+smalltalk.addMethod(
+"_buildAST",
+smalltalk.method({
+selector: "buildAST",
+fn: function (){
+var self=this;
+var ast;
+return smalltalk.withContext(function($ctx1) { var $1;
+ast=_st(_st((smalltalk.Smalltalk || Smalltalk))._current())._parse_(_st(_st(self)._method())._source());
+_st(_st((smalltalk.SemanticAnalyzer || SemanticAnalyzer))._on_(_st(_st(_st(self)._context())._receiver())._class()))._visit_(ast);
+$1=ast;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"buildAST",{ast:ast}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_context_",
+smalltalk.method({
+selector: "context:",
+fn: function (aContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@context"]=_st((smalltalk.AIContext || AIContext))._new();
+return self}, function($ctx1) {$ctx1.fill(self,"context:",{aContext:aContext}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_defaultInterpreterClass",
+smalltalk.method({
+selector: "defaultInterpreterClass",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=(smalltalk.ASTSteppingInterpreter || ASTSteppingInterpreter);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defaultInterpreterClass",{}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_initializeInterpreter",
+smalltalk.method({
+selector: "initializeInterpreter",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(_st(self)._interpreter())._interpret_(_st(_st(_st(self)._buildAST())._nodes())._first());
+return self}, function($ctx1) {$ctx1.fill(self,"initializeInterpreter",{}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_initializeWithContext_",
+smalltalk.method({
+selector: "initializeWithContext:",
+fn: function (aMethodContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._context_fromMethodContext_((smalltalk.IAContext || IAContext),aMethodContext);
+_st(self)._initializeInterpreter();
+return self}, function($ctx1) {$ctx1.fill(self,"initializeWithContext:",{aMethodContext:aMethodContext}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_interpreter",
+smalltalk.method({
+selector: "interpreter",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$1;
+$2=self["@interpreter"];
+if(($receiver = $2) == nil || $receiver == undefined){
+self["@interpreter"]=_st(_st(self)._defaultInterpreterClass())._new();
+$1=self["@interpreter"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"interpreter",{}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_interpreter_",
+smalltalk.method({
+selector: "interpreter:",
+fn: function (anInterpreter){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@interpreter"]=anInterpreter;
+return self}, function($ctx1) {$ctx1.fill(self,"interpreter:",{anInterpreter:anInterpreter}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_method",
+smalltalk.method({
+selector: "method",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._context())._method();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"method",{}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_restart",
+smalltalk.method({
+selector: "restart",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._shouldBeImplemented();
+return self}, function($ctx1) {$ctx1.fill(self,"restart",{}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_resume",
+smalltalk.method({
+selector: "resume",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._shouldBeImplemented();
+return self}, function($ctx1) {$ctx1.fill(self,"resume",{}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_step",
+smalltalk.method({
+selector: "step",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st((function(){
+return smalltalk.withContext(function($ctx2) {return _st(_st(_st(_st(_st(self)._interpreter())._nextNode())._notNil())._and_((function(){
+return smalltalk.withContext(function($ctx3) {return _st(_st(_st(self)._interpreter())._nextNode())._stopOnStepping();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})})))._or_((function(){
+return smalltalk.withContext(function($ctx3) {return _st(_st(_st(self)._interpreter())._atEnd())._not();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileFalse_((function(){
+return smalltalk.withContext(function($ctx2) {_st(_st(self)._interpreter())._step();
+return _st(self)._step();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"step",{}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_stepInto",
+smalltalk.method({
+selector: "stepInto",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._shouldBeImplemented();
+return self}, function($ctx1) {$ctx1.fill(self,"stepInto",{}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_stepOver",
+smalltalk.method({
+selector: "stepOver",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._step();
+return self}, function($ctx1) {$ctx1.fill(self,"stepOver",{}, smalltalk.ASTDebugger)})}
+}),
+smalltalk.ASTDebugger);
+
+
+smalltalk.addMethod(
+"_context_",
+smalltalk.method({
+selector: "context:",
+fn: function (aMethodContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._initializeWithContext_(aMethodContext);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"context:",{aMethodContext:aMethodContext}, smalltalk.ASTDebugger.klass)})}
+}),
+smalltalk.ASTDebugger.klass);
 
 
 smalltalk.addClass('ASTInterpreter', smalltalk.Object, ['currentNode', 'context', 'shouldReturn', 'result'], 'Compiler-Interpreter');
@@ -206,6 +453,19 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { self["@result"]=anObject;
 _st(aBlock)._value_(anObject);
 return self}, function($ctx1) {$ctx1.fill(self,"continue:value:",{aBlock:aBlock,anObject:anObject}, smalltalk.ASTInterpreter)})}
+}),
+smalltalk.ASTInterpreter);
+
+smalltalk.addMethod(
+"_currentNode",
+smalltalk.method({
+selector: "currentNode",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=self["@currentNode"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"currentNode",{}, smalltalk.ASTInterpreter)})}
 }),
 smalltalk.ASTInterpreter);
 
@@ -310,7 +570,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 $1=_st(nodes)._isEmpty();
 if(smalltalk.assert($1)){
-_st(aBlock)._value_(aCollection);
+_st(self)._continue_value_(aBlock,aCollection);
 } else {
 _st(self)._interpret_continue_(_st(nodes)._first(),(function(value){
 return smalltalk.withContext(function($ctx2) {return _st(self)._interpretAll_continue_result_(_st(nodes)._allButFirst(),aBlock,_st(aCollection).__comma([value]));
@@ -482,10 +742,12 @@ selector: "interpretSendNode:continue:",
 fn: function (aNode,aBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { _st(self)._interpret_continue_(_st(aNode)._receiver(),(function(receiver){
-return smalltalk.withContext(function($ctx2) {return _st(self)._messageFromSendNode_do_(aNode,(function(message){
-return smalltalk.withContext(function($ctx3) {_st(_st(self)._context())._pc_(_st(_st(_st(self)._context())._pc()).__plus((1)));
+return smalltalk.withContext(function($ctx2) {return _st(self)._interpretAll_continue_(_st(aNode)._arguments(),(function(args){
+return smalltalk.withContext(function($ctx3) {return _st(self)._messageFromSendNode_arguments_do_(aNode,args,(function(message){
+return smalltalk.withContext(function($ctx4) {_st(_st(self)._context())._pc_(_st(_st(_st(self)._context())._pc()).__plus((1)));
 return _st(self)._continue_value_(aBlock,_st(message)._sendTo_(receiver));
-}, function($ctx3) {$ctx3.fillBlock({message:message},$ctx1)})}));
+}, function($ctx4) {$ctx4.fillBlock({message:message},$ctx1)})}));
+}, function($ctx3) {$ctx3.fillBlock({args:args},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({receiver:receiver},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"interpretSendNode:continue:",{aNode:aNode,aBlock:aBlock}, smalltalk.ASTInterpreter)})}
 }),
@@ -536,20 +798,18 @@ return self}, function($ctx1) {$ctx1.fill(self,"interpretVariableNode:continue:"
 smalltalk.ASTInterpreter);
 
 smalltalk.addMethod(
-"_messageFromSendNode_do_",
+"_messageFromSendNode_arguments_do_",
 smalltalk.method({
-selector: "messageFromSendNode:do:",
-fn: function (aSendNode,aBlock){
+selector: "messageFromSendNode:arguments:do:",
+fn: function (aSendNode,aCollection,aBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1,$2;
-_st(self)._interpretAll_continue_(_st(aSendNode)._arguments(),(function(args){
-return smalltalk.withContext(function($ctx2) {$1=_st((smalltalk.Message || Message))._new();
+$1=_st((smalltalk.Message || Message))._new();
 _st($1)._selector_(_st(aSendNode)._selector());
-_st($1)._arguments_(args);
+_st($1)._arguments_(aCollection);
 $2=_st($1)._yourself();
-return _st(aBlock)._value_($2);
-}, function($ctx2) {$ctx2.fillBlock({args:args},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"messageFromSendNode:do:",{aSendNode:aSendNode,aBlock:aBlock}, smalltalk.ASTInterpreter)})}
+_st(self)._continue_value_(aBlock,$2);
+return self}, function($ctx1) {$ctx1.fill(self,"messageFromSendNode:arguments:do:",{aSendNode:aSendNode,aCollection:aCollection,aBlock:aBlock}, smalltalk.ASTInterpreter)})}
 }),
 smalltalk.ASTInterpreter);
 
@@ -566,9 +826,42 @@ return $1;
 }),
 smalltalk.ASTInterpreter);
 
+smalltalk.addMethod(
+"_shouldReturn",
+smalltalk.method({
+selector: "shouldReturn",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$1;
+$2=self["@shouldReturn"];
+if(($receiver = $2) == nil || $receiver == undefined){
+$1=false;
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"shouldReturn",{}, smalltalk.ASTInterpreter)})}
+}),
+smalltalk.ASTInterpreter);
 
 
-smalltalk.addClass('ASTDebugger', smalltalk.ASTInterpreter, ['continuation'], 'Compiler-Interpreter');
+
+smalltalk.addClass('ASTSteppingInterpreter', smalltalk.ASTInterpreter, ['continuation', 'nextNode'], 'Compiler-Interpreter');
+smalltalk.addMethod(
+"_atEnd",
+smalltalk.method({
+selector: "atEnd",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._shouldReturn())._or_((function(){
+return smalltalk.withContext(function($ctx2) {return _st(_st(self)._nextNode()).__eq_eq(_st(self)._currentNode());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"atEnd",{}, smalltalk.ASTSteppingInterpreter)})}
+}),
+smalltalk.ASTSteppingInterpreter);
+
 smalltalk.addMethod(
 "_initialize",
 smalltalk.method({
@@ -578,9 +871,9 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.ASTInterpreter.fn.prototype._initialize.apply(_st(self), []);
 self["@continuation"]=(function(){
 return smalltalk.withContext(function($ctx2) {}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})});
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.ASTDebugger)})}
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.ASTSteppingInterpreter)})}
 }),
-smalltalk.ASTDebugger);
+smalltalk.ASTSteppingInterpreter);
 
 smalltalk.addMethod(
 "_interpret_continue_",
@@ -588,12 +881,26 @@ smalltalk.method({
 selector: "interpret:continue:",
 fn: function (aNode,aBlock){
 var self=this;
-return smalltalk.withContext(function($ctx1) { self["@continuation"]=(function(){
+return smalltalk.withContext(function($ctx1) { self["@nextNode"]=aNode;
+self["@continuation"]=(function(){
 return smalltalk.withContext(function($ctx2) {return smalltalk.ASTInterpreter.fn.prototype._interpret_continue_.apply(_st(self), [aNode,aBlock]);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})});
-return self}, function($ctx1) {$ctx1.fill(self,"interpret:continue:",{aNode:aNode,aBlock:aBlock}, smalltalk.ASTDebugger)})}
+return self}, function($ctx1) {$ctx1.fill(self,"interpret:continue:",{aNode:aNode,aBlock:aBlock}, smalltalk.ASTSteppingInterpreter)})}
 }),
-smalltalk.ASTDebugger);
+smalltalk.ASTSteppingInterpreter);
+
+smalltalk.addMethod(
+"_nextNode",
+smalltalk.method({
+selector: "nextNode",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=self["@nextNode"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"nextNode",{}, smalltalk.ASTSteppingInterpreter)})}
+}),
+smalltalk.ASTSteppingInterpreter);
 
 smalltalk.addMethod(
 "_step",
@@ -602,9 +909,9 @@ selector: "step",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { _st(self["@continuation"])._value();
-return self}, function($ctx1) {$ctx1.fill(self,"step",{}, smalltalk.ASTDebugger)})}
+return self}, function($ctx1) {$ctx1.fill(self,"step",{}, smalltalk.ASTSteppingInterpreter)})}
 }),
-smalltalk.ASTDebugger);
+smalltalk.ASTSteppingInterpreter);
 
 
 
@@ -622,6 +929,17 @@ return $1;
 smalltalk.Node);
 
 smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.Node)})}
+}),
+smalltalk.Node);
+
+smalltalk.addMethod(
 "_interpreter_continue_",
 smalltalk.method({
 selector: "interpreter:continue:",
@@ -635,6 +953,17 @@ return $1;
 smalltalk.AssignmentNode);
 
 smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.AssignmentNode)})}
+}),
+smalltalk.AssignmentNode);
+
+smalltalk.addMethod(
 "_interpreter_continue_",
 smalltalk.method({
 selector: "interpreter:continue:",
@@ -644,6 +973,17 @@ return smalltalk.withContext(function($ctx1) { var $1;
 $1=_st(anInterpreter)._interpretBlockNode_continue_(self,aBlock);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"interpreter:continue:",{anInterpreter:anInterpreter,aBlock:aBlock}, smalltalk.BlockNode)})}
+}),
+smalltalk.BlockNode);
+
+smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.BlockNode)})}
 }),
 smalltalk.BlockNode);
 
@@ -674,6 +1014,17 @@ return $1;
 smalltalk.DynamicArrayNode);
 
 smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.DynamicArrayNode)})}
+}),
+smalltalk.DynamicArrayNode);
+
+smalltalk.addMethod(
 "_interpreter_continue_",
 smalltalk.method({
 selector: "interpreter:continue:",
@@ -687,6 +1038,17 @@ return $1;
 smalltalk.DynamicDictionaryNode);
 
 smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.DynamicDictionaryNode)})}
+}),
+smalltalk.DynamicDictionaryNode);
+
+smalltalk.addMethod(
 "_interpreter_continue_",
 smalltalk.method({
 selector: "interpreter:continue:",
@@ -696,6 +1058,17 @@ return smalltalk.withContext(function($ctx1) { var $1;
 $1=_st(anInterpreter)._interpretJSStatementNode_continue_(self,aBlock);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"interpreter:continue:",{anInterpreter:anInterpreter,aBlock:aBlock}, smalltalk.JSStatementNode)})}
+}),
+smalltalk.JSStatementNode);
+
+smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.JSStatementNode)})}
 }),
 smalltalk.JSStatementNode);
 
@@ -735,6 +1108,17 @@ return smalltalk.withContext(function($ctx1) { var $1;
 $1=_st(anInterpreter)._interpretSendNode_continue_(self,aBlock);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"interpreter:continue:",{anInterpreter:anInterpreter,aBlock:aBlock}, smalltalk.SendNode)})}
+}),
+smalltalk.SendNode);
+
+smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.SendNode)})}
 }),
 smalltalk.SendNode);
 

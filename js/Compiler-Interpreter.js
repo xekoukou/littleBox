@@ -1,5 +1,5 @@
 smalltalk.addPackage('Compiler-Interpreter', {});
-smalltalk.addClass('AIContext', smalltalk.NodeVisitor, ['outerContext', 'pc', 'locals', 'selector'], 'Compiler-Interpreter');
+smalltalk.addClass('AIContext', smalltalk.NodeVisitor, ['outerContext', 'pc', 'locals', 'method'], 'Compiler-Interpreter');
 smalltalk.AIContext.comment="AIContext is like a `MethodContext`, used by the `ASTInterpreter`.\x0aUnlike a `MethodContext`, it is not read-only.\x0a\x0aWhen debugging, `AIContext` instances are created by copying the current `MethodContext` (thisContext)"
 smalltalk.addMethod(
 "_initializeFromMethodContext_",
@@ -11,7 +11,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 _st(self)._pc_(_st(aMethodContext)._pc());
 _st(self)._receiver_(_st(aMethodContext)._receiver());
-_st(self)._selector_(_st(aMethodContext)._selector());
+_st(self)._method_(_st(aMethodContext)._method());
 $1=_st(aMethodContext)._outerContext();
 if(($receiver = $1) == nil || $receiver == undefined){
 $1;
@@ -23,8 +23,8 @@ return smalltalk.withContext(function($ctx2) {return _st(_st(self)._locals())._
 }, function($ctx2) {$ctx2.fillBlock({key:key,value:value},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeFromMethodContext:",{aMethodContext:aMethodContext}, smalltalk.AIContext)})},
 args: ["aMethodContext"],
-source: "initializeFromMethodContext: aMethodContext\x0a\x09self pc: aMethodContext pc.\x0a    self receiver: aMethodContext receiver.\x0a    self selector: aMethodContext selector.\x0a    aMethodContext outerContext ifNotNil: [\x0a\x09\x09self outerContext: (self class fromMethodContext: aMethodContext outerContext) ].\x0a    aMethodContext locals keysAndValuesDo: [ :key :value |\x0a    \x09self locals at: key put: value ]\x0a    ",
-messageSends: ["pc:", "pc", "receiver:", "receiver", "selector:", "selector", "ifNotNil:", "outerContext:", "fromMethodContext:", "outerContext", "class", "keysAndValuesDo:", "at:put:", "locals"],
+source: "initializeFromMethodContext: aMethodContext\x0a\x09self pc: aMethodContext pc.\x0a    self receiver: aMethodContext receiver.\x0a    self method: aMethodContext method.\x0a    aMethodContext outerContext ifNotNil: [\x0a\x09\x09self outerContext: (self class fromMethodContext: aMethodContext outerContext) ].\x0a    aMethodContext locals keysAndValuesDo: [ :key :value |\x0a    \x09self locals at: key put: value ]\x0a    ",
+messageSends: ["pc:", "pc", "receiver:", "receiver", "method:", "method", "ifNotNil:", "outerContext:", "fromMethodContext:", "outerContext", "class", "keysAndValuesDo:", "at:put:", "locals"],
 referencedClasses: []
 }),
 smalltalk.AIContext);
@@ -86,6 +86,40 @@ args: [],
 source: "locals\x0a\x09^ locals ifNil: [ locals := Dictionary new ]",
 messageSends: ["ifNil:", "new"],
 referencedClasses: ["Dictionary"]
+}),
+smalltalk.AIContext);
+
+smalltalk.addMethod(
+"_method",
+smalltalk.method({
+selector: "method",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=self["@method"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"method",{}, smalltalk.AIContext)})},
+args: [],
+source: "method\x0a\x09^ method",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.AIContext);
+
+smalltalk.addMethod(
+"_method_",
+smalltalk.method({
+selector: "method:",
+category: 'accessing',
+fn: function (aCompiledMethod){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@method"]=aCompiledMethod;
+return self}, function($ctx1) {$ctx1.fill(self,"method:",{aCompiledMethod:aCompiledMethod}, smalltalk.AIContext)})},
+args: ["aCompiledMethod"],
+source: "method: aCompiledMethod\x0a\x09method := aCompiledMethod",
+messageSends: [],
+referencedClasses: []
 }),
 smalltalk.AIContext);
 
@@ -197,6 +231,310 @@ referencedClasses: []
 }),
 smalltalk.AIContext);
 
+smalltalk.addMethod(
+"_selector",
+smalltalk.method({
+selector: "selector",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$1;
+$2=_st(self)._metod();
+if(($receiver = $2) == nil || $receiver == undefined){
+$1=$2;
+} else {
+$1=_st(_st(self)._method())._selector();
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"selector",{}, smalltalk.AIContext)})},
+args: [],
+source: "selector\x0a\x09^ self metod\x0a    \x09ifNotNil: [ self method selector ]",
+messageSends: ["ifNotNil:", "selector", "method", "metod"],
+referencedClasses: []
+}),
+smalltalk.AIContext);
+
+
+smalltalk.addMethod(
+"_fromMethodContext_",
+smalltalk.method({
+selector: "fromMethodContext:",
+category: 'instance creation',
+fn: function (aMethodContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._initializeFromMethodContext_(aMethodContext);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"fromMethodContext:",{aMethodContext:aMethodContext}, smalltalk.AIContext.klass)})},
+args: ["aMethodContext"],
+source: "fromMethodContext: aMethodContext\x0a\x09^ self new\x0a    \x09initializeFromMethodContext: aMethodContext;\x0a        yourself",
+messageSends: ["initializeFromMethodContext:", "new", "yourself"],
+referencedClasses: []
+}),
+smalltalk.AIContext.klass);
+
+
+smalltalk.addClass('ASTDebugger', smalltalk.Object, ['interpreter', 'context'], 'Compiler-Interpreter');
+smalltalk.ASTDebugger.comment="ASTDebugger is a debugger to Amber.\x0aIt uses an AST interpreter to step through the code.\x0a\x0aASTDebugger instances are created from a `MethodContext` with `ASTDebugger class >> context:`.\x0aThey hold an `AIContext` instance internally, recursive copy of the `MethodContext`.\x0a\x0aUse the methods of the 'stepping' protocol to do stepping."
+smalltalk.addMethod(
+"_buildAST",
+smalltalk.method({
+selector: "buildAST",
+category: 'initialization',
+fn: function (){
+var self=this;
+var ast;
+return smalltalk.withContext(function($ctx1) { var $1;
+ast=_st(_st((smalltalk.Smalltalk || Smalltalk))._current())._parse_(_st(_st(self)._method())._source());
+_st(_st((smalltalk.SemanticAnalyzer || SemanticAnalyzer))._on_(_st(_st(_st(self)._context())._receiver())._class()))._visit_(ast);
+$1=ast;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"buildAST",{ast:ast}, smalltalk.ASTDebugger)})},
+args: [],
+source: "buildAST\x0a\x09\x22Build the AST tree from the method source code.\x0a    The AST is annotated with a SemanticAnalyzer, \x0a    to know the semantics and bindings of each node needed for later debugging\x22\x0a    \x0a    | ast |\x0a    \x0a    ast := Smalltalk current parse: self method source.\x0a    (SemanticAnalyzer on: self context receiver class)\x0a    \x09visit: ast.    \x0a    \x0a    ^ ast",
+messageSends: ["parse:", "source", "method", "current", "visit:", "on:", "class", "receiver", "context"],
+referencedClasses: ["Smalltalk", "SemanticAnalyzer"]
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_context_",
+smalltalk.method({
+selector: "context:",
+category: 'accessing',
+fn: function (aContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@context"]=_st((smalltalk.AIContext || AIContext))._new();
+return self}, function($ctx1) {$ctx1.fill(self,"context:",{aContext:aContext}, smalltalk.ASTDebugger)})},
+args: ["aContext"],
+source: "context: aContext\x0a\x09context := AIContext new.",
+messageSends: ["new"],
+referencedClasses: ["AIContext"]
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_defaultInterpreterClass",
+smalltalk.method({
+selector: "defaultInterpreterClass",
+category: 'defaults',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=(smalltalk.ASTSteppingInterpreter || ASTSteppingInterpreter);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defaultInterpreterClass",{}, smalltalk.ASTDebugger)})},
+args: [],
+source: "defaultInterpreterClass\x0a\x09^ ASTSteppingInterpreter",
+messageSends: [],
+referencedClasses: ["ASTSteppingInterpreter"]
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_initializeInterpreter",
+smalltalk.method({
+selector: "initializeInterpreter",
+category: 'initialization',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(_st(self)._interpreter())._interpret_(_st(_st(_st(self)._buildAST())._nodes())._first());
+return self}, function($ctx1) {$ctx1.fill(self,"initializeInterpreter",{}, smalltalk.ASTDebugger)})},
+args: [],
+source: "initializeInterpreter\x0a\x09self interpreter interpret: self buildAST nodes first",
+messageSends: ["interpret:", "first", "nodes", "buildAST", "interpreter"],
+referencedClasses: []
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_initializeWithContext_",
+smalltalk.method({
+selector: "initializeWithContext:",
+category: 'initialization',
+fn: function (aMethodContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._context_fromMethodContext_((smalltalk.IAContext || IAContext),aMethodContext);
+_st(self)._initializeInterpreter();
+return self}, function($ctx1) {$ctx1.fill(self,"initializeWithContext:",{aMethodContext:aMethodContext}, smalltalk.ASTDebugger)})},
+args: ["aMethodContext"],
+source: "initializeWithContext: aMethodContext\x0a\x09\x22TODO: do we need to handle block contexts?\x22\x0a    \x0a    self context: IAContext fromMethodContext: aMethodContext.\x0a    self initializeInterpreter",
+messageSends: ["context:fromMethodContext:", "initializeInterpreter"],
+referencedClasses: ["IAContext"]
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_interpreter",
+smalltalk.method({
+selector: "interpreter",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$1;
+$2=self["@interpreter"];
+if(($receiver = $2) == nil || $receiver == undefined){
+self["@interpreter"]=_st(_st(self)._defaultInterpreterClass())._new();
+$1=self["@interpreter"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"interpreter",{}, smalltalk.ASTDebugger)})},
+args: [],
+source: "interpreter\x0a\x09^ interpreter ifNil: [ interpreter := self defaultInterpreterClass new ]",
+messageSends: ["ifNil:", "new", "defaultInterpreterClass"],
+referencedClasses: []
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_interpreter_",
+smalltalk.method({
+selector: "interpreter:",
+category: 'accessing',
+fn: function (anInterpreter){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@interpreter"]=anInterpreter;
+return self}, function($ctx1) {$ctx1.fill(self,"interpreter:",{anInterpreter:anInterpreter}, smalltalk.ASTDebugger)})},
+args: ["anInterpreter"],
+source: "interpreter: anInterpreter\x0a\x09interpreter := anInterpreter",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_method",
+smalltalk.method({
+selector: "method",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._context())._method();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"method",{}, smalltalk.ASTDebugger)})},
+args: [],
+source: "method\x0a\x09^ self context method",
+messageSends: ["method", "context"],
+referencedClasses: []
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_restart",
+smalltalk.method({
+selector: "restart",
+category: 'stepping',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._shouldBeImplemented();
+return self}, function($ctx1) {$ctx1.fill(self,"restart",{}, smalltalk.ASTDebugger)})},
+args: [],
+source: "restart\x0a\x09self shouldBeImplemented",
+messageSends: ["shouldBeImplemented"],
+referencedClasses: []
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_resume",
+smalltalk.method({
+selector: "resume",
+category: 'stepping',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._shouldBeImplemented();
+return self}, function($ctx1) {$ctx1.fill(self,"resume",{}, smalltalk.ASTDebugger)})},
+args: [],
+source: "resume\x0a\x09self shouldBeImplemented",
+messageSends: ["shouldBeImplemented"],
+referencedClasses: []
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_step",
+smalltalk.method({
+selector: "step",
+category: 'stepping',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st((function(){
+return smalltalk.withContext(function($ctx2) {return _st(_st(_st(_st(_st(self)._interpreter())._nextNode())._notNil())._and_((function(){
+return smalltalk.withContext(function($ctx3) {return _st(_st(_st(self)._interpreter())._nextNode())._stopOnStepping();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})})))._or_((function(){
+return smalltalk.withContext(function($ctx3) {return _st(_st(_st(self)._interpreter())._atEnd())._not();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileFalse_((function(){
+return smalltalk.withContext(function($ctx2) {_st(_st(self)._interpreter())._step();
+return _st(self)._step();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"step",{}, smalltalk.ASTDebugger)})},
+args: [],
+source: "step\x0a\x09\x22The ASTSteppingInterpreter stops at each node interpretation. \x0a    One step will interpret nodes until:\x0a    - we get at the end\x0a    - the next node is a stepping node (send, assignment, etc.)\x22\x0a    \x0a\x09[ (self interpreter nextNode notNil and: [ self interpreter nextNode stopOnStepping ])\x0a\x09\x09or: [ self interpreter atEnd not ] ] \x0a \x09\x09\x09whileFalse: [\x0a\x09\x09\x09\x09self interpreter step. \x0a                self step ]",
+messageSends: ["whileFalse:", "step", "interpreter", "or:", "not", "atEnd", "and:", "stopOnStepping", "nextNode", "notNil"],
+referencedClasses: []
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_stepInto",
+smalltalk.method({
+selector: "stepInto",
+category: 'stepping',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._shouldBeImplemented();
+return self}, function($ctx1) {$ctx1.fill(self,"stepInto",{}, smalltalk.ASTDebugger)})},
+args: [],
+source: "stepInto\x0a\x09self shouldBeImplemented",
+messageSends: ["shouldBeImplemented"],
+referencedClasses: []
+}),
+smalltalk.ASTDebugger);
+
+smalltalk.addMethod(
+"_stepOver",
+smalltalk.method({
+selector: "stepOver",
+category: 'stepping',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._step();
+return self}, function($ctx1) {$ctx1.fill(self,"stepOver",{}, smalltalk.ASTDebugger)})},
+args: [],
+source: "stepOver\x0a\x09self step",
+messageSends: ["step"],
+referencedClasses: []
+}),
+smalltalk.ASTDebugger);
+
+
+smalltalk.addMethod(
+"_context_",
+smalltalk.method({
+selector: "context:",
+category: 'instance creation',
+fn: function (aMethodContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._initializeWithContext_(aMethodContext);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"context:",{aMethodContext:aMethodContext}, smalltalk.ASTDebugger.klass)})},
+args: ["aMethodContext"],
+source: "context: aMethodContext\x0a\x09^ self new\x0a    \x09initializeWithContext: aMethodContext;\x0a        yourself",
+messageSends: ["initializeWithContext:", "new", "yourself"],
+referencedClasses: []
+}),
+smalltalk.ASTDebugger.klass);
 
 
 smalltalk.addClass('ASTInterpreter', smalltalk.Object, ['currentNode', 'context', 'shouldReturn', 'result'], 'Compiler-Interpreter');
@@ -277,6 +615,24 @@ return self}, function($ctx1) {$ctx1.fill(self,"continue:value:",{aBlock:aBlock,
 args: ["aBlock", "anObject"],
 source: "continue: aBlock value: anObject\x0a\x09result := anObject.\x0a    aBlock value: anObject",
 messageSends: ["value:"],
+referencedClasses: []
+}),
+smalltalk.ASTInterpreter);
+
+smalltalk.addMethod(
+"_currentNode",
+smalltalk.method({
+selector: "currentNode",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=self["@currentNode"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"currentNode",{}, smalltalk.ASTInterpreter)})},
+args: [],
+source: "currentNode\x0a\x09^ currentNode",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.ASTInterpreter);
@@ -376,7 +732,7 @@ _st(self)._continue_value_(aBlock,aNode);
 };
 return self}, function($ctx1) {$ctx1.fill(self,"interpret:continue:",{aNode:aNode,aBlock:aBlock}, smalltalk.ASTInterpreter)})},
 args: ["aNode", "aBlock"],
-source: "interpret: aNode continue: aBlock\x0a\x09shouldReturn ifTrue: [ ^ self ].\x0a\x0a\x09aNode isNode \x0a    \x09ifTrue: [ \x09\x0a        \x09currentNode := aNode.\x0a            self interpretNode: aNode continue: [ :value |\x0a  \x09\x09\x09\x09self continue: aBlock value: value] ]\x0a        ifFalse: [ self continue: aBlock value: aNode ]",
+source: "interpret: aNode continue: aBlock\x0a\x09shouldReturn ifTrue: [ ^ self ].\x0a\x0a\x09aNode isNode \x0a    \x09ifTrue: [ \x09\x0a        \x09currentNode := aNode.\x0a            self interpretNode: aNode continue: [ :value |\x0a  \x09\x09\x09\x09self continue: aBlock value: value ] ]\x0a        ifFalse: [ self continue: aBlock value: aNode ]",
 messageSends: ["ifTrue:", "ifTrue:ifFalse:", "interpretNode:continue:", "continue:value:", "isNode"],
 referencedClasses: []
 }),
@@ -408,7 +764,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 $1=_st(nodes)._isEmpty();
 if(smalltalk.assert($1)){
-_st(aBlock)._value_(aCollection);
+_st(self)._continue_value_(aBlock,aCollection);
 } else {
 _st(self)._interpret_continue_(_st(nodes)._first(),(function(value){
 return smalltalk.withContext(function($ctx2) {return _st(self)._interpretAll_continue_result_(_st(nodes)._allButFirst(),aBlock,_st(aCollection).__comma([value]));
@@ -416,8 +772,8 @@ return smalltalk.withContext(function($ctx2) {return _st(self)._interpretAll_co
 };
 return self}, function($ctx1) {$ctx1.fill(self,"interpretAll:continue:result:",{nodes:nodes,aBlock:aBlock,aCollection:aCollection}, smalltalk.ASTInterpreter)})},
 args: ["nodes", "aBlock", "aCollection"],
-source: "interpretAll: nodes continue: aBlock result: aCollection\x0a\x09nodes isEmpty \x0a    \x09ifTrue: [ aBlock value: aCollection ]\x0a    \x09ifFalse: [\x0a    \x09\x09self interpret: nodes first continue: [:value |\x0a    \x09\x09\x09self \x0a                \x09interpretAll: nodes allButFirst \x0a                    continue: aBlock\x0a  \x09\x09\x09\x09\x09result: aCollection, { value } ] ]",
-messageSends: ["ifTrue:ifFalse:", "value:", "interpret:continue:", "first", "interpretAll:continue:result:", "allButFirst", ",", "isEmpty"],
+source: "interpretAll: nodes continue: aBlock result: aCollection\x0a\x09nodes isEmpty \x0a    \x09ifTrue: [ self continue: aBlock value: aCollection ]\x0a    \x09ifFalse: [\x0a    \x09\x09self interpret: nodes first continue: [:value |\x0a    \x09\x09\x09self \x0a                \x09interpretAll: nodes allButFirst \x0a                    continue: aBlock\x0a  \x09\x09\x09\x09\x09result: aCollection, { value } ] ]",
+messageSends: ["ifTrue:ifFalse:", "continue:value:", "interpret:continue:", "first", "interpretAll:continue:result:", "allButFirst", ",", "isEmpty"],
 referencedClasses: []
 }),
 smalltalk.ASTInterpreter);
@@ -640,15 +996,17 @@ category: 'interpreting',
 fn: function (aNode,aBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { _st(self)._interpret_continue_(_st(aNode)._receiver(),(function(receiver){
-return smalltalk.withContext(function($ctx2) {return _st(self)._messageFromSendNode_do_(aNode,(function(message){
-return smalltalk.withContext(function($ctx3) {_st(_st(self)._context())._pc_(_st(_st(_st(self)._context())._pc()).__plus((1)));
+return smalltalk.withContext(function($ctx2) {return _st(self)._interpretAll_continue_(_st(aNode)._arguments(),(function(args){
+return smalltalk.withContext(function($ctx3) {return _st(self)._messageFromSendNode_arguments_do_(aNode,args,(function(message){
+return smalltalk.withContext(function($ctx4) {_st(_st(self)._context())._pc_(_st(_st(_st(self)._context())._pc()).__plus((1)));
 return _st(self)._continue_value_(aBlock,_st(message)._sendTo_(receiver));
-}, function($ctx3) {$ctx3.fillBlock({message:message},$ctx1)})}));
+}, function($ctx4) {$ctx4.fillBlock({message:message},$ctx1)})}));
+}, function($ctx3) {$ctx3.fillBlock({args:args},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({receiver:receiver},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"interpretSendNode:continue:",{aNode:aNode,aBlock:aBlock}, smalltalk.ASTInterpreter)})},
 args: ["aNode", "aBlock"],
-source: "interpretSendNode: aNode continue: aBlock\x0a\x09\x22TODO: Handle super sends\x22\x0a    \x0a    self interpret: aNode receiver continue: [ :receiver |\x0a    \x09self messageFromSendNode: aNode do: [ :message |\x0a        \x09self context pc: self context pc + 1.\x0a        \x09self \x0a            \x09continue: aBlock \x0a                value: (message sendTo: receiver) ] ]",
-messageSends: ["interpret:continue:", "receiver", "messageFromSendNode:do:", "pc:", "+", "pc", "context", "continue:value:", "sendTo:"],
+source: "interpretSendNode: aNode continue: aBlock\x0a\x09\x22TODO: Handle super sends\x22\x0a    \x0a    self interpret: aNode receiver continue: [ :receiver |\x0a    \x09self interpretAll: aNode arguments continue: [ :args |\x0a    \x09\x09self \x0a            \x09messageFromSendNode: aNode \x0a                arguments: args\x0a                do: [ :message |\x0a        \x09\x09\x09self context pc: self context pc + 1.\x0a        \x09\x09\x09self \x0a            \x09\x09\x09continue: aBlock \x0a                \x09\x09value: (message sendTo: receiver) ] ] ]",
+messageSends: ["interpret:continue:", "receiver", "interpretAll:continue:", "arguments", "messageFromSendNode:arguments:do:", "pc:", "+", "pc", "context", "continue:value:", "sendTo:"],
 referencedClasses: []
 }),
 smalltalk.ASTInterpreter);
@@ -713,24 +1071,22 @@ referencedClasses: []
 smalltalk.ASTInterpreter);
 
 smalltalk.addMethod(
-"_messageFromSendNode_do_",
+"_messageFromSendNode_arguments_do_",
 smalltalk.method({
-selector: "messageFromSendNode:do:",
+selector: "messageFromSendNode:arguments:do:",
 category: 'private',
-fn: function (aSendNode,aBlock){
+fn: function (aSendNode,aCollection,aBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1,$2;
-_st(self)._interpretAll_continue_(_st(aSendNode)._arguments(),(function(args){
-return smalltalk.withContext(function($ctx2) {$1=_st((smalltalk.Message || Message))._new();
+$1=_st((smalltalk.Message || Message))._new();
 _st($1)._selector_(_st(aSendNode)._selector());
-_st($1)._arguments_(args);
+_st($1)._arguments_(aCollection);
 $2=_st($1)._yourself();
-return _st(aBlock)._value_($2);
-}, function($ctx2) {$ctx2.fillBlock({args:args},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"messageFromSendNode:do:",{aSendNode:aSendNode,aBlock:aBlock}, smalltalk.ASTInterpreter)})},
-args: ["aSendNode", "aBlock"],
-source: "messageFromSendNode: aSendNode do: aBlock\x0a\x09self interpretAll: aSendNode arguments continue: [ :args |\x0a    \x09aBlock value: (Message new\x0a    \x09\x09selector: aSendNode selector;\x0a        \x09arguments: args;\x0a        \x09yourself) ]",
-messageSends: ["interpretAll:continue:", "arguments", "value:", "selector:", "selector", "new", "arguments:", "yourself"],
+_st(self)._continue_value_(aBlock,$2);
+return self}, function($ctx1) {$ctx1.fill(self,"messageFromSendNode:arguments:do:",{aSendNode:aSendNode,aCollection:aCollection,aBlock:aBlock}, smalltalk.ASTInterpreter)})},
+args: ["aSendNode", "aCollection", "aBlock"],
+source: "messageFromSendNode: aSendNode arguments: aCollection do: aBlock\x0a    self \x0a        continue: aBlock\x0a        value: (Message new\x0a    \x09\x09selector: aSendNode selector;\x0a        \x09arguments: aCollection;\x0a        \x09yourself)",
+messageSends: ["continue:value:", "selector:", "selector", "new", "arguments:", "yourself"],
 referencedClasses: ["Message"]
 }),
 smalltalk.ASTInterpreter);
@@ -753,10 +1109,53 @@ referencedClasses: []
 }),
 smalltalk.ASTInterpreter);
 
+smalltalk.addMethod(
+"_shouldReturn",
+smalltalk.method({
+selector: "shouldReturn",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $2,$1;
+$2=self["@shouldReturn"];
+if(($receiver = $2) == nil || $receiver == undefined){
+$1=false;
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"shouldReturn",{}, smalltalk.ASTInterpreter)})},
+args: [],
+source: "shouldReturn\x0a\x09^ shouldReturn ifNil: [ false ]",
+messageSends: ["ifNil:"],
+referencedClasses: []
+}),
+smalltalk.ASTInterpreter);
 
 
-smalltalk.addClass('ASTDebugger', smalltalk.ASTInterpreter, ['continuation'], 'Compiler-Interpreter');
-smalltalk.ASTDebugger.comment="ASTDebugger is an interpreter with stepping capabilities.\x0aUse `#stepOver` to actually interpret the next node.\x0a\x0aUsage example:\x0a\x0a    | ast debugger |\x0a    ast := Smalltalk current parse: 'foo 1+2+4'.\x0a    (SemanticAnalyzer on: Object) visit: ast.\x0a\x0a    debugger := ASTDebugger new\x0a        interpret: ast nodes first;\x0a        yourself.\x0a        \x0a    debugger stepOver; stepOver.\x0a    debugger stepOver; stepOver.\x0a    debugger result.\x22Answers 1\x22\x0a    debugger stepOver.\x0a    debugger result. \x22Answers 3\x22\x0a    debugger stepOver.\x0a    debugger result. \x22Answers 7\x22\x0a    "
+
+smalltalk.addClass('ASTSteppingInterpreter', smalltalk.ASTInterpreter, ['continuation', 'nextNode'], 'Compiler-Interpreter');
+smalltalk.ASTSteppingInterpreter.comment="ASTSteppingInterpreter is an interpreter with stepping capabilities.\x0aUse `#step` to actually interpret the next node.\x0a\x0aUsage example:\x0a\x0a    | ast interpreter |\x0a    ast := Smalltalk current parse: 'foo 1+2+4'.\x0a    (SemanticAnalyzer on: Object) visit: ast.\x0a\x0a    interpreter := ASTSteppingInterpreter new\x0a        interpret: ast nodes first;\x0a        yourself.\x0a        \x0a    debugger step; step.\x0a    debugger step; step.\x0a    debugger result.\x22Answers 1\x22\x0a    debugger step.\x0a    debugger result. \x22Answers 3\x22\x0a    debugger step.\x0a    debugger result. \x22Answers 7\x22\x0a    "
+smalltalk.addMethod(
+"_atEnd",
+smalltalk.method({
+selector: "atEnd",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._shouldReturn())._or_((function(){
+return smalltalk.withContext(function($ctx2) {return _st(_st(self)._nextNode()).__eq_eq(_st(self)._currentNode());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"atEnd",{}, smalltalk.ASTSteppingInterpreter)})},
+args: [],
+source: "atEnd\x0a\x09^ self shouldReturn or: [ self nextNode == self currentNode ]",
+messageSends: ["or:", "==", "currentNode", "nextNode", "shouldReturn"],
+referencedClasses: []
+}),
+smalltalk.ASTSteppingInterpreter);
+
 smalltalk.addMethod(
 "_initialize",
 smalltalk.method({
@@ -767,13 +1166,13 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.ASTInterpreter.fn.prototype._initialize.apply(_st(self), []);
 self["@continuation"]=(function(){
 return smalltalk.withContext(function($ctx2) {}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})});
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.ASTDebugger)})},
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.ASTSteppingInterpreter)})},
 args: [],
 source: "initialize\x0a\x09super initialize.\x0a    continuation := [  ]",
 messageSends: ["initialize"],
 referencedClasses: []
 }),
-smalltalk.ASTDebugger);
+smalltalk.ASTSteppingInterpreter);
 
 smalltalk.addMethod(
 "_interpret_continue_",
@@ -782,16 +1181,35 @@ selector: "interpret:continue:",
 category: 'interpreting',
 fn: function (aNode,aBlock){
 var self=this;
-return smalltalk.withContext(function($ctx1) { self["@continuation"]=(function(){
+return smalltalk.withContext(function($ctx1) { self["@nextNode"]=aNode;
+self["@continuation"]=(function(){
 return smalltalk.withContext(function($ctx2) {return smalltalk.ASTInterpreter.fn.prototype._interpret_continue_.apply(_st(self), [aNode,aBlock]);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})});
-return self}, function($ctx1) {$ctx1.fill(self,"interpret:continue:",{aNode:aNode,aBlock:aBlock}, smalltalk.ASTDebugger)})},
+return self}, function($ctx1) {$ctx1.fill(self,"interpret:continue:",{aNode:aNode,aBlock:aBlock}, smalltalk.ASTSteppingInterpreter)})},
 args: ["aNode", "aBlock"],
-source: "interpret: aNode continue: aBlock\x0a\x09continuation := [ super interpret: aNode continue: aBlock ]",
+source: "interpret: aNode continue: aBlock\x0a\x09nextNode := aNode.\x0a\x09continuation := [ \x0a    \x09super interpret: aNode continue: aBlock ]",
 messageSends: ["interpret:continue:"],
 referencedClasses: []
 }),
-smalltalk.ASTDebugger);
+smalltalk.ASTSteppingInterpreter);
+
+smalltalk.addMethod(
+"_nextNode",
+smalltalk.method({
+selector: "nextNode",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=self["@nextNode"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"nextNode",{}, smalltalk.ASTSteppingInterpreter)})},
+args: [],
+source: "nextNode\x0a\x09^ nextNode",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.ASTSteppingInterpreter);
 
 smalltalk.addMethod(
 "_step",
@@ -801,13 +1219,13 @@ category: 'stepping',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { _st(self["@continuation"])._value();
-return self}, function($ctx1) {$ctx1.fill(self,"step",{}, smalltalk.ASTDebugger)})},
+return self}, function($ctx1) {$ctx1.fill(self,"step",{}, smalltalk.ASTSteppingInterpreter)})},
 args: [],
 source: "step\x0a\x09continuation value",
 messageSends: ["value"],
 referencedClasses: []
 }),
-smalltalk.ASTDebugger);
+smalltalk.ASTSteppingInterpreter);
 
 
 
@@ -825,6 +1243,22 @@ return $1;
 args: ["anInterpreter", "aBlock"],
 source: "interpreter: anInterpreter continue: aBlock\x0a\x09^ anInterpreter interpretNode: self continue: aBlock",
 messageSends: ["interpretNode:continue:"],
+referencedClasses: []
+}),
+smalltalk.Node);
+
+smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+category: '*Compiler-Interpreter',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.Node)})},
+args: [],
+source: "isSteppingNode\x0a\x09^ false",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.Node);
@@ -848,6 +1282,22 @@ referencedClasses: []
 smalltalk.AssignmentNode);
 
 smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+category: '*Compiler-Interpreter',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.AssignmentNode)})},
+args: [],
+source: "isSteppingNode\x0a\x09^ true",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.AssignmentNode);
+
+smalltalk.addMethod(
 "_interpreter_continue_",
 smalltalk.method({
 selector: "interpreter:continue:",
@@ -861,6 +1311,22 @@ return $1;
 args: ["anInterpreter", "aBlock"],
 source: "interpreter: anInterpreter continue: aBlock\x0a\x09^ anInterpreter interpretBlockNode: self continue: aBlock",
 messageSends: ["interpretBlockNode:continue:"],
+referencedClasses: []
+}),
+smalltalk.BlockNode);
+
+smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+category: '*Compiler-Interpreter',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.BlockNode)})},
+args: [],
+source: "isSteppingNode\x0a\x09^ true",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.BlockNode);
@@ -902,6 +1368,22 @@ referencedClasses: []
 smalltalk.DynamicArrayNode);
 
 smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+category: '*Compiler-Interpreter',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.DynamicArrayNode)})},
+args: [],
+source: "isSteppingNode\x0a\x09^ true",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.DynamicArrayNode);
+
+smalltalk.addMethod(
 "_interpreter_continue_",
 smalltalk.method({
 selector: "interpreter:continue:",
@@ -920,6 +1402,22 @@ referencedClasses: []
 smalltalk.DynamicDictionaryNode);
 
 smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+category: '*Compiler-Interpreter',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.DynamicDictionaryNode)})},
+args: [],
+source: "isSteppingNode\x0a\x09^ true",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.DynamicDictionaryNode);
+
+smalltalk.addMethod(
 "_interpreter_continue_",
 smalltalk.method({
 selector: "interpreter:continue:",
@@ -933,6 +1431,22 @@ return $1;
 args: ["anInterpreter", "aBlock"],
 source: "interpreter: anInterpreter continue: aBlock\x0a\x09^ anInterpreter interpretJSStatementNode: self continue: aBlock",
 messageSends: ["interpretJSStatementNode:continue:"],
+referencedClasses: []
+}),
+smalltalk.JSStatementNode);
+
+smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+category: '*Compiler-Interpreter',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.JSStatementNode)})},
+args: [],
+source: "isSteppingNode\x0a\x09^ true",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.JSStatementNode);
@@ -987,6 +1501,22 @@ return $1;
 args: ["anInterpreter", "aBlock"],
 source: "interpreter: anInterpreter continue: aBlock\x0a\x09^ anInterpreter interpretSendNode: self continue: aBlock",
 messageSends: ["interpretSendNode:continue:"],
+referencedClasses: []
+}),
+smalltalk.SendNode);
+
+smalltalk.addMethod(
+"_isSteppingNode",
+smalltalk.method({
+selector: "isSteppingNode",
+category: '*Compiler-Interpreter',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isSteppingNode",{}, smalltalk.SendNode)})},
+args: [],
+source: "isSteppingNode\x0a\x09^ true",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.SendNode);
