@@ -18,6 +18,22 @@ referencedClasses: []
 smalltalk.BlockClosure);
 
 smalltalk.addMethod(
+"_asCompiledMethod_",
+smalltalk.method({
+selector: "asCompiledMethod:",
+category: 'converting',
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return smalltalk.method({selector:aString, fn:self});;
+return self}, function($ctx1) {$ctx1.fill(self,"asCompiledMethod:",{aString:aString}, smalltalk.BlockClosure)})},
+args: ["aString"],
+source: "asCompiledMethod: aString\x0a\x09<return smalltalk.method({selector:aString, fn:self});>",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.BlockClosure);
+
+smalltalk.addMethod(
 "_compiledSource",
 smalltalk.method({
 selector: "compiledSource",
@@ -28,6 +44,28 @@ return smalltalk.withContext(function($ctx1) { return self.toString();
 return self}, function($ctx1) {$ctx1.fill(self,"compiledSource",{}, smalltalk.BlockClosure)})},
 args: [],
 source: "compiledSource\x0a\x09<return self.toString()>",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.BlockClosure);
+
+smalltalk.addMethod(
+"_currySelf",
+smalltalk.method({
+selector: "currySelf",
+category: 'converting',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+    	return function () {
+    		var args = [ this ];
+        	args.push.apply(args, arguments);
+        	return self.apply(null, args);
+    	}
+	;
+return self}, function($ctx1) {$ctx1.fill(self,"currySelf",{}, smalltalk.BlockClosure)})},
+args: [],
+source: "currySelf\x0a\x09\x22Transforms [ :selfarg :x :y | stcode ] block\x0a    which represents JS function (selfarg, x, y, ...) {jscode}\x0a    into function (x, y, ...) {jscode} that takes selfarg from 'this'.\x0a    IOW, it is usable as JS method and first arg takes the receiver.\x22\x0a    \x0a    <\x0a    \x09return function () {\x0a    \x09\x09var args = [ this ];\x0a        \x09args.push.apply(args, arguments);\x0a        \x09return self.apply(null, args);\x0a    \x09}\x0a\x09>",
 messageSends: [],
 referencedClasses: []
 }),

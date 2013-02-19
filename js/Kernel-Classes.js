@@ -1265,7 +1265,7 @@ smalltalk.addMethod(
 "_class_instanceVariableNames_",
 smalltalk.method({
 selector: "class:instanceVariableNames:",
-category: 'class creation',
+category: 'api',
 fn: function (aClass,aString){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1,$2;
@@ -1315,16 +1315,37 @@ return smalltalk.withContext(function($ctx1) { _st(anotherClass)._comment_(_st(
 _st(_st(_st(aClass)._methodDictionary())._values())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(_st((smalltalk.Compiler || Compiler))._new())._install_forClass_category_(_st(each)._source(),anotherClass,_st(each)._category());
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+_st(self)._basicClass_instanceVariables_(_st(anotherClass)._class(),_st(_st(aClass)._class())._instanceVariableNames());
 _st(_st(_st(_st(aClass)._class())._methodDictionary())._values())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(_st((smalltalk.Compiler || Compiler))._new())._install_forClass_category_(_st(each)._source(),_st(anotherClass)._class(),_st(each)._category());
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-_st(self)._basicClass_instanceVariables_(_st(anotherClass)._class(),_st(_st(aClass)._class())._instanceVariableNames());
 _st(self)._setupClass_(anotherClass);
 return self}, function($ctx1) {$ctx1.fill(self,"copyClass:to:",{aClass:aClass,anotherClass:anotherClass}, smalltalk.ClassBuilder)})},
 args: ["aClass", "anotherClass"],
-source: "copyClass: aClass to: anotherClass\x0a\x0a\x09anotherClass comment: aClass comment.\x0a\x0a\x09aClass methodDictionary values do: [ :each |\x0a\x09\x09Compiler new install: each source forClass: anotherClass category: each category ].\x0a\x0a\x09aClass class methodDictionary values do: [ :each |\x0a\x09\x09Compiler new install: each source forClass: anotherClass class category: each category ].\x0a\x0a\x09self basicClass: anotherClass class instanceVariables: aClass class instanceVariableNames.\x0a\x0a\x09self setupClass: anotherClass",
-messageSends: ["comment:", "comment", "do:", "install:forClass:category:", "source", "category", "new", "values", "methodDictionary", "class", "basicClass:instanceVariables:", "instanceVariableNames", "setupClass:"],
+source: "copyClass: aClass to: anotherClass\x0a\x0a\x09anotherClass comment: aClass comment.\x0a\x0a\x09aClass methodDictionary values do: [ :each |\x0a\x09\x09Compiler new install: each source forClass: anotherClass category: each category ].\x0a\x0a\x09self basicClass: anotherClass class instanceVariables: aClass class instanceVariableNames.\x0a\x0a\x09aClass class methodDictionary values do: [ :each |\x0a\x09\x09Compiler new install: each source forClass: anotherClass class category: each category ].\x0a\x0a\x09self setupClass: anotherClass",
+messageSends: ["comment:", "comment", "do:", "install:forClass:category:", "source", "category", "new", "values", "methodDictionary", "basicClass:instanceVariables:", "class", "instanceVariableNames", "setupClass:"],
 referencedClasses: ["Compiler"]
+}),
+smalltalk.ClassBuilder);
+
+smalltalk.addMethod(
+"_installMethod_forClass_category_",
+smalltalk.method({
+selector: "installMethod:forClass:category:",
+category: 'api',
+fn: function (aCompiledMethod,aBehavior,aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+_st(aCompiledMethod)._category_(aString);
+_st(aBehavior)._addCompiledMethod_(aCompiledMethod);
+_st(self)._setupClass_(aBehavior);
+$1=aCompiledMethod;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"installMethod:forClass:category:",{aCompiledMethod:aCompiledMethod,aBehavior:aBehavior,aString:aString}, smalltalk.ClassBuilder)})},
+args: ["aCompiledMethod", "aBehavior", "aString"],
+source: "installMethod: aCompiledMethod forClass: aBehavior category: aString\x0a\x09aCompiledMethod category: aString.\x0a\x09aBehavior addCompiledMethod: aCompiledMethod.\x0a    self setupClass: aBehavior.\x0a\x09^aCompiledMethod",
+messageSends: ["category:", "addCompiledMethod:", "setupClass:"],
+referencedClasses: []
 }),
 smalltalk.ClassBuilder);
 
@@ -1403,7 +1424,7 @@ smalltalk.addMethod(
 "_renameClass_to_",
 smalltalk.method({
 selector: "renameClass:to:",
-category: 'class creation',
+category: 'api',
 fn: function (aClass,aString){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1,$2;
@@ -1424,7 +1445,7 @@ smalltalk.addMethod(
 "_setupClass_",
 smalltalk.method({
 selector: "setupClass:",
-category: 'class creation',
+category: 'api',
 fn: function (aClass){
 var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.init(aClass);;
@@ -1440,7 +1461,7 @@ smalltalk.addMethod(
 "_superclass_subclass_",
 smalltalk.method({
 selector: "superclass:subclass:",
-category: 'class creation',
+category: 'api',
 fn: function (aClass,aString){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
@@ -1458,7 +1479,7 @@ smalltalk.addMethod(
 "_superclass_subclass_instanceVariableNames_package_",
 smalltalk.method({
 selector: "superclass:subclass:instanceVariableNames:package:",
-category: 'class creation',
+category: 'api',
 fn: function (aClass,aString,aString2,aString3){
 var self=this;
 var newClass;
@@ -1557,12 +1578,12 @@ return _st(chunk)._isEmpty();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileFalse_((function(){
 return smalltalk.withContext(function($ctx2) {return _st(self)._compileMethod_(chunk);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(_st((smalltalk.Compiler || Compiler))._new())._setupClass_(self["@class"]);
+_st(_st((smalltalk.ClassBuilder || ClassBuilder))._new())._setupClass_(self["@class"]);
 return self}, function($ctx1) {$ctx1.fill(self,"scanFrom:",{aChunkParser:aChunkParser,chunk:chunk}, smalltalk.ClassCategoryReader)})},
 args: ["aChunkParser"],
-source: "scanFrom: aChunkParser\x0a\x09| chunk |\x0a\x09[chunk := aChunkParser nextChunk.\x0a\x09chunk isEmpty] whileFalse: [\x0a\x09    self compileMethod: chunk].\x0a\x09Compiler new setupClass: class",
+source: "scanFrom: aChunkParser\x0a\x09| chunk |\x0a\x09[chunk := aChunkParser nextChunk.\x0a\x09chunk isEmpty] whileFalse: [\x0a\x09    self compileMethod: chunk].\x0a\x09ClassBuilder new setupClass: class",
 messageSends: ["whileFalse:", "compileMethod:", "nextChunk", "isEmpty", "setupClass:", "new"],
-referencedClasses: ["Compiler"]
+referencedClasses: ["ClassBuilder"]
 }),
 smalltalk.ClassCategoryReader);
 
