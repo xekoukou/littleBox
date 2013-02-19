@@ -58,14 +58,19 @@ self equations do:
 
 !Component methodsFor: 'diconnecting'!
 
-disconnect
+disconnectCompAt: aConnectorId at: aPosition
 
-"needs to remove element from DOM tree first"
+|selector|
 
-parent disconnectCompFrom: elementId from: position.
-!
+"remove from DOM"
+selector := pid,aConnectorId,' ',':nth-child(',(aPosition - 1) asString,')'.
+selector asJQuery remove.
 
-disconnectCompFrom: anElementId from: aPosition
+"remove from Connectors"
+(self connectors at: aConnectorId) remove: aPosition ifAbsent:[].
+
+"disconnect variables"
+self equations do: [ :each | each removeCompVarFrom: aConnectorId from: aPosition].
 ! !
 
 !Component methodsFor: 'functioning'!
@@ -248,20 +253,29 @@ addInputVar: aVector
 
 |dim1 dim2 dim3 dim4 dim5|
 
-dim1 := input at: aVector at: 1.
-(dim1 = nil) 
-	ifFalse: [dim2 := dim1 at: aVector at: 2.
-  		(( dim2 = nil ) & ( dim1 at:(-1) = nil )) 
-        	ifFalse:[dim3 := dim2 at: aVector at: 3.
-          		(dim3 = nil) 
-                	ifFalse: [ dim4 := dim3 at: aVector at: 4.
-  						(dim4 = nill) 
-                        	ifFalse: [ 
-                            	((aVector at: 4 = 'intermediate') |(aVector at: 4 = 'content') ) 
-                            		ifTrue: [ dim3 add: aVector at: 5. ]
-                    				ifFalse:[ dim5 := dim4 at: aVector at: 5.
-    									(dim5 = nil) 
-                                        	ifFalse:[ dim5 add: aVector at: 6. ]]]] ] ].
+dim1 := input at: aVector at: 1 ifAbsent:[^nil].
+dim2 := dim1 at: aVector at: 2 ifAbsent:[ dim2 := dim1 at: (-1) ifAbsent:[^nil]].
+dim3 := dim2 at: aVector at: 3 ifAbsent:[^nil].
+dim4 := dim3 at: aVector at: 4 ifAbsent:[^nil].
+((aVector at: 4 = 'intermediate') |(aVector at: 4 = 'content') ) 
+	ifTrue: [ dim4 := aVector at: 5. ]
+   	ifFalse:[ dim5 := dim4 at: aVector at: 5  ifAbsent:[^nil].
+ 		dim5 := aVector at: 6. ].
+!
+
+removeCompVarFrom: aConnectorId from: aPosition
+
+
+|dim1 dim2|
+
+dim1 := input at: aConnectorId.
+dim2 := dim1 at: aPosition.
+dim2 do:[:dim3| 
+dim3 do: [:dim4| dim4 keysAndValuesDo: [ :key :dim5 | 
+                ((key = 'intermediate') |(key = 'content') ) 
+                ifTrue: [dim5 = nil]
+              	ifFalse: [dim5 do: [:each| each = nil]]
+      			]]].
 ! !
 
 !Equation methodsFor: 'initializing'!

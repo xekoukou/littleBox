@@ -152,32 +152,24 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_disconnect",
+"_disconnectCompAt_at_",
 smalltalk.method({
-selector: "disconnect",
+selector: "disconnectCompAt:at:",
 category: 'diconnecting',
-fn: function (){
+fn: function (aConnectorId,aPosition){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self["@parent"])._disconnectCompFrom_from_(self["@elementId"],self["@position"]);
-return self}, function($ctx1) {$ctx1.fill(self,"disconnect",{}, smalltalk.Component)})},
-args: [],
-source: "disconnect\x0a\x0a\x22needs to remove element from DOM tree first\x22\x0a\x0aparent disconnectCompFrom: elementId from: position.",
-messageSends: ["disconnectCompFrom:from:"],
-referencedClasses: []
-}),
-smalltalk.Component);
-
-smalltalk.addMethod(
-"_disconnectCompFrom_from_",
-smalltalk.method({
-selector: "disconnectCompFrom:from:",
-category: 'diconnecting',
-fn: function (anElementId,aPosition){
-var self=this;
-return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"disconnectCompFrom:from:",{anElementId:anElementId,aPosition:aPosition}, smalltalk.Component)})},
-args: ["anElementId", "aPosition"],
-source: "disconnectCompFrom: anElementId from: aPosition\x0a\x0a",
-messageSends: [],
+var selector;
+return smalltalk.withContext(function($ctx1) { selector=_st(_st(_st(_st(_st(self["@pid"]).__comma(aConnectorId)).__comma(" ")).__comma(":nth-child(")).__comma(_st(_st(aPosition).__minus((1)))._asString())).__comma(")");
+_st(_st(selector)._asJQuery())._remove();
+_st(_st(_st(self)._connectors())._at_(aConnectorId))._remove_ifAbsent_(aPosition,(function(){
+return smalltalk.withContext(function($ctx2) {}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(_st(self)._equations())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st(each)._removeCompVarFrom_from_(aConnectorId,aPosition);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"disconnectCompAt:at:",{aConnectorId:aConnectorId,aPosition:aPosition,selector:selector}, smalltalk.Component)})},
+args: ["aConnectorId", "aPosition"],
+source: "disconnectCompAt: aConnectorId at: aPosition\x0a\x0a|selector|\x0a\x0a\x22remove from DOM\x22\x0aselector := pid,aConnectorId,' ',':nth-child(',(aPosition - 1) asString,')'.\x0aselector asJQuery remove.\x0a\x0a\x22remove from Connectors\x22\x0a(self connectors at: aConnectorId) remove: aPosition ifAbsent:[].\x0a\x0a\x22disconnect variables\x22\x0aself equations do: [ :each | each removeCompVarFrom: aConnectorId from: aPosition].\x0a\x0a\x0a\x0a",
+messageSends: [",", "asString", "-", "remove", "asJQuery", "remove:ifAbsent:", "at:", "connectors", "do:", "removeCompVarFrom:from:", "equations"],
 referencedClasses: []
 }),
 smalltalk.Component);
@@ -459,41 +451,42 @@ category: 'connecting',
 fn: function (aVector){
 var self=this;
 var dim1,dim2,dim3,dim4,dim5;
-return smalltalk.withContext(function($ctx1) { var $1,$2,$3,$4,$5,$6;
-dim1=_st(self["@input"])._at_at_(aVector,(1));
-$1=_st(dim1).__eq(nil);
-if(! smalltalk.assert($1)){
-dim2=_st(dim1)._at_at_(aVector,(2));
-dim2;
-$2=_st(_st(dim2).__eq(nil)).__and(_st(dim1)._at_(_st((-1)).__eq(nil)));
-if(! smalltalk.assert($2)){
-dim3=_st(dim2)._at_at_(aVector,(3));
-dim3;
-$3=_st(dim3).__eq(nil);
-if(! smalltalk.assert($3)){
-dim4=_st(dim3)._at_at_(aVector,(4));
+return smalltalk.withContext(function($ctx1) { var $1;
+var $early={};
+try {
+dim1=_st(self["@input"])._at_at_ifAbsent_(aVector,(1),(function(){
+return smalltalk.withContext(function($ctx2) {throw $early=[nil];
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+dim2=_st(dim1)._at_at_ifAbsent_(aVector,(2),(function(){
+return smalltalk.withContext(function($ctx2) {dim2=_st(dim1)._at_ifAbsent_((-1),(function(){
+return smalltalk.withContext(function($ctx3) {throw $early=[nil];
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return dim2;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+dim3=_st(dim2)._at_at_ifAbsent_(aVector,(3),(function(){
+return smalltalk.withContext(function($ctx2) {throw $early=[nil];
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+dim4=_st(dim3)._at_at_ifAbsent_(aVector,(4),(function(){
+return smalltalk.withContext(function($ctx2) {throw $early=[nil];
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+$1=_st(_st(aVector)._at_(_st((4)).__eq("intermediate"))).__or(_st(aVector)._at_(_st((4)).__eq("content")));
+if(smalltalk.assert($1)){
+dim4=_st(aVector)._at_((5));
 dim4;
-$4=_st(dim4).__eq(_st(nil)._l());
-if(! smalltalk.assert($4)){
-$5=_st(_st(aVector)._at_(_st((4)).__eq("intermediate"))).__or(_st(aVector)._at_(_st((4)).__eq("content")));
-if(smalltalk.assert($5)){
-_st(dim3)._add_at_(aVector,(5));
 } else {
-dim5=_st(dim4)._at_at_(aVector,(5));
+dim5=_st(dim4)._at_at_ifAbsent_(aVector,(5),(function(){
+return smalltalk.withContext(function($ctx2) {throw $early=[nil];
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 dim5;
-$6=_st(dim5).__eq(nil);
-if(! smalltalk.assert($6)){
-_st(dim5)._add_at_(aVector,(6));
+dim5=_st(aVector)._at_((6));
+dim5;
 };
-};
-};
-};
-};
-};
-return self}, function($ctx1) {$ctx1.fill(self,"addInputVar:",{aVector:aVector,dim1:dim1,dim2:dim2,dim3:dim3,dim4:dim4,dim5:dim5}, smalltalk.Equation)})},
+return self}
+catch(e) {if(e===$early)return e[0]; throw e}
+}, function($ctx1) {$ctx1.fill(self,"addInputVar:",{aVector:aVector,dim1:dim1,dim2:dim2,dim3:dim3,dim4:dim4,dim5:dim5}, smalltalk.Equation)})},
 args: ["aVector"],
-source: "addInputVar: aVector\x0a\x0a\x22aVector is an Array of the input space, the last  dim is the input variable\x22\x0a\x0a|dim1 dim2 dim3 dim4 dim5|\x0a\x0adim1 := input at: aVector at: 1.\x0a(dim1 = nil) \x0a\x09ifFalse: [dim2 := dim1 at: aVector at: 2.\x0a  \x09\x09(( dim2 = nil ) & ( dim1 at:(-1) = nil )) \x0a        \x09ifFalse:[dim3 := dim2 at: aVector at: 3.\x0a          \x09\x09(dim3 = nil) \x0a                \x09ifFalse: [ dim4 := dim3 at: aVector at: 4.\x0a  \x09\x09\x09\x09\x09\x09(dim4 = nill) \x0a                        \x09ifFalse: [ \x0a                            \x09((aVector at: 4 = 'intermediate') |(aVector at: 4 = 'content') ) \x0a                            \x09\x09ifTrue: [ dim3 add: aVector at: 5. ]\x0a                    \x09\x09\x09\x09ifFalse:[ dim5 := dim4 at: aVector at: 5.\x0a    \x09\x09\x09\x09\x09\x09\x09\x09\x09(dim5 = nil) \x0a                                        \x09ifFalse:[ dim5 add: aVector at: 6. ]]]] ] ].\x0a\x0a\x0a",
-messageSends: ["at:at:", "ifFalse:", "ifTrue:ifFalse:", "add:at:", "=", "|", "at:", "l", "&"],
+source: "addInputVar: aVector\x0a\x0a\x22aVector is an Array of the input space, the last  dim is the input variable\x22\x0a\x0a|dim1 dim2 dim3 dim4 dim5|\x0a\x0adim1 := input at: aVector at: 1 ifAbsent:[^nil].\x0adim2 := dim1 at: aVector at: 2 ifAbsent:[ dim2 := dim1 at: (-1) ifAbsent:[^nil]].\x0adim3 := dim2 at: aVector at: 3 ifAbsent:[^nil].\x0adim4 := dim3 at: aVector at: 4 ifAbsent:[^nil].\x0a((aVector at: 4 = 'intermediate') |(aVector at: 4 = 'content') ) \x0a\x09ifTrue: [ dim4 := aVector at: 5. ]\x0a   \x09ifFalse:[ dim5 := dim4 at: aVector at: 5  ifAbsent:[^nil].\x0a \x09\x09dim5 := aVector at: 6. ].\x0a\x0a\x0a",
+messageSends: ["at:at:ifAbsent:", "at:ifAbsent:", "ifTrue:ifFalse:", "at:", "|", "="],
 referencedClasses: []
 }),
 smalltalk.Equation);
@@ -558,6 +551,39 @@ return self}, function($ctx1) {$ctx1.fill(self,"output:",{anOutput:anOutput}, sm
 args: ["anOutput"],
 source: "output: anOutput\x0a\x0aoutput:= anOutput.",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.Equation);
+
+smalltalk.addMethod(
+"_removeCompVarFrom_from_",
+smalltalk.method({
+selector: "removeCompVarFrom:from:",
+category: 'connecting',
+fn: function (aConnectorId,aPosition){
+var self=this;
+var dim1,dim2;
+return smalltalk.withContext(function($ctx1) { var $1;
+dim1=_st(self["@input"])._at_(aConnectorId);
+dim2=_st(dim1)._at_(aPosition);
+_st(dim2)._do_((function(dim3){
+return smalltalk.withContext(function($ctx2) {return _st(dim3)._do_((function(dim4){
+return smalltalk.withContext(function($ctx3) {return _st(dim4)._keysAndValuesDo_((function(key,dim5){
+return smalltalk.withContext(function($ctx4) {$1=_st(_st(key).__eq("intermediate")).__or(_st(key).__eq("content"));
+if(smalltalk.assert($1)){
+return _st(dim5).__eq(nil);
+} else {
+return _st(dim5)._do_((function(each){
+return smalltalk.withContext(function($ctx5) {return _st(each).__eq(nil);
+}, function($ctx5) {$ctx5.fillBlock({each:each},$ctx1)})}));
+};
+}, function($ctx4) {$ctx4.fillBlock({key:key,dim5:dim5},$ctx1)})}));
+}, function($ctx3) {$ctx3.fillBlock({dim4:dim4},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({dim3:dim3},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"removeCompVarFrom:from:",{aConnectorId:aConnectorId,aPosition:aPosition,dim1:dim1,dim2:dim2}, smalltalk.Equation)})},
+args: ["aConnectorId", "aPosition"],
+source: "removeCompVarFrom: aConnectorId from: aPosition\x0a\x0a\x0a|dim1 dim2|\x0a\x0adim1 := input at: aConnectorId.\x0adim2 := dim1 at: aPosition.\x0adim2 do:[:dim3| \x0adim3 do: [:dim4| dim4 keysAndValuesDo: [ :key :dim5 | \x0a                ((key = 'intermediate') |(key = 'content') ) \x0a                ifTrue: [dim5 = nil]\x0a              \x09ifFalse: [dim5 do: [:each| each = nil]]\x0a      \x09\x09\x09]]].\x0a    \x0a\x0a\x0a",
+messageSends: ["at:", "do:", "keysAndValuesDo:", "ifTrue:ifFalse:", "=", "|"],
 referencedClasses: []
 }),
 smalltalk.Equation);
