@@ -1,19 +1,18 @@
 Smalltalk current createPackage: 'Component' properties: #{}!
 Object subclass: #Component
-	instanceVariableNames: 'elementId position parent pid mid connectors variables'
+	instanceVariableNames: 'elementId connectorId position parent pid mid connectors variables equations'
 	package: 'Component'!
-!Component commentStamp!
-"
-Variables
-Dictionary
-	check output format
-"!
 
 !Component methodsFor: 'accessing'!
 
 connectors
 
 ^connectors
+!
+
+equations
+
+^equations
 !
 
 pid
@@ -25,15 +24,36 @@ variables
 ^variables
 ! !
 
-!Component methodsFor: 'connecting variables'!
+!Component methodsFor: 'binding'!
 
-connectVarsTo: aConnectorPosition to:aPosition
+bindComp: aComponent atCon: aConnectorId atPos: aPosition
 
-"position 1 is the position of the connector, position2 is the position inside the connector.
-All variables must be connected or passed to the upper component.
-"
+self connectors at: aConnectorId at:aPosition put: aComponent .
+self bindVars: aComponent variables conId: aConnectorId pos: aPosition.
+!
 
-self subclassResponsibility
+bindVars: aVariables conId: aConnectorId pos: aPosition
+
+"aPosition is the position of the component as a child of the the connector element"
+
+
+self equations do: 
+	[ :equation | aVariables do: 
+    	[ :variable| |vector| vector:= Array new. 
+   			vector add: aConnectorId; add: aPosition. 
+            vector add: variable selector.
+        	(variable isIntermediate) 
+        		ifTrue:[vector add: 'intermediate'. vector add: variable.]
+    			ifFalse: [ 
+            		(variable isStyleAttr) 
+            			ifTrue:[ vector add: 'styleAttr'. 
+                        	vector add:variable attr.] 
+                   		ifFalse:[
+                      		(vector isContent) 
+                      			 ifTrue: [  vector add: 'content'. ] 
+                                 ifFalse: [ vector add: 'attr'. vector add:variable attr.] ] .
+  		  	 		vector add: variable.] .
+ 				equation addInputVar: vector.  ] ].
 ! !
 
 !Component methodsFor: 'diconnecting'!
@@ -67,41 +87,39 @@ assignId
 
 mid := mid + 1.
 ( ( mid/10 ) truncated = (mid/10)) ifTrue: [mid := mid + 1.].
-smid := pid , mid asString, '0'.
+smid := connectorId , mid asString, '0'.
 ^ smid.
 !
 
-connect: anElementId at: aPosition to: aParent
+connect: aConnectorId at: aPosition to: aParent
 
-"the ElementId is the internal to the parent mid of the element we want"
+"the connectorId is the id of the element that a connector represents wthout the pid of the parent"
 |ids|
 
-elementId := anElementId.
-parent := aParent.
+connectorId := aConnectorId.
 pid := parent assignId.
-mid := 0.
+parent := aParent.
 position:=aPosition.
 
-parent connectors at: anElementId at:aPosition put: self.
 
 ids:=self realize.
 self setConnectors.
 self setVariables.
+self setEquations.
 
-
-
-parent connectVarsTo: anElementId to: aPosition.
+parent bindComp: self atCon: aConnectorId atPos: aPosition
 !
 
-connect: anElementId to: aParent
+connect: aConnectorId to: aParent
 
 
-self connect: anElementId at: ((parent connectors at: anElementId size)+1) to: aParent
+self connect: aConnectorId at: ((parent connectors at: aConnectorId size)+1) to: aParent
 !
 
 initialize
 
-super initialize
+super initialize.
+mid := 0.
 ! !
 
 !Component methodsFor: 'private'!
@@ -114,12 +132,13 @@ paintOn: css
 
 realize
 
-|html css ids|
+|html css selector|
 
-parent pid,'0',elementId,' ',':nth-child(',position asString,')' asJQuery after: '<div id=',pid,'></div>'.
-html := HTMLCanvas onJQuery: '#',pid asJQuery.
+selector := (parent pid),connectorId,' ',':nth-child(',(position - 1) asString,')'.
+selector asJQuery after: '<div id = ', pid ,'></div>'.
+html := HTMLCanvas onJQuery: ('#',pid) asJQuery.
 self renderOn: html.
-css := CSSCanvas new:self.
+css := CSSCanvas new: self.
 self paintOn:css
 !
 
@@ -132,7 +151,14 @@ self subclassResponsibility
 
 setConnectors
 
-"Used to initializing the connectors"
+"Used to initialize the connectors"
+
+self subclassResponsibility
+!
+
+setEquations
+
+"Used to initialize the Equations"
 
 self subclassResponsibility
 !
@@ -176,27 +202,29 @@ elementId: anElementId
 ! !
 
 Object subclass: #Equation
-	instanceVariableNames: 'input output connectionRules'
+	instanceVariableNames: 'input output'
 	package: 'Component'!
 !Equation commentStamp!
 "An equation is a static part of a component that links its variables with the variables of the connected components variables
 
 input
-Dictionary dim 1 selector
+Dictionary dim 1 mid of parent connector
                   dim 2 child position or -1 that means any position
-                  dim 3 type of attribute/variable (attr, styleAttr, intermediary variable)
-                  dim 4 value of attribute (height, etc only if it is not an intermediary variable)
-                  dim 5 the actual variable
+                  dim 3 selector without the pid of the attached component
+                  dim 4 type of attribute/variable (attr, styleAttr, intermediary variable)
+                  dim 5 value of attribute (height, etc only if it is not an intermediary variable)
+                  dim 6 the actual variable
+                  
+The first 5 dimensions are static and play the role of the rules whether an input var is part of the equation or not
 
 output
-Dictionary dim 1 selector
-                  dim 3 type of attribute/variable (attr, styleAttr, intermediary variable)
-                  dim 4 value of attribute (height, etc only if it is not an intermediary variable)
-                  dim 5 the actual variable
+    Array
+    
+Since the equation lives inside a component there is no output api. This is static
 
 "!
 
-!Equation methodsFor: 'initializing'!
+!Equation methodsFor: 'computing'!
 
 compute
 
@@ -205,6 +233,53 @@ compute
 self subclassResponsibility
 !
 
+reverseCompute
+
+"static function definition"
+
+self subclassResponsibility
+! !
+
+!Equation methodsFor: 'connecting'!
+
+addInputVar: aVector
+
+"aVector is an Array of the input space, the last  dim is the input variable"
+
+|dim1 dim2 dim3 dim4 dim5|
+
+dim1 := input at: aVector at: 1.
+(dim1 = nil) 
+	ifFalse: [dim2 := dim1 at: aVector at: 2.
+  		(( dim2 = nil ) & ( dim1 at:(-1) = nil )) 
+        	ifFalse:[dim3 := dim2 at: aVector at: 3.
+          		(dim3 = nil) 
+                	ifFalse: [ dim4 := dim3 at: aVector at: 4.
+  						(dim4 = nill) 
+                        	ifFalse: [ 
+                            	((aVector at: 4 = 'intermediate') |(aVector at: 4 = 'content') ) 
+                            		ifTrue: [ dim3 add: aVector at: 5. ]
+                    				ifFalse:[ dim5 := dim4 at: aVector at: 5.
+    									(dim5 = nil) 
+                                        	ifFalse:[ dim5 add: aVector at: 6. ]]]] ] ].
+! !
+
+!Equation methodsFor: 'initializing'!
+
+initialize
+
+super initialize
+
+self defineConnectionRules.
+!
+
+output: anOutput
+
+output:= anOutput.
+! !
+
+!Equation methodsFor: 'private'!
+
 defineConnectionRules
 
 "input Dictionary that is used to check whether an input varialbe (obtained through a connection) should be linked to this function 
@@ -212,20 +287,21 @@ Dictionary dim 1 selector
                   dim 2 child position or -1 that means any position
                   dim 3 type of attribute/variable (attr, styleAttr, intermediary variable)
                   dim 4 value of attribute (height, etc only if it is not an intermediary variable)
+                  
+dim4 should contain an Array in which the variables will be put.
+(dim3 in case of an intermediary var)
 "
 
 self subclassResponsibility
-!
+! !
 
-initialize
+!Equation class methodsFor: 'not yet classified'!
 
-super initialize
-!
+new: anOutput
 
-reverseCompute
+"the output space is a static api and is predifined when a component class and the equation class are written.
+the component simply initializes the output and passes it at the equation"
 
-"static function definition"
-
-self subclassResponsibility
+^ self new
 ! !
 

@@ -1,18 +1,36 @@
 smalltalk.addPackage('DomBinding', {});
-smalltalk.addClass('Var', smalltalk.Object, ['val', 'ancestors', 'descendents'], 'DomBinding');
+smalltalk.addClass('Var', smalltalk.Object, ['val', 'ancFunctions', 'descFunctions'], 'DomBinding');
 smalltalk.addMethod(
-"_addAncestor_",
+"_addAncFunction_",
 smalltalk.method({
-selector: "addAncestor:",
-fn: function (anAncestor){
+selector: "addAncFunction:",
+fn: function (anAncestorFunction){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(self["@ancestors"]).__eq_eq(_st(nil)._l());
+$1=_st(self["@ancFunctions"]).__eq_eq(_st(nil)._l());
 if(smalltalk.assert($1)){
-self["@ancestors"]=_st((smalltalk.Array || Array))._new();
-self["@ancestors"];
+self["@ancFunctions"]=_st((smalltalk.Array || Array))._new();
+self["@ancFunctions"];
 };
-return self}, function($ctx1) {$ctx1.fill(self,"addAncestor:",{anAncestor:anAncestor}, smalltalk.Var)})}
+_st(self["@ancFunctions"])._add_(anAncestorFunction);
+return self}, function($ctx1) {$ctx1.fill(self,"addAncFunction:",{anAncestorFunction:anAncestorFunction}, smalltalk.Var)})}
+}),
+smalltalk.Var);
+
+smalltalk.addMethod(
+"_addDescFunction_",
+smalltalk.method({
+selector: "addDescFunction:",
+fn: function (aDescFunction){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(self["@descFunctions"]).__eq_eq(_st(nil)._l());
+if(smalltalk.assert($1)){
+self["@descFunctions"]=_st((smalltalk.Array || Array))._new();
+self["@descFunctions"];
+};
+_st(self["@descFunctions"])._add_(aDescFunction);
+return self}, function($ctx1) {$ctx1.fill(self,"addDescFunction:",{aDescFunction:aDescFunction}, smalltalk.Var)})}
 }),
 smalltalk.Var);
 
@@ -235,6 +253,17 @@ return smalltalk.withContext(function($ctx1) { return true;
 smalltalk.VarBool);
 
 smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.VarBool)})}
+}),
+smalltalk.VarBool);
+
+smalltalk.addMethod(
 "_not",
 smalltalk.method({
 selector: "not",
@@ -282,7 +311,7 @@ smalltalk.VarBool);
 
 
 
-smalltalk.addClass('AttrBool', smalltalk.VarBool, ['selector', 'attr'], 'DomBinding');
+smalltalk.addClass('AttrBool', smalltalk.VarBool, ['pid', 'selector', 'attr'], 'DomBinding');
 smalltalk.addMethod(
 "_attr",
 smalltalk.method({
@@ -321,6 +350,19 @@ return self}, function($ctx1) {$ctx1.fill(self,"bool:",{aBool:aBool}, smalltalk.
 smalltalk.AttrBool);
 
 smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=_st(aComponent)._pid();
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrBool)})}
+}),
+smalltalk.AttrBool);
+
+smalltalk.addMethod(
 "_dBind",
 smalltalk.method({
 selector: "dBind",
@@ -349,7 +391,7 @@ config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("characterData",true);
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
-_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+_st(_st(_st(_st(_st(self["@pid"]).__comma(" ")).__comma(self["@selector"]))._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
@@ -366,6 +408,28 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.VarBool.fn.prototype._initialize.apply(_st(self), []);
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.AttrBool)})}
+}),
+smalltalk.AttrBool);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.AttrBool)})}
+}),
+smalltalk.AttrBool);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.AttrBool)})}
 }),
 smalltalk.AttrBool);
 
@@ -390,6 +454,7 @@ fn: function (aSelector,anAttr){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrBool)})}
 }),
 smalltalk.AttrBool);
@@ -400,11 +465,24 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._attr_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._attr_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.AttrBool)})}
 }),
 smalltalk.AttrBool);
 
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrBool.klass)})}
+}),
+smalltalk.AttrBool.klass);
 
 smalltalk.addMethod(
 "_selector_attr_",
@@ -420,7 +498,7 @@ return $1;
 smalltalk.AttrBool.klass);
 
 
-smalltalk.addClass('StyleAttrBool', smalltalk.VarBool, ['selector', 'attr'], 'DomBinding');
+smalltalk.addClass('StyleAttrBool', smalltalk.VarBool, ['pid', 'selector', 'attr'], 'DomBinding');
 smalltalk.addMethod(
 "_attr",
 smalltalk.method({
@@ -459,6 +537,19 @@ return self}, function($ctx1) {$ctx1.fill(self,"bool:",{aBool:aBool}, smalltalk.
 smalltalk.StyleAttrBool);
 
 smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=_st(aComponent)._pid();
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrBool)})}
+}),
+smalltalk.StyleAttrBool);
+
+smalltalk.addMethod(
 "_dBind",
 smalltalk.method({
 selector: "dBind",
@@ -486,7 +577,7 @@ myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
-_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+_st(_st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
@@ -503,6 +594,28 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.VarBool.fn.prototype._initialize.apply(_st(self), []);
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.StyleAttrBool)})}
+}),
+smalltalk.StyleAttrBool);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.StyleAttrBool)})}
+}),
+smalltalk.StyleAttrBool);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.StyleAttrBool)})}
 }),
 smalltalk.StyleAttrBool);
 
@@ -527,6 +640,7 @@ fn: function (aSelector,anAttr){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrBool)})}
 }),
 smalltalk.StyleAttrBool);
@@ -537,11 +651,24 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._css_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._css_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.StyleAttrBool)})}
 }),
 smalltalk.StyleAttrBool);
 
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrBool.klass)})}
+}),
+smalltalk.StyleAttrBool.klass);
 
 smalltalk.addMethod(
 "_selector_attr_",
@@ -805,6 +932,17 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.Var.fn.prototype._initialize.apply(_st(self), []);
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.VarNumb)})}
+}),
+smalltalk.VarNumb);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.VarNumb)})}
 }),
 smalltalk.VarNumb);
 
@@ -1126,7 +1264,7 @@ smalltalk.VarNumb);
 
 
 
-smalltalk.addClass('AttrNumb', smalltalk.VarNumb, ['selector', 'attr', 'unit'], 'DomBinding');
+smalltalk.addClass('AttrNumb', smalltalk.VarNumb, ['pid', 'selector', 'attr', 'unit'], 'DomBinding');
 smalltalk.addMethod(
 "_attr",
 smalltalk.method({
@@ -1137,6 +1275,34 @@ return smalltalk.withContext(function($ctx1) { var $1;
 $1=self["@attr"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"attr",{}, smalltalk.AttrNumb)})}
+}),
+smalltalk.AttrNumb);
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=_st(aComponent)._pid();
+self["@unit"]="";
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrNumb)})}
+}),
+smalltalk.AttrNumb);
+
+smalltalk.addMethod(
+"_component_selector_attr_unit_",
+smalltalk.method({
+selector: "component:selector:attr:unit:",
+fn: function (aComponent,aSelector,anAttr,aUnit){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=_st(aComponent)._pid();
+self["@unit"]=aUnit;
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:unit:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.AttrNumb)})}
 }),
 smalltalk.AttrNumb);
 
@@ -1169,7 +1335,7 @@ config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("characterData",true);
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
-_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+_st(_st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
@@ -1186,6 +1352,28 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.VarNumb.fn.prototype._initialize.apply(_st(self), []);
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.AttrNumb)})}
+}),
+smalltalk.AttrNumb);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.AttrNumb)})}
+}),
+smalltalk.AttrNumb);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.AttrNumb)})}
 }),
 smalltalk.AttrNumb);
 
@@ -1234,6 +1422,7 @@ fn: function (aSelector,anAttr){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 self["@unit"]="";
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrNumb)})}
 }),
@@ -1247,34 +1436,9 @@ fn: function (aSelector,anAttr,aUnit){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 self["@unit"]=aUnit;
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:unit:",{aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.AttrNumb)})}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_selector_styleAttr_",
-smalltalk.method({
-selector: "selector:styleAttr:",
-fn: function (aSelector,anAttr){
-var self=this;
-return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
-self["@selector"]=aSelector;
-self["@unit"]="";
-return self}, function($ctx1) {$ctx1.fill(self,"selector:styleAttr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrNumb)})}
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_selector_styleAttr_unit_",
-smalltalk.method({
-selector: "selector:styleAttr:unit:",
-fn: function (aSelector,anAttr,aUnit){
-var self=this;
-return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
-self["@selector"]=aSelector;
-self["@unit"]=aUnit;
-return self}, function($ctx1) {$ctx1.fill(self,"selector:styleAttr:unit:",{aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.AttrNumb)})}
 }),
 smalltalk.AttrNumb);
 
@@ -1284,11 +1448,37 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._attr_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._attr_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.AttrNumb)})}
 }),
 smalltalk.AttrNumb);
 
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrNumb.klass)})}
+}),
+smalltalk.AttrNumb.klass);
+
+smalltalk.addMethod(
+"_componet_selector_attr_unit_",
+smalltalk.method({
+selector: "componet:selector:attr:unit:",
+fn: function (aComponent,aSelector,anAttr,aUnit){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._componet_selector_attr_unit_(aComponent,aSelector,anAttr,aUnit);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"componet:selector:attr:unit:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.AttrNumb.klass)})}
+}),
+smalltalk.AttrNumb.klass);
 
 smalltalk.addMethod(
 "_selector_attr_",
@@ -1316,21 +1506,8 @@ return $1;
 }),
 smalltalk.AttrNumb.klass);
 
-smalltalk.addMethod(
-"_selector_styleAttr_unit_",
-smalltalk.method({
-selector: "selector:styleAttr:unit:",
-fn: function (aSelector,anAttr,aUnit){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_styleAttr_unit_(aSelector,anAttr,aUnit);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"selector:styleAttr:unit:",{aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.AttrNumb.klass)})}
-}),
-smalltalk.AttrNumb.klass);
 
-
-smalltalk.addClass('StyleAttrNumb', smalltalk.VarNumb, ['selector', 'attr', 'unit'], 'DomBinding');
+smalltalk.addClass('StyleAttrNumb', smalltalk.VarNumb, ['pid', 'selector', 'attr', 'unit'], 'DomBinding');
 smalltalk.addMethod(
 "_attr",
 smalltalk.method({
@@ -1341,6 +1518,34 @@ return smalltalk.withContext(function($ctx1) { var $1;
 $1=self["@attr"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"attr",{}, smalltalk.StyleAttrNumb)})}
+}),
+smalltalk.StyleAttrNumb);
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=_st(aComponent)._pid();
+self["@unit"]="";
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrNumb)})}
+}),
+smalltalk.StyleAttrNumb);
+
+smalltalk.addMethod(
+"_component_selector_attr_unit_",
+smalltalk.method({
+selector: "component:selector:attr:unit:",
+fn: function (aComponent,aSelector,anAttr,aUnit){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=_st(aComponent)._pid();
+self["@unit"]=aUnit;
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:unit:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.StyleAttrNumb)})}
 }),
 smalltalk.StyleAttrNumb);
 
@@ -1372,7 +1577,7 @@ myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
-_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+_st(_st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
@@ -1389,6 +1594,28 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.VarNumb.fn.prototype._initialize.apply(_st(self), []);
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.StyleAttrNumb)})}
+}),
+smalltalk.StyleAttrNumb);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.StyleAttrNumb)})}
+}),
+smalltalk.StyleAttrNumb);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.StyleAttrNumb)})}
 }),
 smalltalk.StyleAttrNumb);
 
@@ -1437,6 +1664,7 @@ fn: function (aSelector,anAttr){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 self["@unit"]="";
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrNumb)})}
 }),
@@ -1450,6 +1678,7 @@ fn: function (aSelector,anAttr,aUnit){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 self["@unit"]=aUnit;
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:unit:",{aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.StyleAttrNumb)})}
 }),
@@ -1461,11 +1690,37 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._css_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._css_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.StyleAttrNumb)})}
 }),
 smalltalk.StyleAttrNumb);
 
+
+smalltalk.addMethod(
+"_componet_selector_attr_",
+smalltalk.method({
+selector: "componet:selector:attr:",
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._componet_selector_attr_(aComponent,aSelector,anAttr);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"componet:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrNumb.klass)})}
+}),
+smalltalk.StyleAttrNumb.klass);
+
+smalltalk.addMethod(
+"_componet_selector_attr_unit_",
+smalltalk.method({
+selector: "componet:selector:attr:unit:",
+fn: function (aComponent,aSelector,anAttr,aUnit){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._componet_selector_attr_unit_(aComponent,aSelector,anAttr,aUnit);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"componet:selector:attr:unit:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.StyleAttrNumb.klass)})}
+}),
+smalltalk.StyleAttrNumb.klass);
 
 smalltalk.addMethod(
 "_selector_attr_",
@@ -1778,6 +2033,17 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.Var.fn.prototype._initialize.apply(_st(self), []);
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.VarString)})}
+}),
+smalltalk.VarString);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.VarString)})}
 }),
 smalltalk.VarString);
 
@@ -2266,7 +2532,7 @@ return self}, function($ctx1) {$ctx1.fill(self,"value:",{aUTFCharCode:aUTFCharCo
 smalltalk.VarString.klass);
 
 
-smalltalk.addClass('AttrString', smalltalk.VarString, ['selector', 'attr'], 'DomBinding');
+smalltalk.addClass('AttrString', smalltalk.VarString, ['pid', 'selector', 'attr'], 'DomBinding');
 smalltalk.addMethod(
 "_attr",
 smalltalk.method({
@@ -2277,6 +2543,19 @@ return smalltalk.withContext(function($ctx1) { var $1;
 $1=self["@attr"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"attr",{}, smalltalk.AttrString)})}
+}),
+smalltalk.AttrString);
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=aComponent;
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrString)})}
 }),
 smalltalk.AttrString);
 
@@ -2308,7 +2587,7 @@ myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
-_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+_st(_st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
@@ -2325,6 +2604,39 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.VarString.fn.prototype._initialize.apply(_st(self), []);
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.AttrString)})}
+}),
+smalltalk.AttrString);
+
+smalltalk.addMethod(
+"_isContent",
+smalltalk.method({
+selector: "isContent",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isContent",{}, smalltalk.AttrString)})}
+}),
+smalltalk.AttrString);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.AttrString)})}
+}),
+smalltalk.AttrString);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.AttrString)})}
 }),
 smalltalk.AttrString);
 
@@ -2349,6 +2661,7 @@ fn: function (aSelector,anAttr){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrString)})}
 }),
 smalltalk.AttrString);
@@ -2383,11 +2696,24 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._attr_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._attr_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.AttrString)})}
 }),
 smalltalk.AttrString);
 
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrString.klass)})}
+}),
+smalltalk.AttrString.klass);
 
 smalltalk.addMethod(
 "_selector_attr_",
@@ -2403,7 +2729,19 @@ return $1;
 smalltalk.AttrString.klass);
 
 
-smalltalk.addClass('ContentString', smalltalk.VarString, ['selector'], 'DomBinding');
+smalltalk.addClass('ContentString', smalltalk.VarString, ['pid', 'selector'], 'DomBinding');
+smalltalk.addMethod(
+"_component_selector_",
+smalltalk.method({
+selector: "component:selector:",
+fn: function (aComponent,aSelector){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@pid"]=_st(aComponent)._pid();
+self["@selector"]=aSelector;
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:",{aComponent:aComponent,aSelector:aSelector}, smalltalk.ContentString)})}
+}),
+smalltalk.ContentString);
+
 smalltalk.addMethod(
 "_dBind",
 smalltalk.method({
@@ -2448,6 +2786,39 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.VarString.fn.prototype._initialize.apply(_st(self), []);
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.ContentString)})}
+}),
+smalltalk.ContentString);
+
+smalltalk.addMethod(
+"_isContent",
+smalltalk.method({
+selector: "isContent",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isContent",{}, smalltalk.ContentString)})}
+}),
+smalltalk.ContentString);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.ContentString)})}
+}),
+smalltalk.ContentString);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.ContentString)})}
 }),
 smalltalk.ContentString);
 
@@ -2512,6 +2883,19 @@ smalltalk.ContentString);
 
 
 smalltalk.addMethod(
+"_component_selector_",
+smalltalk.method({
+selector: "component:selector:",
+fn: function (aComponent,aSelector){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._component_selector_(aComponent,aSelector);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"component:selector:",{aComponent:aComponent,aSelector:aSelector}, smalltalk.ContentString.klass)})}
+}),
+smalltalk.ContentString.klass);
+
+smalltalk.addMethod(
 "_selector_",
 smalltalk.method({
 selector: "selector:",
@@ -2525,7 +2909,7 @@ return $1;
 smalltalk.ContentString.klass);
 
 
-smalltalk.addClass('StyleAttrString', smalltalk.VarString, ['selector', 'attr'], 'DomBinding');
+smalltalk.addClass('StyleAttrString', smalltalk.VarString, ['pid', 'selector', 'attr'], 'DomBinding');
 smalltalk.addMethod(
 "_attr",
 smalltalk.method({
@@ -2536,6 +2920,19 @@ return smalltalk.withContext(function($ctx1) { var $1;
 $1=self["@attr"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"attr",{}, smalltalk.StyleAttrString)})}
+}),
+smalltalk.StyleAttrString);
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=aComponent;
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrString)})}
 }),
 smalltalk.StyleAttrString);
 
@@ -2567,7 +2964,7 @@ myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
-_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+_st(_st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
@@ -2584,6 +2981,28 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.VarString.fn.prototype._initialize.apply(_st(self), []);
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.StyleAttrString)})}
+}),
+smalltalk.StyleAttrString);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.StyleAttrString)})}
+}),
+smalltalk.StyleAttrString);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.StyleAttrString)})}
 }),
 smalltalk.StyleAttrString);
 
@@ -2608,6 +3027,7 @@ fn: function (aSelector,anAttr){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrString)})}
 }),
 smalltalk.StyleAttrString);
@@ -2642,11 +3062,24 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._css_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._css_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.StyleAttrString)})}
 }),
 smalltalk.StyleAttrString);
 
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrString.klass)})}
+}),
+smalltalk.StyleAttrString.klass);
 
 smalltalk.addMethod(
 "_selector_attr_",

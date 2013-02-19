@@ -1,22 +1,45 @@
 smalltalk.addPackage('DomBinding', {});
-smalltalk.addClass('Var', smalltalk.Object, ['val', 'ancestors', 'descendents'], 'DomBinding');
+smalltalk.addClass('Var', smalltalk.Object, ['val', 'ancFunctions', 'descFunctions'], 'DomBinding');
 smalltalk.addMethod(
-"_addAncestor_",
+"_addAncFunction_",
 smalltalk.method({
-selector: "addAncestor:",
-category: 'accessing',
-fn: function (anAncestor){
+selector: "addAncFunction:",
+category: 'adding function pointers',
+fn: function (anAncestorFunction){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(self["@ancestors"]).__eq_eq(_st(nil)._l());
+$1=_st(self["@ancFunctions"]).__eq_eq(_st(nil)._l());
 if(smalltalk.assert($1)){
-self["@ancestors"]=_st((smalltalk.Array || Array))._new();
-self["@ancestors"];
+self["@ancFunctions"]=_st((smalltalk.Array || Array))._new();
+self["@ancFunctions"];
 };
-return self}, function($ctx1) {$ctx1.fill(self,"addAncestor:",{anAncestor:anAncestor}, smalltalk.Var)})},
-args: ["anAncestor"],
-source: "addAncestor: anAncestor\x0a\x0a(ancestors == nill) ifTrue: [ ancestors := Array new. ].\x0a\x0a\x0a",
-messageSends: ["ifTrue:", "new", "==", "l"],
+_st(self["@ancFunctions"])._add_(anAncestorFunction);
+return self}, function($ctx1) {$ctx1.fill(self,"addAncFunction:",{anAncestorFunction:anAncestorFunction}, smalltalk.Var)})},
+args: ["anAncestorFunction"],
+source: "addAncFunction: anAncestorFunction\x0a\x0a\x22Is used after a connection to a parent component\x22\x0a\x0a(ancFunctions == nill) ifTrue: [ ancFunctions := Array new. ].\x0a\x0aancFunctions add: anAncestorFunction\x0a\x0a\x0a",
+messageSends: ["ifTrue:", "new", "==", "l", "add:"],
+referencedClasses: ["Array"]
+}),
+smalltalk.Var);
+
+smalltalk.addMethod(
+"_addDescFunction_",
+smalltalk.method({
+selector: "addDescFunction:",
+category: 'adding function pointers',
+fn: function (aDescFunction){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(self["@descFunctions"]).__eq_eq(_st(nil)._l());
+if(smalltalk.assert($1)){
+self["@descFunctions"]=_st((smalltalk.Array || Array))._new();
+self["@descFunctions"];
+};
+_st(self["@descFunctions"])._add_(aDescFunction);
+return self}, function($ctx1) {$ctx1.fill(self,"addDescFunction:",{aDescFunction:aDescFunction}, smalltalk.Var)})},
+args: ["aDescFunction"],
+source: "addDescFunction: aDescFunction\x0a\x0a\x22Is used as soon as the component is created\x22\x0a\x0a(descFunctions == nill) ifTrue: [ descFunctions := Array new. ].\x0a\x0adescFunctions add: aDescFunction\x0a\x0a\x0a",
+messageSends: ["ifTrue:", "new", "==", "l", "add:"],
 referencedClasses: ["Array"]
 }),
 smalltalk.Var);
@@ -310,6 +333,22 @@ referencedClasses: []
 smalltalk.VarBool);
 
 smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.VarBool)})},
+args: [],
+source: "isIntermediate\x0a\x0a^true",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.VarBool);
+
+smalltalk.addMethod(
 "_not",
 smalltalk.method({
 selector: "not",
@@ -372,7 +411,7 @@ smalltalk.VarBool);
 
 
 
-smalltalk.addClass('AttrBool', smalltalk.VarBool, ['selector', 'attr'], 'DomBinding');
+smalltalk.addClass('AttrBool', smalltalk.VarBool, ['pid', 'selector', 'attr'], 'DomBinding');
 smalltalk.addMethod(
 "_attr",
 smalltalk.method({
@@ -426,6 +465,24 @@ referencedClasses: []
 smalltalk.AttrBool);
 
 smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+category: 'initializing',
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=_st(aComponent)._pid();
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrBool)})},
+args: ["aComponent", "aSelector", "anAttr"],
+source: "component: aComponent selector: aSelector attr: anAttr\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := aComponent pid.",
+messageSends: ["pid"],
+referencedClasses: []
+}),
+smalltalk.AttrBool);
+
+smalltalk.addMethod(
 "_dBind",
 smalltalk.method({
 selector: "dBind",
@@ -455,15 +512,15 @@ config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("characterData",true);
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
-_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+_st(_st(_st(_st(_st(self["@pid"]).__comma(" ")).__comma(self["@selector"]))._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrBool)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                 temp:=each target asJQuery attr: self attr. self bool:temp.\x0a                                        ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "bool:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                 temp:=each target asJQuery attr: self attr. self bool:temp.\x0a                                        ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a                       \x0a(pid,' ',selector) asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "bool:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray", ","],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.AttrBool);
@@ -480,6 +537,38 @@ return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.AttrBo
 args: [],
 source: "initialize\x0a\x0asuper initialize",
 messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.AttrBool);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.AttrBool)})},
+args: [],
+source: "isIntermediate\x0a\x0a^false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.AttrBool);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.AttrBool)})},
+args: [],
+source: "isStyleAttr\x0a\x0a^false",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.AttrBool);
@@ -511,9 +600,10 @@ fn: function (aSelector,anAttr){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrBool)})},
 args: ["aSelector", "anAttr"],
-source: "selector:aSelector attr: anAttr\x0a\x0aattr:=anAttr.\x0aselector:=aSelector.",
+source: "selector: aSelector attr: anAttr\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := ''.",
 messageSends: [],
 referencedClasses: []
 }),
@@ -526,15 +616,33 @@ selector: "updateSelf",
 category: 'updating',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._attr_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._attr_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.AttrBool)})},
 args: [],
-source: "updateSelf\x0a\x0aselector asJQuery attr:attr to: val.\x0a",
-messageSends: ["attr:to:", "asJQuery"],
+source: "updateSelf\x0a\x0a(pid,' 'selector) asJQuery attr:attr to: val.\x0a",
+messageSends: ["attr:to:", "asJQuery", ",", "selector"],
 referencedClasses: []
 }),
 smalltalk.AttrBool);
 
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+category: 'instance creation',
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrBool.klass)})},
+args: ["aComponent", "aSelector", "anAttr"],
+source: "component: aComponent selector: aSelector attr: anAttr\x0a\x0a^ self new component: aComponent selector: aSelector attr: anAttr",
+messageSends: ["component:selector:attr:", "new"],
+referencedClasses: []
+}),
+smalltalk.AttrBool.klass);
 
 smalltalk.addMethod(
 "_selector_attr_",
@@ -555,7 +663,7 @@ referencedClasses: []
 smalltalk.AttrBool.klass);
 
 
-smalltalk.addClass('StyleAttrBool', smalltalk.VarBool, ['selector', 'attr'], 'DomBinding');
+smalltalk.addClass('StyleAttrBool', smalltalk.VarBool, ['pid', 'selector', 'attr'], 'DomBinding');
 smalltalk.addMethod(
 "_attr",
 smalltalk.method({
@@ -609,6 +717,24 @@ referencedClasses: []
 smalltalk.StyleAttrBool);
 
 smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+category: 'initializing',
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=_st(aComponent)._pid();
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrBool)})},
+args: ["aComponent", "aSelector", "anAttr"],
+source: "component: aComponent selector: aSelector attr: anAttr\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := aComponent pid.",
+messageSends: ["pid"],
+referencedClasses: []
+}),
+smalltalk.StyleAttrBool);
+
+smalltalk.addMethod(
 "_dBind",
 smalltalk.method({
 selector: "dBind",
@@ -637,15 +763,15 @@ myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
-_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+_st(_st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrBool)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                temp:=each target asJQuery css: self attr.self bool:temp.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "css:", "attr", "asJQuery", "target", "bool:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                                temp:=each target asJQuery css: self attr.self bool:temp.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                       \x0a(pid,' 'selector) asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "css:", "attr", "asJQuery", "target", "bool:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray", ",", "selector"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.StyleAttrBool);
@@ -662,6 +788,38 @@ return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.StyleA
 args: [],
 source: "initialize\x0a\x0asuper initialize",
 messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.StyleAttrBool);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.StyleAttrBool)})},
+args: [],
+source: "isIntermediate\x0a\x0a^false\x0a",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.StyleAttrBool);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.StyleAttrBool)})},
+args: [],
+source: "isStyleAttr\x0a\x0a^true",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.StyleAttrBool);
@@ -693,9 +851,10 @@ fn: function (aSelector,anAttr){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrBool)})},
 args: ["aSelector", "anAttr"],
-source: "selector:aSelector attr: anAttr\x0a\x0aattr:=anAttr.\x0aselector:=aSelector.",
+source: "selector: aSelector attr: anAttr\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := ''.",
 messageSends: [],
 referencedClasses: []
 }),
@@ -708,15 +867,33 @@ selector: "updateSelf",
 category: 'updating',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._css_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._css_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.StyleAttrBool)})},
 args: [],
-source: "updateSelf\x0a\x0aselector asJQuery css:attr to: val.",
-messageSends: ["css:to:", "asJQuery"],
+source: "updateSelf\x0a\x0a(pid,' 'selector) asJQuery css:attr to: val.",
+messageSends: ["css:to:", "asJQuery", ",", "selector"],
 referencedClasses: []
 }),
 smalltalk.StyleAttrBool);
 
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+category: 'instance creation',
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrBool.klass)})},
+args: ["aComponent", "aSelector", "anAttr"],
+source: "component: aComponent selector: aSelector attr: anAttr\x0a\x0a^ self new component: aComponent selector: aSelector attr: anAttr",
+messageSends: ["component:selector:attr:", "new"],
+referencedClasses: []
+}),
+smalltalk.StyleAttrBool.klass);
 
 smalltalk.addMethod(
 "_selector_attr_",
@@ -1069,6 +1246,22 @@ return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.VarNum
 args: [],
 source: "initialize\x0a\x0asuper initialize",
 messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.VarNumb);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.VarNumb)})},
+args: [],
+source: "isIntermediate\x0a\x0a^true",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.VarNumb);
@@ -1481,7 +1674,7 @@ smalltalk.VarNumb);
 
 
 
-smalltalk.addClass('AttrNumb', smalltalk.VarNumb, ['selector', 'attr', 'unit'], 'DomBinding');
+smalltalk.addClass('AttrNumb', smalltalk.VarNumb, ['pid', 'selector', 'attr', 'unit'], 'DomBinding');
 smalltalk.addMethod(
 "_attr",
 smalltalk.method({
@@ -1496,6 +1689,44 @@ return $1;
 args: [],
 source: "attr\x0a\x0a^attr",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.AttrNumb);
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+category: 'initializing',
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=_st(aComponent)._pid();
+self["@unit"]="";
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrNumb)})},
+args: ["aComponent", "aSelector", "anAttr"],
+source: "component: aComponent selector: aSelector attr: anAttr\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := aComponent pid.\x0aunit:=''.",
+messageSends: ["pid"],
+referencedClasses: []
+}),
+smalltalk.AttrNumb);
+
+smalltalk.addMethod(
+"_component_selector_attr_unit_",
+smalltalk.method({
+selector: "component:selector:attr:unit:",
+category: 'initializing',
+fn: function (aComponent,aSelector,anAttr,aUnit){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=_st(aComponent)._pid();
+self["@unit"]=aUnit;
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:unit:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.AttrNumb)})},
+args: ["aComponent", "aSelector", "anAttr", "aUnit"],
+source: "component: aComponent selector: aSelector attr: anAttr unit: aUnit\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := aComponent pid.\x0aunit := aUnit.",
+messageSends: ["pid"],
 referencedClasses: []
 }),
 smalltalk.AttrNumb);
@@ -1530,15 +1761,15 @@ config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("characterData",true);
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
-_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+_st(_st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrNumb)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp|\x0a temp:=each target asJQuery attr: self attr. self numb:(temp copyFrom:0 to: temp size- unit size ) asNumber.\x0a                     ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "numb:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp|\x0a temp:=each target asJQuery attr: self attr. self numb:(temp copyFrom:0 to: temp size- unit size ) asNumber.\x0a                     ]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'characterData' put:true.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a                       \x0a(pid,' 'selector) asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "numb:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray", ",", "selector"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.AttrNumb);
@@ -1555,6 +1786,38 @@ return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.AttrNu
 args: [],
 source: "initialize\x0a\x0asuper initialize",
 messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.AttrNumb);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.AttrNumb)})},
+args: [],
+source: "isIntermediate\x0a\x0a^false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.AttrNumb);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.AttrNumb)})},
+args: [],
+source: "isStyleAttr\x0a\x0a^false",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.AttrNumb);
@@ -1620,10 +1883,11 @@ fn: function (aSelector,anAttr){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 self["@unit"]="";
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrNumb)})},
 args: ["aSelector", "anAttr"],
-source: "selector:aSelector attr: anAttr\x0a\x0a\x0aattr:=anAttr.\x0aselector:=aSelector.\x0aunit:=''.",
+source: "selector: aSelector attr: anAttr\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := ''.\x0aunit:=''.",
 messageSends: [],
 referencedClasses: []
 }),
@@ -1638,46 +1902,11 @@ fn: function (aSelector,anAttr,aUnit){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 self["@unit"]=aUnit;
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:unit:",{aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.AttrNumb)})},
 args: ["aSelector", "anAttr", "aUnit"],
-source: "selector:aSelector attr: anAttr unit:aUnit\x0a\x0a\x0aattr:=anAttr.\x0aselector:=aSelector.\x0aunit:=aUnit.",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_selector_styleAttr_",
-smalltalk.method({
-selector: "selector:styleAttr:",
-category: 'initializing',
-fn: function (aSelector,anAttr){
-var self=this;
-return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
-self["@selector"]=aSelector;
-self["@unit"]="";
-return self}, function($ctx1) {$ctx1.fill(self,"selector:styleAttr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrNumb)})},
-args: ["aSelector", "anAttr"],
-source: "selector:aSelector styleAttr: anAttr\x0a\x0aattr:=anAttr.\x0aselector:=aSelector.\x0aunit:=''.",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.AttrNumb);
-
-smalltalk.addMethod(
-"_selector_styleAttr_unit_",
-smalltalk.method({
-selector: "selector:styleAttr:unit:",
-category: 'initializing',
-fn: function (aSelector,anAttr,aUnit){
-var self=this;
-return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
-self["@selector"]=aSelector;
-self["@unit"]=aUnit;
-return self}, function($ctx1) {$ctx1.fill(self,"selector:styleAttr:unit:",{aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.AttrNumb)})},
-args: ["aSelector", "anAttr", "aUnit"],
-source: "selector:aSelector styleAttr: anAttr unit:aUnit\x0a\x0aattr:=anAttr.\x0aselector:=aSelector.\x0aunit:=aUnit.",
+source: "selector: aSelector attr: anAttr unit: aUnit\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := ''.\x0aunit := aUnit.",
 messageSends: [],
 referencedClasses: []
 }),
@@ -1690,15 +1919,51 @@ selector: "updateSelf",
 category: 'assigning',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._attr_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._attr_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.AttrNumb)})},
 args: [],
-source: "updateSelf\x0a\x0aselector asJQuery attr:attr to: val asString,unit.\x0a",
-messageSends: ["attr:to:", ",", "asString", "asJQuery"],
+source: "updateSelf\x0a\x0a(pid,' 'selector) asJQuery attr:attr to: val asString,unit.\x0a",
+messageSends: ["attr:to:", ",", "asString", "asJQuery", "selector"],
 referencedClasses: []
 }),
 smalltalk.AttrNumb);
 
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+category: 'instance creation',
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrNumb.klass)})},
+args: ["aComponent", "aSelector", "anAttr"],
+source: "component: aComponent selector: aSelector attr: anAttr\x0a\x0a^ self new component: aComponent selector: aSelector attr: anAttr",
+messageSends: ["component:selector:attr:", "new"],
+referencedClasses: []
+}),
+smalltalk.AttrNumb.klass);
+
+smalltalk.addMethod(
+"_componet_selector_attr_unit_",
+smalltalk.method({
+selector: "componet:selector:attr:unit:",
+category: 'instance creation',
+fn: function (aComponent,aSelector,anAttr,aUnit){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._componet_selector_attr_unit_(aComponent,aSelector,anAttr,aUnit);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"componet:selector:attr:unit:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.AttrNumb.klass)})},
+args: ["aComponent", "aSelector", "anAttr", "aUnit"],
+source: "componet: aComponent selector: aSelector attr: anAttr unit:aUnit\x0a\x0a^ self new componet: aComponent selector: aSelector attr: anAttr unit:aUnit",
+messageSends: ["componet:selector:attr:unit:", "new"],
+referencedClasses: []
+}),
+smalltalk.AttrNumb.klass);
 
 smalltalk.addMethod(
 "_selector_attr_",
@@ -1712,7 +1977,7 @@ $1=_st(_st(self)._new())._selector_attr_(aSelector,anAttr);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrNumb.klass)})},
 args: ["aSelector", "anAttr"],
-source: "selector: aSelector attr: anAttr\x0a^ self new selector: aSelector attr: anAttr.",
+source: "selector: aSelector attr: anAttr\x0a\x0a^ self new selector: aSelector attr: anAttr.",
 messageSends: ["selector:attr:", "new"],
 referencedClasses: []
 }),
@@ -1736,26 +2001,8 @@ referencedClasses: []
 }),
 smalltalk.AttrNumb.klass);
 
-smalltalk.addMethod(
-"_selector_styleAttr_unit_",
-smalltalk.method({
-selector: "selector:styleAttr:unit:",
-category: 'instance creation',
-fn: function (aSelector,anAttr,aUnit){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_styleAttr_unit_(aSelector,anAttr,aUnit);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"selector:styleAttr:unit:",{aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.AttrNumb.klass)})},
-args: ["aSelector", "anAttr", "aUnit"],
-source: "selector: aSelector styleAttr: anAttr unit:aUnit\x0a\x0a^ self new selector: aSelector styleAttr: anAttr unit:aUnit",
-messageSends: ["selector:styleAttr:unit:", "new"],
-referencedClasses: []
-}),
-smalltalk.AttrNumb.klass);
 
-
-smalltalk.addClass('StyleAttrNumb', smalltalk.VarNumb, ['selector', 'attr', 'unit'], 'DomBinding');
+smalltalk.addClass('StyleAttrNumb', smalltalk.VarNumb, ['pid', 'selector', 'attr', 'unit'], 'DomBinding');
 smalltalk.addMethod(
 "_attr",
 smalltalk.method({
@@ -1770,6 +2017,44 @@ return $1;
 args: [],
 source: "attr\x0a\x0a^attr",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.StyleAttrNumb);
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+category: 'initializing',
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=_st(aComponent)._pid();
+self["@unit"]="";
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrNumb)})},
+args: ["aComponent", "aSelector", "anAttr"],
+source: "component: aComponent selector: aSelector attr: anAttr\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := aComponent pid.\x0aunit := ''.",
+messageSends: ["pid"],
+referencedClasses: []
+}),
+smalltalk.StyleAttrNumb);
+
+smalltalk.addMethod(
+"_component_selector_attr_unit_",
+smalltalk.method({
+selector: "component:selector:attr:unit:",
+category: 'initializing',
+fn: function (aComponent,aSelector,anAttr,aUnit){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=_st(aComponent)._pid();
+self["@unit"]=aUnit;
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:unit:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.StyleAttrNumb)})},
+args: ["aComponent", "aSelector", "anAttr", "aUnit"],
+source: "component: aComponent selector: aSelector attr: anAttr unit: aUnit\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := aComponent pid.\x0aunit := aUnit.",
+messageSends: ["pid"],
 referencedClasses: []
 }),
 smalltalk.StyleAttrNumb);
@@ -1803,15 +2088,15 @@ myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
-_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+_st(_st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrNumb)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0atemp:=each target asJQuery css: self attr.self numb:(temp copyFrom:0 to: temp size- unit size ) asNumber.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a\x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "css:", "attr", "asJQuery", "target", "numb:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0atemp:=each target asJQuery css: self attr.self numb:(temp copyFrom:0 to: temp size- unit size ) asNumber.]].\x0a\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a\x0a(pid,' 'selector) asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "css:", "attr", "asJQuery", "target", "numb:", "asNumber", "copyFrom:to:", "-", "size", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray", ",", "selector"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.StyleAttrNumb);
@@ -1828,6 +2113,38 @@ return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.StyleA
 args: [],
 source: "initialize\x0a\x0asuper initialize",
 messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.StyleAttrNumb);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.StyleAttrNumb)})},
+args: [],
+source: "isIntermediate\x0a\x0a^false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.StyleAttrNumb);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.StyleAttrNumb)})},
+args: [],
+source: "isStyleAttr\x0a\x0a^true",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.StyleAttrNumb);
@@ -1893,10 +2210,11 @@ fn: function (aSelector,anAttr){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 self["@unit"]="";
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrNumb)})},
 args: ["aSelector", "anAttr"],
-source: "selector:aSelector attr: anAttr\x0a\x0a\x0aattr:=anAttr.\x0aselector:=aSelector.\x0aunit:=''.",
+source: "selector: aSelector attr: anAttr\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := ''.\x0aunit := ''.",
 messageSends: [],
 referencedClasses: []
 }),
@@ -1911,10 +2229,11 @@ fn: function (aSelector,anAttr,aUnit){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 self["@unit"]=aUnit;
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:unit:",{aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.StyleAttrNumb)})},
 args: ["aSelector", "anAttr", "aUnit"],
-source: "selector:aSelector attr: anAttr unit:aUnit\x0a\x0a\x0aattr:=anAttr.\x0aselector:=aSelector.\x0aunit:=aUnit.",
+source: "selector: aSelector attr: anAttr unit: aUnit\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := ''.\x0aunit := aUnit.",
 messageSends: [],
 referencedClasses: []
 }),
@@ -1927,15 +2246,51 @@ selector: "updateSelf",
 category: 'assigning',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._css_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._css_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.StyleAttrNumb)})},
 args: [],
-source: "updateSelf\x0a\x0a\x0aselector asJQuery css:attr to: val asString,unit.",
-messageSends: ["css:to:", ",", "asString", "asJQuery"],
+source: "updateSelf\x0a\x0a\x0a(pid,' 'selector) asJQuery css:attr to: val asString,unit.",
+messageSends: ["css:to:", ",", "asString", "asJQuery", "selector"],
 referencedClasses: []
 }),
 smalltalk.StyleAttrNumb);
 
+
+smalltalk.addMethod(
+"_componet_selector_attr_",
+smalltalk.method({
+selector: "componet:selector:attr:",
+category: 'instance creation',
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._componet_selector_attr_(aComponent,aSelector,anAttr);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"componet:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrNumb.klass)})},
+args: ["aComponent", "aSelector", "anAttr"],
+source: "componet: aComponent selector: aSelector attr: anAttr\x0a\x0a^ self new componet: aComponent selector: aSelector attr: anAttr ",
+messageSends: ["componet:selector:attr:", "new"],
+referencedClasses: []
+}),
+smalltalk.StyleAttrNumb.klass);
+
+smalltalk.addMethod(
+"_componet_selector_attr_unit_",
+smalltalk.method({
+selector: "componet:selector:attr:unit:",
+category: 'instance creation',
+fn: function (aComponent,aSelector,anAttr,aUnit){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._componet_selector_attr_unit_(aComponent,aSelector,anAttr,aUnit);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"componet:selector:attr:unit:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.StyleAttrNumb.klass)})},
+args: ["aComponent", "aSelector", "anAttr", "aUnit"],
+source: "componet: aComponent selector: aSelector attr: anAttr unit:aUnit\x0a\x0a^ self new componet: aComponent selector: aSelector attr: anAttr unit:aUnit",
+messageSends: ["componet:selector:attr:unit:", "new"],
+referencedClasses: []
+}),
+smalltalk.StyleAttrNumb.klass);
 
 smalltalk.addMethod(
 "_selector_attr_",
@@ -2372,6 +2727,22 @@ return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.VarStr
 args: [],
 source: "initialize\x0a\x0asuper initialize",
 messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.VarString);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.VarString)})},
+args: [],
+source: "isIntermediate\x0a\x0a^true",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.VarString);
@@ -3031,7 +3402,7 @@ referencedClasses: []
 smalltalk.VarString.klass);
 
 
-smalltalk.addClass('AttrString', smalltalk.VarString, ['selector', 'attr'], 'DomBinding');
+smalltalk.addClass('AttrString', smalltalk.VarString, ['pid', 'selector', 'attr'], 'DomBinding');
 smalltalk.addMethod(
 "_attr",
 smalltalk.method({
@@ -3045,6 +3416,24 @@ return $1;
 }, function($ctx1) {$ctx1.fill(self,"attr",{}, smalltalk.AttrString)})},
 args: [],
 source: "attr\x0a\x0a^attr",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.AttrString);
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+category: 'initializing',
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=aComponent;
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrString)})},
+args: ["aComponent", "aSelector", "anAttr"],
+source: "component: aComponent selector: aSelector attr: anAttr\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := aComponent.\x0a",
 messageSends: [],
 referencedClasses: []
 }),
@@ -3079,15 +3468,15 @@ myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
-_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+_st(_st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.AttrString)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0atemp:=each target asJQuery attr: self attr. self string:temp.\x0a                                      ]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                  \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0atemp:=each target asJQuery attr: self attr. self string:temp.\x0a                                      ]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                  \x0a(pid,' 'selector) asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "attr:", "attr", "asJQuery", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray", ",", "selector"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.AttrString);
@@ -3104,6 +3493,54 @@ return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.AttrSt
 args: [],
 source: "initialize\x0a\x0asuper initialize",
 messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.AttrString);
+
+smalltalk.addMethod(
+"_isContent",
+smalltalk.method({
+selector: "isContent",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isContent",{}, smalltalk.AttrString)})},
+args: [],
+source: "isContent\x0a\x0a^false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.AttrString);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.AttrString)})},
+args: [],
+source: "isIntermediate\x0a\x0a^false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.AttrString);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.AttrString)})},
+args: [],
+source: "isStyleAttr\x0a\x0a^false",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.AttrString);
@@ -3135,9 +3572,10 @@ fn: function (aSelector,anAttr){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrString)})},
 args: ["aSelector", "anAttr"],
-source: "selector:aSelector attr: anAttr\x0a\x0a\x0aattr:=anAttr.\x0aselector:=aSelector.",
+source: "selector:aSelector attr: anAttr\x0a\x0a\x0aattr:=anAttr.\x0aselector:=aSelector.\x0apid := ''.",
 messageSends: [],
 referencedClasses: []
 }),
@@ -3184,15 +3622,33 @@ selector: "updateSelf",
 category: 'assigning',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._attr_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._attr_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.AttrString)})},
 args: [],
-source: "updateSelf\x0a\x0aselector asJQuery attr:attr to: val.\x0a",
-messageSends: ["attr:to:", "asJQuery"],
+source: "updateSelf\x0a\x0a(pid,' 'selector) asJQuery attr:attr to: val.\x0a",
+messageSends: ["attr:to:", "asJQuery", ",", "selector"],
 referencedClasses: []
 }),
 smalltalk.AttrString);
 
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+category: 'instance creation',
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrString.klass)})},
+args: ["aComponent", "aSelector", "anAttr"],
+source: "component: aComponent selector: aSelector attr: anAttr\x0a\x0a^ self new component: aComponent selector: aSelector attr: anAttr",
+messageSends: ["component:selector:attr:", "new"],
+referencedClasses: []
+}),
+smalltalk.AttrString.klass);
 
 smalltalk.addMethod(
 "_selector_attr_",
@@ -3213,7 +3669,24 @@ referencedClasses: []
 smalltalk.AttrString.klass);
 
 
-smalltalk.addClass('ContentString', smalltalk.VarString, ['selector'], 'DomBinding');
+smalltalk.addClass('ContentString', smalltalk.VarString, ['pid', 'selector'], 'DomBinding');
+smalltalk.addMethod(
+"_component_selector_",
+smalltalk.method({
+selector: "component:selector:",
+category: 'initializing',
+fn: function (aComponent,aSelector){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@pid"]=_st(aComponent)._pid();
+self["@selector"]=aSelector;
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:",{aComponent:aComponent,aSelector:aSelector}, smalltalk.ContentString)})},
+args: ["aComponent", "aSelector"],
+source: "component: aComponent selector:aSelector\x0a\x0apid := aComponent pid.\x0aselector := aSelector.\x0a",
+messageSends: ["pid"],
+referencedClasses: []
+}),
+smalltalk.ContentString);
+
 smalltalk.addMethod(
 "_dBind",
 smalltalk.method({
@@ -3267,6 +3740,54 @@ return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.Conten
 args: [],
 source: "initialize\x0a\x0asuper initialize",
 messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.ContentString);
+
+smalltalk.addMethod(
+"_isContent",
+smalltalk.method({
+selector: "isContent",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isContent",{}, smalltalk.ContentString)})},
+args: [],
+source: "isContent\x0a\x0a^true",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.ContentString);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.ContentString)})},
+args: [],
+source: "isIntermediate\x0a\x0a^false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.ContentString);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.ContentString)})},
+args: [],
+source: "isStyleAttr\x0a\x0a^false",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.ContentString);
@@ -3357,6 +3878,24 @@ smalltalk.ContentString);
 
 
 smalltalk.addMethod(
+"_component_selector_",
+smalltalk.method({
+selector: "component:selector:",
+category: 'instance creation',
+fn: function (aComponent,aSelector){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._component_selector_(aComponent,aSelector);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"component:selector:",{aComponent:aComponent,aSelector:aSelector}, smalltalk.ContentString.klass)})},
+args: ["aComponent", "aSelector"],
+source: "component: aComponent selector: aSelector\x0a\x0a^ self new component: aComponent selector: aSelector",
+messageSends: ["component:selector:", "new"],
+referencedClasses: []
+}),
+smalltalk.ContentString.klass);
+
+smalltalk.addMethod(
 "_selector_",
 smalltalk.method({
 selector: "selector:",
@@ -3375,7 +3914,7 @@ referencedClasses: []
 smalltalk.ContentString.klass);
 
 
-smalltalk.addClass('StyleAttrString', smalltalk.VarString, ['selector', 'attr'], 'DomBinding');
+smalltalk.addClass('StyleAttrString', smalltalk.VarString, ['pid', 'selector', 'attr'], 'DomBinding');
 smalltalk.addMethod(
 "_attr",
 smalltalk.method({
@@ -3389,6 +3928,24 @@ return $1;
 }, function($ctx1) {$ctx1.fill(self,"attr",{}, smalltalk.StyleAttrString)})},
 args: [],
 source: "attr\x0a\x0a^attr",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.StyleAttrString);
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+category: 'initializing',
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
+self["@selector"]=aSelector;
+self["@pid"]=aComponent;
+return self}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrString)})},
+args: ["aComponent", "aSelector", "anAttr"],
+source: "component: aComponent selector: aSelector attr: anAttr\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := aComponent.\x0a",
 messageSends: [],
 referencedClasses: []
 }),
@@ -3423,15 +3980,15 @@ myObserver=_st((smalltalk.NativeFunction || NativeFunction))._constructor_value_
 config=_st((smalltalk.HashedCollection || HashedCollection))._new();
 _st(config)._at_put_("attributes",true);
 _st(config)._at_put_("attributeFilter",_st(_st((smalltalk.Array || Array))._new())._add_(_st(self)._attr()));
-_st(_st(_st(self["@selector"])._asJQuery())._toArray())._do_((function(each){
+_st(_st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._toArray())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(myObserver)._observe_with_(each,config);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $2=self;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"dBind",{mutationObserver:mutationObserver,myObserver:myObserver,config:config,mutationHandler:mutationHandler}, smalltalk.StyleAttrString)})},
 args: [],
-source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                               temp:=each target css: self attr.self string:temp.]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                       \x0aselector asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
-messageSends: ["do:", "css:", "attr", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray", "asJQuery"],
+source: "dBind\x0a|mutationObserver myObserver config mutationHandler|\x0a\x0amutationHandler:=[:mutationRecords| mutationRecords do:[:each||temp| \x0a                               temp:=each target css: self attr.self string:temp.]].\x0a(HTMLCanvas isWebkit) ifTrue:[mutationObserver:='WebKitMutationObserver'.]\x0a                                            ifFalse:[mutationObserver:='MutationObserver'.].\x0a                                            \x0a \x22mutation observer is native code, thus it is not a BlockClosure\x22\x0amyObserver:= NativeFunction constructor: mutationObserver value: mutationHandler.\x0a\x0aconfig:=HashedCollection new.\x0aconfig at:'attributes' put:true.\x0aconfig at:'attributeFilter' put: (Array new add: self attr).\x0a\x0a                       \x0a(pid,' 'selector) asJQuery toArray do: [:each| myObserver observe: each with: config.].\x0a           \x0a\x0a^self",
+messageSends: ["do:", "css:", "attr", "target", "string:", "ifTrue:ifFalse:", "isWebkit", "constructor:value:", "new", "at:put:", "add:", "observe:with:", "toArray", "asJQuery", ",", "selector"],
 referencedClasses: ["HTMLCanvas", "NativeFunction", "HashedCollection", "Array"]
 }),
 smalltalk.StyleAttrString);
@@ -3448,6 +4005,38 @@ return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.StyleA
 args: [],
 source: "initialize\x0a\x0asuper initialize",
 messageSends: ["initialize"],
+referencedClasses: []
+}),
+smalltalk.StyleAttrString);
+
+smalltalk.addMethod(
+"_isIntermediate",
+smalltalk.method({
+selector: "isIntermediate",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return false;
+}, function($ctx1) {$ctx1.fill(self,"isIntermediate",{}, smalltalk.StyleAttrString)})},
+args: [],
+source: "isIntermediate\x0a\x0a^false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.StyleAttrString);
+
+smalltalk.addMethod(
+"_isStyleAttr",
+smalltalk.method({
+selector: "isStyleAttr",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return true;
+}, function($ctx1) {$ctx1.fill(self,"isStyleAttr",{}, smalltalk.StyleAttrString)})},
+args: [],
+source: "isStyleAttr\x0a\x0a^true",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.StyleAttrString);
@@ -3479,9 +4068,10 @@ fn: function (aSelector,anAttr){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@attr"]=anAttr;
 self["@selector"]=aSelector;
+self["@pid"]="";
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrString)})},
 args: ["aSelector", "anAttr"],
-source: "selector:aSelector attr: anAttr\x0a\x0a\x0aattr:=anAttr.\x0aselector:=aSelector.",
+source: "selector:aSelector attr: anAttr\x0a\x0a\x0aattr := anAttr.\x0aselector := aSelector.\x0apid := ''.",
 messageSends: [],
 referencedClasses: []
 }),
@@ -3528,15 +4118,33 @@ selector: "updateSelf",
 category: 'assigning',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._css_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._css_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.StyleAttrString)})},
 args: [],
-source: "updateSelf\x0a\x0a\x0aselector asJQuery css:attr to: val.\x0a ",
-messageSends: ["css:to:", "asJQuery"],
+source: "updateSelf\x0a\x0a\x0a(pid,' 'selector) asJQuery css:attr to: val.\x0a ",
+messageSends: ["css:to:", "asJQuery", ",", "selector"],
 referencedClasses: []
 }),
 smalltalk.StyleAttrString);
 
+
+smalltalk.addMethod(
+"_component_selector_attr_",
+smalltalk.method({
+selector: "component:selector:attr:",
+category: 'instance creation',
+fn: function (aComponent,aSelector,anAttr){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrString.klass)})},
+args: ["aComponent", "aSelector", "anAttr"],
+source: "component: aComponent selector: aSelector attr: anAttr\x0a\x0a^ self new component: aComponent selector: aSelector attr: anAttr",
+messageSends: ["component:selector:attr:", "new"],
+referencedClasses: []
+}),
+smalltalk.StyleAttrString.klass);
 
 smalltalk.addMethod(
 "_selector_attr_",

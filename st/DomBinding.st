@@ -1,18 +1,33 @@
 Smalltalk current createPackage: 'DomBinding' properties: #{}!
 Object subclass: #Var
-	instanceVariableNames: 'val ancestors descendents'
+	instanceVariableNames: 'val ancFunctions descFunctions'
 	package: 'DomBinding'!
 
 !Var methodsFor: 'accessing'!
 
-addAncestor: anAncestor
-
-(ancestors == nill) ifTrue: [ ancestors := Array new. ].
-!
-
 val
 
 ^val
+! !
+
+!Var methodsFor: 'adding function pointers'!
+
+addAncFunction: anAncestorFunction
+
+"Is used after a connection to a parent component"
+
+(ancFunctions == nill) ifTrue: [ ancFunctions := Array new. ].
+
+ancFunctions add: anAncestorFunction
+!
+
+addDescFunction: aDescFunction
+
+"Is used as soon as the component is created"
+
+(descFunctions == nill) ifTrue: [ descFunctions := Array new. ].
+
+descFunctions add: aDescFunction
 ! !
 
 !Var methodsFor: 'assigning'!
@@ -140,10 +155,15 @@ super initialize
 isBoolean
 
 ^true
+!
+
+isIntermediate
+
+^true
 ! !
 
 VarBool subclass: #AttrBool
-	instanceVariableNames: 'selector attr'
+	instanceVariableNames: 'pid selector attr'
 	package: 'DomBinding'!
 
 !AttrBool methodsFor: 'accessing'!
@@ -188,7 +208,7 @@ config at:'characterData' put:true.
 config at:'attributes' put:true.
 config at:'attributeFilter' put: (Array new add: self attr).
                        
-selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
+(pid,' ',selector) asJQuery toArray do: [:each| myObserver observe: each with: config.].
            
 
 ^self
@@ -196,25 +216,50 @@ selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
 
 !AttrBool methodsFor: 'initializing'!
 
+component: aComponent selector: aSelector attr: anAttr
+
+attr := anAttr.
+selector := aSelector.
+pid := aComponent pid.
+!
+
 initialize
 
 super initialize
 !
 
-selector:aSelector attr: anAttr
+selector: aSelector attr: anAttr
 
-attr:=anAttr.
-selector:=aSelector.
+attr := anAttr.
+selector := aSelector.
+pid := ''.
+! !
+
+!AttrBool methodsFor: 'testing'!
+
+isIntermediate
+
+^false
+!
+
+isStyleAttr
+
+^false
 ! !
 
 !AttrBool methodsFor: 'updating'!
 
 updateSelf
 
-selector asJQuery attr:attr to: val.
+(pid,' 'selector) asJQuery attr:attr to: val.
 ! !
 
 !AttrBool class methodsFor: 'instance creation'!
+
+component: aComponent selector: aSelector attr: anAttr
+
+^ self new component: aComponent selector: aSelector attr: anAttr
+!
 
 selector: aSelector attr: anAttr
 
@@ -222,7 +267,7 @@ selector: aSelector attr: anAttr
 ! !
 
 VarBool subclass: #StyleAttrBool
-	instanceVariableNames: 'selector attr'
+	instanceVariableNames: 'pid selector attr'
 	package: 'DomBinding'!
 
 !StyleAttrBool methodsFor: 'accessing'!
@@ -266,7 +311,7 @@ config at:'attributes' put:true.
 config at:'attributeFilter' put: (Array new add: self attr).
 
                        
-selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
+(pid,' 'selector) asJQuery toArray do: [:each| myObserver observe: each with: config.].
            
 
 ^self
@@ -274,25 +319,50 @@ selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
 
 !StyleAttrBool methodsFor: 'initializing'!
 
+component: aComponent selector: aSelector attr: anAttr
+
+attr := anAttr.
+selector := aSelector.
+pid := aComponent pid.
+!
+
 initialize
 
 super initialize
 !
 
-selector:aSelector attr: anAttr
+selector: aSelector attr: anAttr
 
-attr:=anAttr.
-selector:=aSelector.
+attr := anAttr.
+selector := aSelector.
+pid := ''.
+! !
+
+!StyleAttrBool methodsFor: 'testing'!
+
+isIntermediate
+
+^false
+!
+
+isStyleAttr
+
+^true
 ! !
 
 !StyleAttrBool methodsFor: 'updating'!
 
 updateSelf
 
-selector asJQuery css:attr to: val.
+(pid,' 'selector) asJQuery css:attr to: val.
 ! !
 
 !StyleAttrBool class methodsFor: 'instance creation'!
+
+component: aComponent selector: aSelector attr: anAttr
+
+^ self new component: aComponent selector: aSelector attr: anAttr
+!
 
 selector: aSelector attr: anAttr
 
@@ -574,6 +644,11 @@ even
 	^ 0 = (self numb \\ 2)
 !
 
+isIntermediate
+
+^true
+!
+
 isZero
 	^self numb = 0
 !
@@ -595,7 +670,7 @@ positive
 ! !
 
 VarNumb subclass: #AttrNumb
-	instanceVariableNames: 'selector attr unit'
+	instanceVariableNames: 'pid selector attr unit'
 	package: 'DomBinding'!
 
 !AttrNumb methodsFor: 'accessing'!
@@ -640,7 +715,7 @@ config at:'characterData' put:true.
 config at:'attributes' put:true.
 config at:'attributeFilter' put: (Array new add: self attr).
                        
-selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
+(pid,' 'selector) asJQuery toArray do: [:each| myObserver observe: each with: config.].
            
 
 ^self
@@ -648,64 +723,84 @@ selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
 
 updateSelf
 
-selector asJQuery attr:attr to: val asString,unit.
+(pid,' 'selector) asJQuery attr:attr to: val asString,unit.
 ! !
 
 !AttrNumb methodsFor: 'initializing'!
+
+component: aComponent selector: aSelector attr: anAttr
+
+attr := anAttr.
+selector := aSelector.
+pid := aComponent pid.
+unit:=''.
+!
+
+component: aComponent selector: aSelector attr: anAttr unit: aUnit
+
+attr := anAttr.
+selector := aSelector.
+pid := aComponent pid.
+unit := aUnit.
+!
 
 initialize
 
 super initialize
 !
 
-selector:aSelector attr: anAttr
+selector: aSelector attr: anAttr
 
-
-attr:=anAttr.
-selector:=aSelector.
+attr := anAttr.
+selector := aSelector.
+pid := ''.
 unit:=''.
 !
 
-selector:aSelector attr: anAttr unit:aUnit
+selector: aSelector attr: anAttr unit: aUnit
 
+attr := anAttr.
+selector := aSelector.
+pid := ''.
+unit := aUnit.
+! !
 
-attr:=anAttr.
-selector:=aSelector.
-unit:=aUnit.
+!AttrNumb methodsFor: 'testing'!
+
+isIntermediate
+
+^false
 !
 
-selector:aSelector styleAttr: anAttr
+isStyleAttr
 
-attr:=anAttr.
-selector:=aSelector.
-unit:=''.
-!
-
-selector:aSelector styleAttr: anAttr unit:aUnit
-
-attr:=anAttr.
-selector:=aSelector.
-unit:=aUnit.
+^false
 ! !
 
 !AttrNumb class methodsFor: 'instance creation'!
 
+component: aComponent selector: aSelector attr: anAttr
+
+^ self new component: aComponent selector: aSelector attr: anAttr
+!
+
+componet: aComponent selector: aSelector attr: anAttr unit:aUnit
+
+^ self new componet: aComponent selector: aSelector attr: anAttr unit:aUnit
+!
+
 selector: aSelector attr: anAttr
+
 ^ self new selector: aSelector attr: anAttr.
 !
 
 selector: aSelector attr: anAttr unit:aUnit
 
 ^ self new selector: aSelector attr: anAttr unit:aUnit
-!
-
-selector: aSelector styleAttr: anAttr unit:aUnit
-
-^ self new selector: aSelector styleAttr: anAttr unit:aUnit
 ! !
 
 VarNumb subclass: #StyleAttrNumb
-	instanceVariableNames: 'selector attr unit'
+	instanceVariableNames: 'pid selector attr unit'
 	package: 'DomBinding'!
 
 !StyleAttrNumb methodsFor: 'accessing'!
@@ -749,7 +844,7 @@ config at:'attributes' put:true.
 config at:'attributeFilter' put: (Array new add: self attr).
 
 
-selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
+(pid,' 'selector) asJQuery toArray do: [:each| myObserver observe: each with: config.].
            
 
 ^self
@@ -758,33 +853,71 @@ selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
 updateSelf
 
 
-selector asJQuery css:attr to: val asString,unit.
+(pid,' 'selector) asJQuery css:attr to: val asString,unit.
 ! !
 
 !StyleAttrNumb methodsFor: 'initializing'!
+
+component: aComponent selector: aSelector attr: anAttr
+
+attr := anAttr.
+selector := aSelector.
+pid := aComponent pid.
+unit := ''.
+!
+
+component: aComponent selector: aSelector attr: anAttr unit: aUnit
+
+attr := anAttr.
+selector := aSelector.
+pid := aComponent pid.
+unit := aUnit.
+!
 
 initialize
 
 super initialize
 !
 
-selector:aSelector attr: anAttr
+selector: aSelector attr: anAttr
 
-
-attr:=anAttr.
-selector:=aSelector.
-unit:=''.
+attr := anAttr.
+selector := aSelector.
+pid := ''.
+unit := ''.
 !
 
-selector:aSelector attr: anAttr unit:aUnit
+selector: aSelector attr: anAttr unit: aUnit
 
+attr := anAttr.
+selector := aSelector.
+pid := ''.
+unit := aUnit.
+! !
 
-attr:=anAttr.
-selector:=aSelector.
-unit:=aUnit.
+!StyleAttrNumb methodsFor: 'testing'!
+
+isIntermediate
+
+^false
+!
+
+isStyleAttr
+
+^true
 ! !
 
 !StyleAttrNumb class methodsFor: 'instance creation'!
+
+componet: aComponent selector: aSelector attr: anAttr
+
+^ self new componet: aComponent selector: aSelector attr: anAttr
+!
+
+componet: aComponent selector: aSelector attr: anAttr unit:aUnit
+
+^ self new componet: aComponent selector: aSelector attr: anAttr unit:aUnit
+!
 
 selector: aSelector attr: anAttr
 
@@ -1081,6 +1214,11 @@ includesSubString: subString
 	< return self._string().indexOf(subString) !!= -1 >
 !
 
+isIntermediate
+
+^true
+!
+
 isString
 	^true
 ! !
@@ -1134,7 +1272,7 @@ value: aUTFCharCode
 ! !
 
 VarString subclass: #AttrString
-	instanceVariableNames: 'selector attr'
+	instanceVariableNames: 'pid selector attr'
 	package: 'DomBinding'!
 
 !AttrString methodsFor: 'accessing'!
@@ -1178,7 +1316,7 @@ config at:'attributes' put:true.
 config at:'attributeFilter' put: (Array new add: self attr).
 
                   
-selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
+(pid,' 'selector) asJQuery toArray do: [:each| myObserver observe: each with: config.].
            
 
 ^self
@@ -1186,10 +1324,17 @@ selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
 
 updateSelf
 
-selector asJQuery attr:attr to: val.
+(pid,' 'selector) asJQuery attr:attr to: val.
 ! !
 
 !AttrString methodsFor: 'initializing'!
+
+component: aComponent selector: aSelector attr: anAttr
+
+attr := anAttr.
+selector := aSelector.
+pid := aComponent.
+!
 
 initialize
 
@@ -1201,9 +1346,32 @@ selector:aSelector attr: anAttr
 
 attr:=anAttr.
 selector:=aSelector.
+pid := ''.
+! !
+
+!AttrString methodsFor: 'testing'!
+
+isContent
+
+^false
+!
+
+isIntermediate
+
+^false
+!
+
+isStyleAttr
+
+^false
 ! !
 
 !AttrString class methodsFor: 'instance creation'!
+
+component: aComponent selector: aSelector attr: anAttr
+
+^ self new component: aComponent selector: aSelector attr: anAttr
+!
 
 selector: aSelector attr: anAttr
 
@@ -1211,7 +1379,7 @@ selector: aSelector attr: anAttr
 ! !
 
 VarString subclass: #ContentString
-	instanceVariableNames: 'selector'
+	instanceVariableNames: 'pid selector'
 	package: 'DomBinding'!
 
 !ContentString methodsFor: 'accessing'!
@@ -1262,6 +1430,12 @@ selector asJQuery prop:'textContent' to: val.
 
 !ContentString methodsFor: 'initializing'!
 
+component: aComponent selector:aSelector
+
+pid := aComponent pid.
+selector := aSelector.
+!
+
 initialize
 
 super initialize
@@ -1272,7 +1446,29 @@ selector:aSelector
 selector:=aSelector.
 ! !
 
+!ContentString methodsFor: 'testing'!
+
+isContent
+
+^true
+!
+
+isIntermediate
+
+^false
+!
+
+isStyleAttr
+
+^false
+! !
+
 !ContentString class methodsFor: 'instance creation'!
+
+component: aComponent selector: aSelector
+
+^ self new component: aComponent selector: aSelector
+!
 
 selector: aSelector 
 
@@ -1280,7 +1476,7 @@ selector: aSelector
 ! !
 
 VarString subclass: #StyleAttrString
-	instanceVariableNames: 'selector attr'
+	instanceVariableNames: 'pid selector attr'
 	package: 'DomBinding'!
 
 !StyleAttrString methodsFor: 'accessing'!
@@ -1323,7 +1519,7 @@ config at:'attributes' put:true.
 config at:'attributeFilter' put: (Array new add: self attr).
 
                        
-selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
+(pid,' 'selector) asJQuery toArray do: [:each| myObserver observe: each with: config.].
            
 
 ^self
@@ -1332,10 +1528,17 @@ selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
 updateSelf
 
 
-selector asJQuery css:attr to: val.
+(pid,' 'selector) asJQuery css:attr to: val.
 ! !
 
 !StyleAttrString methodsFor: 'initializing'!
+
+component: aComponent selector: aSelector attr: anAttr
+
+attr := anAttr.
+selector := aSelector.
+pid := aComponent.
+!
 
 initialize
 
@@ -1345,11 +1548,29 @@ super initialize
 selector:aSelector attr: anAttr
 
 
-attr:=anAttr.
-selector:=aSelector.
+attr := anAttr.
+selector := aSelector.
+pid := ''.
+! !
+
+!StyleAttrString methodsFor: 'testing'!
+
+isIntermediate
+
+^false
+!
+
+isStyleAttr
+
+^true
 ! !
 
 !StyleAttrString class methodsFor: 'instance creation'!
+
+component: aComponent selector: aSelector attr: anAttr
+
+^ self new component: aComponent selector: aSelector attr: anAttr
+!
 
 selector: aSelector attr: anAttr
 
