@@ -7,7 +7,7 @@ Object subclass: #CSSCanvas
 
 selector: aSelector attr: anAttr val: aVal
 
-(pid, ' ', aSelector) asJQuery css: anAttr to: aVal.
+('#',pid, ' ', aSelector) asJQuery css: anAttr to: aVal.
 ! !
 
 !CSSCanvas methodsFor: 'initializing'!

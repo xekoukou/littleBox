@@ -28,7 +28,7 @@ smalltalk.method({
 selector: "selector:attr:val:",
 fn: function (aSelector,anAttr,aVal){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(self["@pid"]).__comma(" ")).__comma(aSelector))._asJQuery())._css_to_(anAttr,aVal);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(aSelector))._asJQuery())._css_to_(anAttr,aVal);
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:val:",{aSelector:aSelector,anAttr:anAttr,aVal:aVal}, smalltalk.CSSCanvas)})}
 }),
 smalltalk.CSSCanvas);
