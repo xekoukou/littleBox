@@ -39,10 +39,10 @@ selector: "selector:attr:val:",
 category: 'css',
 fn: function (aSelector,anAttr,aVal){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(self["@pid"]).__comma(" ")).__comma(aSelector))._asJQuery())._css_to_(anAttr,aVal);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(aSelector))._asJQuery())._css_to_(anAttr,aVal);
 return self}, function($ctx1) {$ctx1.fill(self,"selector:attr:val:",{aSelector:aSelector,anAttr:anAttr,aVal:aVal}, smalltalk.CSSCanvas)})},
 args: ["aSelector", "anAttr", "aVal"],
-source: "selector: aSelector attr: anAttr val: aVal\x0a\x0a(pid, ' ', aSelector) asJQuery css: anAttr to: aVal.",
+source: "selector: aSelector attr: anAttr val: aVal\x0a\x0a('#',pid, ' ', aSelector) asJQuery css: anAttr to: aVal.",
 messageSends: ["css:to:", "asJQuery", ","],
 referencedClasses: []
 }),

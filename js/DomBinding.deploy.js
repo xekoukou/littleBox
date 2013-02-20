@@ -465,7 +465,7 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._attr_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._attr_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.AttrBool)})}
 }),
 smalltalk.AttrBool);
@@ -657,7 +657,7 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._css_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._css_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.StyleAttrBool)})}
 }),
 smalltalk.StyleAttrBool);
@@ -1460,7 +1460,7 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._attr_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._attr_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.AttrNumb)})}
 }),
 smalltalk.AttrNumb);
@@ -1714,7 +1714,7 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._css_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._css_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.StyleAttrNumb)})}
 }),
 smalltalk.StyleAttrNumb);
@@ -2732,7 +2732,7 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._attr_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._attr_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.AttrString)})}
 }),
 smalltalk.AttrString);
@@ -2918,7 +2918,7 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._prop_to_("textContent",self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._prop_to_("textContent",self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.ContentString)})}
 }),
 smalltalk.ContentString);
@@ -3110,7 +3110,7 @@ smalltalk.method({
 selector: "updateSelf",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._css_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._css_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.StyleAttrString)})}
 }),
 smalltalk.StyleAttrString);

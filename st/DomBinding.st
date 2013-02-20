@@ -251,7 +251,7 @@ isStyleAttr
 
 updateSelf
 
-(pid,' 'selector) asJQuery attr:attr to: val.
+('#', pid,' ',selector) asJQuery attr:attr to: val.
 ! !
 
 !AttrBool class methodsFor: 'instance creation'!
@@ -354,7 +354,7 @@ isStyleAttr
 
 updateSelf
 
-(pid,' 'selector) asJQuery css:attr to: val.
+('#',pid,' ',selector) asJQuery css:attr to: val.
 ! !
 
 !StyleAttrBool class methodsFor: 'instance creation'!
@@ -723,7 +723,7 @@ config at:'attributeFilter' put: (Array new add: self attr).
 
 updateSelf
 
-(pid,' 'selector) asJQuery attr:attr to: val asString,unit.
+('#',pid,' ',selector) asJQuery attr:attr to: val asString,unit.
 ! !
 
 !AttrNumb methodsFor: 'initializing'!
@@ -853,7 +853,7 @@ config at:'attributeFilter' put: (Array new add: self attr).
 updateSelf
 
 
-(pid,' 'selector) asJQuery css:attr to: val asString,unit.
+('#',pid,' ',selector) asJQuery css:attr to: val asString,unit.
 ! !
 
 !StyleAttrNumb methodsFor: 'initializing'!
@@ -1324,7 +1324,7 @@ config at:'attributeFilter' put: (Array new add: self attr).
 
 updateSelf
 
-(pid,' 'selector) asJQuery attr:attr to: val.
+('#',pid,' ',selector) asJQuery attr:attr to: val.
 ! !
 
 !AttrString methodsFor: 'initializing'!
@@ -1425,7 +1425,7 @@ selector asJQuery toArray do: [:each| myObserver observe: each with: config.].
 
 updateSelf
 
-selector asJQuery prop:'textContent' to: val.
+('#',pid,' ',selector) asJQuery prop:'textContent' to: val.
 ! !
 
 !ContentString methodsFor: 'initializing'!
@@ -1528,7 +1528,7 @@ config at:'attributeFilter' put: (Array new add: self attr).
 updateSelf
 
 
-(pid,' 'selector) asJQuery css:attr to: val.
+('#',pid,' ',selector) asJQuery css:attr to: val.
 ! !
 
 !StyleAttrString methodsFor: 'initializing'!

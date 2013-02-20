@@ -616,11 +616,11 @@ selector: "updateSelf",
 category: 'updating',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._attr_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._attr_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.AttrBool)})},
 args: [],
-source: "updateSelf\x0a\x0a(pid,' 'selector) asJQuery attr:attr to: val.\x0a",
-messageSends: ["attr:to:", "asJQuery", ",", "selector"],
+source: "updateSelf\x0a\x0a('#', pid,' ',selector) asJQuery attr:attr to: val.\x0a",
+messageSends: ["attr:to:", "asJQuery", ","],
 referencedClasses: []
 }),
 smalltalk.AttrBool);
@@ -873,11 +873,11 @@ selector: "updateSelf",
 category: 'updating',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._css_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._css_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.StyleAttrBool)})},
 args: [],
-source: "updateSelf\x0a\x0a(pid,' 'selector) asJQuery css:attr to: val.",
-messageSends: ["css:to:", "asJQuery", ",", "selector"],
+source: "updateSelf\x0a\x0a('#',pid,' ',selector) asJQuery css:attr to: val.",
+messageSends: ["css:to:", "asJQuery", ","],
 referencedClasses: []
 }),
 smalltalk.StyleAttrBool);
@@ -1931,11 +1931,11 @@ selector: "updateSelf",
 category: 'assigning',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._attr_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._attr_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.AttrNumb)})},
 args: [],
-source: "updateSelf\x0a\x0a(pid,' 'selector) asJQuery attr:attr to: val asString,unit.\x0a",
-messageSends: ["attr:to:", ",", "asString", "asJQuery", "selector"],
+source: "updateSelf\x0a\x0a('#',pid,' ',selector) asJQuery attr:attr to: val asString,unit.\x0a",
+messageSends: ["attr:to:", ",", "asString", "asJQuery"],
 referencedClasses: []
 }),
 smalltalk.AttrNumb);
@@ -2270,11 +2270,11 @@ selector: "updateSelf",
 category: 'assigning',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._css_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._css_to_(self["@attr"],_st(_st(self["@val"])._asString()).__comma(self["@unit"]));
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.StyleAttrNumb)})},
 args: [],
-source: "updateSelf\x0a\x0a\x0a(pid,' 'selector) asJQuery css:attr to: val asString,unit.",
-messageSends: ["css:to:", ",", "asString", "asJQuery", "selector"],
+source: "updateSelf\x0a\x0a\x0a('#',pid,' ',selector) asJQuery css:attr to: val asString,unit.",
+messageSends: ["css:to:", ",", "asString", "asJQuery"],
 referencedClasses: []
 }),
 smalltalk.StyleAttrNumb);
@@ -3658,11 +3658,11 @@ selector: "updateSelf",
 category: 'assigning',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._attr_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._attr_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.AttrString)})},
 args: [],
-source: "updateSelf\x0a\x0a(pid,' 'selector) asJQuery attr:attr to: val.\x0a",
-messageSends: ["attr:to:", "asJQuery", ",", "selector"],
+source: "updateSelf\x0a\x0a('#',pid,' ',selector) asJQuery attr:attr to: val.\x0a",
+messageSends: ["attr:to:", "asJQuery", ","],
 referencedClasses: []
 }),
 smalltalk.AttrString);
@@ -3909,11 +3909,11 @@ selector: "updateSelf",
 category: 'assigning',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self["@selector"])._asJQuery())._prop_to_("textContent",self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._prop_to_("textContent",self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.ContentString)})},
 args: [],
-source: "updateSelf\x0a\x0aselector asJQuery prop:'textContent' to: val.\x0a",
-messageSends: ["prop:to:", "asJQuery"],
+source: "updateSelf\x0a\x0a('#',pid,' ',selector) asJQuery prop:'textContent' to: val.\x0a",
+messageSends: ["prop:to:", "asJQuery", ","],
 referencedClasses: []
 }),
 smalltalk.ContentString);
@@ -4166,11 +4166,11 @@ selector: "updateSelf",
 category: 'assigning',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(_st(self["@pid"]).__comma(_st(" ")._selector()))._asJQuery())._css_to_(self["@attr"],self["@val"]);
+return smalltalk.withContext(function($ctx1) { _st(_st(_st(_st(_st("#").__comma(self["@pid"])).__comma(" ")).__comma(self["@selector"]))._asJQuery())._css_to_(self["@attr"],self["@val"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateSelf",{}, smalltalk.StyleAttrString)})},
 args: [],
-source: "updateSelf\x0a\x0a\x0a(pid,' 'selector) asJQuery css:attr to: val.\x0a ",
-messageSends: ["css:to:", "asJQuery", ",", "selector"],
+source: "updateSelf\x0a\x0a\x0a('#',pid,' ',selector) asJQuery css:attr to: val.\x0a ",
+messageSends: ["css:to:", "asJQuery", ","],
 referencedClasses: []
 }),
 smalltalk.StyleAttrString);
