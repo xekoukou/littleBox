@@ -155,42 +155,30 @@ function
 "here is the functionality of the component
 here it sets what to do with input from the user or the server
 here the component can also act as a creator of other components"
-
-self subclassResponsibility
 !
 
 paintOn: css
 "using the CSSCanvas, select attributes from the subtree and paint them"
-
-   self subclassResponsibility
 !
 
 renderOn: html
 
 "Use the html canvas to render a component"
-
-self subclassResponsibility
 !
 
 setConnectors
 
 "Used to initialize the connectors"
-
-self subclassResponsibility
 !
 
 setEquations
 
 "Used to initialize the Equations"
-
-self subclassResponsibility
 !
 
 setVariables
 
 "Used to initializing the binding Variables"
-
-self subclassResponsibility
 ! !
 
 !Component class methodsFor: 'not yet classified'!

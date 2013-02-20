@@ -210,11 +210,10 @@ selector: "function",
 category: 'subclassing',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"function",{}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"function",{}, smalltalk.Component)})},
 args: [],
-source: "function\x0a\x0a\x22here is the functionality of the component\x0ahere it sets what to do with input from the user or the server\x0ahere the component can also act as a creator of other components\x22\x0a\x0aself subclassResponsibility",
-messageSends: ["subclassResponsibility"],
+source: "function\x0a\x0a\x22here is the functionality of the component\x0ahere it sets what to do with input from the user or the server\x0ahere the component can also act as a creator of other components\x22\x0a",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.Component);
@@ -243,11 +242,10 @@ selector: "paintOn:",
 category: 'subclassing',
 fn: function (css){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css}, smalltalk.Component)})},
 args: ["css"],
-source: "paintOn: css\x0a\x22using the CSSCanvas, select attributes from the subtree and paint them\x22\x0a\x0a   self subclassResponsibility",
-messageSends: ["subclassResponsibility"],
+source: "paintOn: css\x0a\x22using the CSSCanvas, select attributes from the subtree and paint them\x22\x0a",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.Component);
@@ -313,11 +311,10 @@ selector: "renderOn:",
 category: 'subclassing',
 fn: function (html){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.Component)})},
 args: ["html"],
-source: "renderOn: html\x0a\x0a\x22Use the html canvas to render a component\x22\x0a\x0aself subclassResponsibility",
-messageSends: ["subclassResponsibility"],
+source: "renderOn: html\x0a\x0a\x22Use the html canvas to render a component\x22\x0a",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.Component);
@@ -349,11 +346,10 @@ selector: "setConnectors",
 category: 'subclassing',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"setConnectors",{}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"setConnectors",{}, smalltalk.Component)})},
 args: [],
-source: "setConnectors\x0a\x0a\x22Used to initialize the connectors\x22\x0a\x0aself subclassResponsibility",
-messageSends: ["subclassResponsibility"],
+source: "setConnectors\x0a\x0a\x22Used to initialize the connectors\x22\x0a",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.Component);
@@ -365,11 +361,10 @@ selector: "setEquations",
 category: 'subclassing',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"setEquations",{}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"setEquations",{}, smalltalk.Component)})},
 args: [],
-source: "setEquations\x0a\x0a\x22Used to initialize the Equations\x22\x0a\x0aself subclassResponsibility",
-messageSends: ["subclassResponsibility"],
+source: "setEquations\x0a\x0a\x22Used to initialize the Equations\x22\x0a",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.Component);
@@ -381,11 +376,10 @@ selector: "setVariables",
 category: 'subclassing',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"setVariables",{}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"setVariables",{}, smalltalk.Component)})},
 args: [],
-source: "setVariables\x0a\x0a\x22Used to initializing the binding Variables\x22\x0a\x0aself subclassResponsibility",
-messageSends: ["subclassResponsibility"],
+source: "setVariables\x0a\x0a\x22Used to initializing the binding Variables\x22\x0a",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.Component);
