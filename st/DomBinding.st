@@ -258,12 +258,12 @@ updateSelf
 
 component: aComponent selector: aSelector attr: anAttr
 
-^ self new component: aComponent selector: aSelector attr: anAttr
+^ self new component: aComponent selector: aSelector attr: anAttr ; yourself.
 !
 
 selector: aSelector attr: anAttr
 
-^ self new selector: aSelector attr: anAttr
+^ self new selector: aSelector attr: anAttr ; yourself.
 ! !
 
 VarBool subclass: #StyleAttrBool
@@ -361,12 +361,12 @@ updateSelf
 
 component: aComponent selector: aSelector attr: anAttr
 
-^ self new component: aComponent selector: aSelector attr: anAttr
+^ self new component: aComponent selector: aSelector attr: anAttr ; yourself.
 !
 
 selector: aSelector attr: anAttr
 
-^ self new selector: aSelector attr: anAttr
+^ self new selector: aSelector attr: anAttr ; yourself.
 ! !
 
 Var subclass: #VarNumb
@@ -781,22 +781,22 @@ isStyleAttr
 
 component: aComponent selector: aSelector attr: anAttr
 
-^ self new component: aComponent selector: aSelector attr: anAttr
+^ self new component: aComponent selector: aSelector attr: anAttr ; yourself.
 !
 
 componet: aComponent selector: aSelector attr: anAttr unit:aUnit
 
-^ self new componet: aComponent selector: aSelector attr: anAttr unit:aUnit
+^ self new componet: aComponent selector: aSelector attr: anAttr unit:aUnit ; yourself.
 !
 
 selector: aSelector attr: anAttr
 
-^ self new selector: aSelector attr: anAttr.
+^ self new selector: aSelector attr: anAttr ; yourself.
 !
 
 selector: aSelector attr: anAttr unit:aUnit
 
-^ self new selector: aSelector attr: anAttr unit:aUnit
+^ self new selector: aSelector attr: anAttr unit:aUnit ; yourself.
 ! !
 
 VarNumb subclass: #StyleAttrNumb
@@ -911,22 +911,22 @@ isStyleAttr
 
 componet: aComponent selector: aSelector attr: anAttr
 
-^ self new componet: aComponent selector: aSelector attr: anAttr
+^ self new componet: aComponent selector: aSelector attr: anAttr ; yourself.
 !
 
 componet: aComponent selector: aSelector attr: anAttr unit:aUnit
 
-^ self new componet: aComponent selector: aSelector attr: anAttr unit:aUnit
+^ self new componet: aComponent selector: aSelector attr: anAttr unit:aUnit ; yourself.
 !
 
 selector: aSelector attr: anAttr
 
-^ self new selector: aSelector attr: anAttr.
+^ self new selector: aSelector attr: anAttr ; yourself.
 !
 
 selector: aSelector attr: anAttr unit:aUnit
 
-^ self new selector: aSelector attr: anAttr unit:aUnit
+^ self new selector: aSelector attr: anAttr unit:aUnit ; yourself.
 ! !
 
 Var subclass: #VarString
@@ -1370,12 +1370,12 @@ isStyleAttr
 
 component: aComponent selector: aSelector attr: anAttr
 
-^ self new component: aComponent selector: aSelector attr: anAttr
+^ self new component: aComponent selector: aSelector attr: anAttr ; yourself.
 !
 
 selector: aSelector attr: anAttr
 
-^ self new selector: aSelector attr: anAttr
+^ self new selector: aSelector attr: anAttr ; yourself.
 ! !
 
 VarString subclass: #ContentString
@@ -1467,12 +1467,12 @@ isStyleAttr
 
 component: aComponent selector: aSelector
 
-^ self new component: aComponent selector: aSelector
+^ self new component: aComponent selector: aSelector ; yourself.
 !
 
 selector: aSelector 
 
-^ self new selector: aSelector.
+^ self new selector: aSelector ; yourself.
 ! !
 
 VarString subclass: #StyleAttrString
@@ -1569,11 +1569,11 @@ isStyleAttr
 
 component: aComponent selector: aSelector attr: anAttr
 
-^ self new component: aComponent selector: aSelector attr: anAttr
+^ self new component: aComponent selector: aSelector attr: anAttr ; yourself.
 !
 
 selector: aSelector attr: anAttr
 
-^ self new selector: aSelector attr: anAttr
+^ self new selector: aSelector attr: anAttr ; yourself.
 ! !
 

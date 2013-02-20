@@ -477,8 +477,11 @@ smalltalk.method({
 selector: "component:selector:attr:",
 fn: function (aComponent,aSelector,anAttr){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._component_selector_attr_(aComponent,aSelector,anAttr);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrBool.klass)})}
 }),
@@ -490,8 +493,11 @@ smalltalk.method({
 selector: "selector:attr:",
 fn: function (aSelector,anAttr){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_attr_(aSelector,anAttr);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._selector_attr_(aSelector,anAttr);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrBool.klass)})}
 }),
@@ -663,8 +669,11 @@ smalltalk.method({
 selector: "component:selector:attr:",
 fn: function (aComponent,aSelector,anAttr){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._component_selector_attr_(aComponent,aSelector,anAttr);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrBool.klass)})}
 }),
@@ -676,8 +685,11 @@ smalltalk.method({
 selector: "selector:attr:",
 fn: function (aSelector,anAttr){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_attr_(aSelector,anAttr);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._selector_attr_(aSelector,anAttr);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrBool.klass)})}
 }),
@@ -1460,8 +1472,11 @@ smalltalk.method({
 selector: "component:selector:attr:",
 fn: function (aComponent,aSelector,anAttr){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._component_selector_attr_(aComponent,aSelector,anAttr);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrNumb.klass)})}
 }),
@@ -1473,8 +1488,11 @@ smalltalk.method({
 selector: "componet:selector:attr:unit:",
 fn: function (aComponent,aSelector,anAttr,aUnit){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._componet_selector_attr_unit_(aComponent,aSelector,anAttr,aUnit);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._componet_selector_attr_unit_(aComponent,aSelector,anAttr,aUnit);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"componet:selector:attr:unit:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.AttrNumb.klass)})}
 }),
@@ -1486,8 +1504,11 @@ smalltalk.method({
 selector: "selector:attr:",
 fn: function (aSelector,anAttr){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_attr_(aSelector,anAttr);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._selector_attr_(aSelector,anAttr);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrNumb.klass)})}
 }),
@@ -1499,8 +1520,11 @@ smalltalk.method({
 selector: "selector:attr:unit:",
 fn: function (aSelector,anAttr,aUnit){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_attr_unit_(aSelector,anAttr,aUnit);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._selector_attr_unit_(aSelector,anAttr,aUnit);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"selector:attr:unit:",{aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.AttrNumb.klass)})}
 }),
@@ -1702,8 +1726,11 @@ smalltalk.method({
 selector: "componet:selector:attr:",
 fn: function (aComponent,aSelector,anAttr){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._componet_selector_attr_(aComponent,aSelector,anAttr);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._componet_selector_attr_(aComponent,aSelector,anAttr);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"componet:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrNumb.klass)})}
 }),
@@ -1715,8 +1742,11 @@ smalltalk.method({
 selector: "componet:selector:attr:unit:",
 fn: function (aComponent,aSelector,anAttr,aUnit){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._componet_selector_attr_unit_(aComponent,aSelector,anAttr,aUnit);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._componet_selector_attr_unit_(aComponent,aSelector,anAttr,aUnit);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"componet:selector:attr:unit:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.StyleAttrNumb.klass)})}
 }),
@@ -1728,8 +1758,11 @@ smalltalk.method({
 selector: "selector:attr:",
 fn: function (aSelector,anAttr){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_attr_(aSelector,anAttr);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._selector_attr_(aSelector,anAttr);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrNumb.klass)})}
 }),
@@ -1741,8 +1774,11 @@ smalltalk.method({
 selector: "selector:attr:unit:",
 fn: function (aSelector,anAttr,aUnit){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_attr_unit_(aSelector,anAttr,aUnit);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._selector_attr_unit_(aSelector,anAttr,aUnit);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"selector:attr:unit:",{aSelector:aSelector,anAttr:anAttr,aUnit:aUnit}, smalltalk.StyleAttrNumb.klass)})}
 }),
@@ -2708,8 +2744,11 @@ smalltalk.method({
 selector: "component:selector:attr:",
 fn: function (aComponent,aSelector,anAttr){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._component_selector_attr_(aComponent,aSelector,anAttr);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrString.klass)})}
 }),
@@ -2721,8 +2760,11 @@ smalltalk.method({
 selector: "selector:attr:",
 fn: function (aSelector,anAttr){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_attr_(aSelector,anAttr);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._selector_attr_(aSelector,anAttr);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.AttrString.klass)})}
 }),
@@ -2888,8 +2930,11 @@ smalltalk.method({
 selector: "component:selector:",
 fn: function (aComponent,aSelector){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._component_selector_(aComponent,aSelector);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._component_selector_(aComponent,aSelector);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"component:selector:",{aComponent:aComponent,aSelector:aSelector}, smalltalk.ContentString.klass)})}
 }),
@@ -2901,8 +2946,11 @@ smalltalk.method({
 selector: "selector:",
 fn: function (aSelector){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_(aSelector);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._selector_(aSelector);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"selector:",{aSelector:aSelector}, smalltalk.ContentString.klass)})}
 }),
@@ -3074,8 +3122,11 @@ smalltalk.method({
 selector: "component:selector:attr:",
 fn: function (aComponent,aSelector,anAttr){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._component_selector_attr_(aComponent,aSelector,anAttr);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._component_selector_attr_(aComponent,aSelector,anAttr);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"component:selector:attr:",{aComponent:aComponent,aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrString.klass)})}
 }),
@@ -3087,8 +3138,11 @@ smalltalk.method({
 selector: "selector:attr:",
 fn: function (aSelector,anAttr){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._new())._selector_attr_(aSelector,anAttr);
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._selector_attr_(aSelector,anAttr);
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"selector:attr:",{aSelector:aSelector,anAttr:anAttr}, smalltalk.StyleAttrString.klass)})}
 }),

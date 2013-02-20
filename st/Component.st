@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'Component' properties: #{}!
 Object subclass: #Component
-	instanceVariableNames: 'elementId connectorId position parent pid mid connectors variables equations'
+	instanceVariableNames: 'connectorId position parent pid mid connectors variables equations'
 	package: 'Component'!
 
 !Component methodsFor: 'accessing'!
@@ -28,8 +28,8 @@ variables
 
 bindComp: aComponent atCon: aConnectorId atPos: aPosition
 
-self connectors at: aConnectorId at:aPosition put: aComponent .
-self bindVars: aComponent variables conId: aConnectorId pos: aPosition.
+self connectors ifNotNil: [ (self connectors at: aConnectorId) at:aPosition put: aComponent. ].
+self equations ifNotNil: [ self bindVars: aComponent variables conId: aConnectorId pos: aPosition. ].
 !
 
 bindVars: aVariables conId: aConnectorId pos: aPosition
@@ -73,17 +73,6 @@ selector asJQuery remove.
 self equations do: [ :each | each removeCompVarFrom: aConnectorId from: aPosition].
 ! !
 
-!Component methodsFor: 'functioning'!
-
-function
-
-"here is the functionality of the component
-here it sets what to do with input from the user or the server
-here the component can also act as a creator of other components"
-
-self subclassResponsibility
-! !
-
 !Component methodsFor: 'initializing'!
 
 assignId
@@ -92,7 +81,7 @@ assignId
 
 mid := mid + 1.
 ( ( mid/10 ) truncated = (mid/10)) ifTrue: [mid := mid + 1.].
-smid := connectorId , mid asString, '0'.
+smid := pid , mid asString, '0'.
 ^ smid.
 !
 
@@ -102,8 +91,8 @@ connect: aConnectorId at: aPosition to: aParent
 |ids|
 
 connectorId := aConnectorId.
-pid := parent assignId.
 parent := aParent.
+pid := parent assignId.
 position:=aPosition.
 
 
@@ -118,33 +107,62 @@ parent bindComp: self atCon: aConnectorId atPos: aPosition
 connect: aConnectorId to: aParent
 
 
-self connect: aConnectorId at: ((parent connectors at: aConnectorId size)+1) to: aParent
+self connect: aConnectorId at: ((aParent connectors at: aConnectorId size)+1) to: aParent
 !
 
 initialize
 
 super initialize.
 mid := 0.
+!
+
+root
+
+pid:=''.
+connectors:=Connectors new.
+connectors addConnectorId: '0'.
+(connectors at:'0') at:0 put: ('body' asJQuery get:0).
+connectorId:='0'.
 ! !
 
 !Component methodsFor: 'private'!
+
+realize
+
+|html css selector jq|
+
+ jq := ('#',(parent pid),connectorId) asJQuery.
+ (jq children length = 0)
+ ifTrue:[
+   	selector := '#',(parent pid),connectorId.
+ 	jq := selector asJQuery.
+	jq append: '<div id = ', pid ,'></div>'. ]
+  ifFalse:[
+selector := '#',(parent pid),connectorId,' ',':nth-child(',position asString,')'.
+jq := selector asJQuery.
+jq after: '<div id = ', pid ,'></div>'.
+].
+html := HTMLCanvas onJQuery: ('#',pid) asJQuery.
+self renderOn: html.
+css := CSSCanvas new: self.
+self paintOn:css
+! !
+
+!Component methodsFor: 'subclassing'!
+
+function
+
+"here is the functionality of the component
+here it sets what to do with input from the user or the server
+here the component can also act as a creator of other components"
+
+self subclassResponsibility
+!
 
 paintOn: css
 "using the CSSCanvas, select attributes from the subtree and paint them"
 
    self subclassResponsibility
-!
-
-realize
-
-|html css selector|
-
-selector := (parent pid),connectorId,' ',':nth-child(',(position - 1) asString,')'.
-selector asJQuery after: '<div id = ', pid ,'></div>'.
-html := HTMLCanvas onJQuery: ('#',pid) asJQuery.
-self renderOn: html.
-css := CSSCanvas new: self.
-self paintOn:css
 !
 
 renderOn: html
@@ -179,12 +197,17 @@ self subclassResponsibility
 
 connect: anElementId at: aPosition to: aParent
 
-^ self new connect: anElementId at: aPosition to: aParent
+^ self new connect: anElementId at: aPosition to: aParent ; yourself
 !
 
 connect: anElementId to: aParent
 
-^ self new connect: anElementId to: aParent.
+^ self new connect: anElementId to: aParent ;yourself.
+!
+
+root
+
+ ^ self new root ; yourself.
 ! !
 
 Dictionary subclass: #Connectors
@@ -193,17 +216,15 @@ Dictionary subclass: #Connectors
 
 !Connectors methodsFor: 'initializing'!
 
+addConnectorId: anElementId
+
+"ElementId should be the internal mid of a connector"
+self at: anElementId put: Array new.
+!
+
 initialize
 
 super initialize
-! !
-
-!Connectors class methodsFor: 'instance creation'!
-
-elementId: anElementId
-
-"ElementId should be the internal mid of a connector"
-^ self new at: anElementId put: Array new; yourself.
 ! !
 
 Object subclass: #Equation

@@ -56,11 +56,16 @@ selector: "new:",
 category: 'not yet classified',
 fn: function (aComponent){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self)._new())._component_(aComponent);
-return self}, function($ctx1) {$ctx1.fill(self,"new:",{aComponent:aComponent}, smalltalk.CSSCanvas.klass)})},
+return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._component_(aComponent);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"new:",{aComponent:aComponent}, smalltalk.CSSCanvas.klass)})},
 args: ["aComponent"],
-source: "new: aComponent\x0a\x0aself new component:aComponent.",
-messageSends: ["component:", "new"],
+source: "new: aComponent\x0a\x0a^ self new component:aComponent ; yourself.",
+messageSends: ["component:", "new", "yourself"],
 referencedClasses: []
 }),
 smalltalk.CSSCanvas.klass);

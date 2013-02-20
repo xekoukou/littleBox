@@ -27,6 +27,6 @@ super initialize
 
 new: aComponent
 
-self new component:aComponent.
+^ self new component:aComponent ; yourself.
 ! !
 
