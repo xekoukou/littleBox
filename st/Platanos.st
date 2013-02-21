@@ -7,9 +7,10 @@ Object subclass: #Platanos
 
 initialize
 
-('body' asJQuery) empty.
+|si|
 
-('body' asJQuery) attr: 'id' value: '0'.
-SearchInput connect: '0' at: 0 to: (Component root).
+si:=SearchInput connect: '' at: 0 to: (Component root).
+
+SearchResult connect:'1' to: si.
 ! !
 
