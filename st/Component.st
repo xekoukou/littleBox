@@ -107,7 +107,7 @@ parent bindComp: self atCon: aConnectorId atPos: aPosition
 connect: aConnectorId to: aParent
 
 
-self connect: aConnectorId at: ((aParent connectors at: aConnectorId size)+1) to: aParent
+self connect: aConnectorId at: ((aParent connectors at: aConnectorId) size+1) to: aParent
 !
 
 initialize
@@ -120,9 +120,9 @@ root
 
 pid:=''.
 connectors:=Connectors new.
-connectors addConnectorId: '0'.
-(connectors at:'0') at:0 put: ('body' asJQuery get:0).
-connectorId:='0'.
+connectors addConnectorId: ''.
+'body' asJQuery append:'<div id = 0> </div>'.
+(connectors at:'') at:0 put: ('#0' asJQuery get:0).
 ! !
 
 !Component methodsFor: 'private'!
@@ -134,11 +134,11 @@ realize
  jq := ('#',(parent pid),connectorId) asJQuery.
  (jq children length = 0)
  ifTrue:[
-   	selector := '#',(parent pid),connectorId.
+   	selector := '#',(parent pid),connectorId,'0'.
  	jq := selector asJQuery.
 	jq append: '<div id = ', pid ,'></div>'. ]
   ifFalse:[
-selector := '#',(parent pid),connectorId,' ',':nth-child(',position asString,')'.
+selector := '#',(parent pid),connectorId,'0 ',':nth-child(',position asString,')'.
 jq := selector asJQuery.
 jq after: '<div id = ', pid ,'></div>'.
 ].
@@ -155,42 +155,30 @@ function
 "here is the functionality of the component
 here it sets what to do with input from the user or the server
 here the component can also act as a creator of other components"
-
-self subclassResponsibility
 !
 
 paintOn: css
 "using the CSSCanvas, select attributes from the subtree and paint them"
-
-   self subclassResponsibility
 !
 
 renderOn: html
 
 "Use the html canvas to render a component"
-
-self subclassResponsibility
 !
 
 setConnectors
 
 "Used to initialize the connectors"
-
-self subclassResponsibility
 !
 
 setEquations
 
 "Used to initialize the Equations"
-
-self subclassResponsibility
 !
 
 setVariables
 
 "Used to initializing the binding Variables"
-
-self subclassResponsibility
 ! !
 
 !Component class methodsFor: 'not yet classified'!

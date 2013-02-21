@@ -114,7 +114,7 @@ smalltalk.method({
 selector: "connect:to:",
 fn: function (aConnectorId,aParent){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._connect_at_to_(aConnectorId,_st(_st(_st(aParent)._connectors())._at_(_st(aConnectorId)._size())).__plus((1)),aParent);
+return smalltalk.withContext(function($ctx1) { _st(self)._connect_at_to_(aConnectorId,_st(_st(_st(_st(aParent)._connectors())._at_(aConnectorId))._size()).__plus((1)),aParent);
 return self}, function($ctx1) {$ctx1.fill(self,"connect:to:",{aConnectorId:aConnectorId,aParent:aParent}, smalltalk.Component)})}
 }),
 smalltalk.Component);
@@ -169,8 +169,7 @@ smalltalk.method({
 selector: "function",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"function",{}, smalltalk.Component)})}
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"function",{}, smalltalk.Component)})}
 }),
 smalltalk.Component);
 
@@ -192,8 +191,7 @@ smalltalk.method({
 selector: "paintOn:",
 fn: function (css){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css}, smalltalk.Component)})}
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css}, smalltalk.Component)})}
 }),
 smalltalk.Component);
 
@@ -221,13 +219,13 @@ return smalltalk.withContext(function($ctx1) { var $1;
 jq=_st(_st(_st("#").__comma(_st(self["@parent"])._pid())).__comma(self["@connectorId"]))._asJQuery();
 $1=_st(_st(_st(jq)._children())._length()).__eq((0));
 if(smalltalk.assert($1)){
-selector=_st(_st("#").__comma(_st(self["@parent"])._pid())).__comma(self["@connectorId"]);
+selector=_st(_st(_st("#").__comma(_st(self["@parent"])._pid())).__comma(self["@connectorId"])).__comma("0");
 selector;
 jq=_st(selector)._asJQuery();
 jq;
 _st(jq)._append_(_st(_st("<div id = ").__comma(self["@pid"])).__comma("></div>"));
 } else {
-selector=_st(_st(_st(_st(_st(_st("#").__comma(_st(self["@parent"])._pid())).__comma(self["@connectorId"])).__comma(" ")).__comma(":nth-child(")).__comma(_st(self["@position"])._asString())).__comma(")");
+selector=_st(_st(_st(_st(_st(_st("#").__comma(_st(self["@parent"])._pid())).__comma(self["@connectorId"])).__comma("0 ")).__comma(":nth-child(")).__comma(_st(self["@position"])._asString())).__comma(")");
 selector;
 jq=_st(selector)._asJQuery();
 jq;
@@ -247,8 +245,7 @@ smalltalk.method({
 selector: "renderOn:",
 fn: function (html){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.Component)})}
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.Component)})}
 }),
 smalltalk.Component);
 
@@ -260,9 +257,9 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@pid"]="";
 self["@connectors"]=_st((smalltalk.Connectors || Connectors))._new();
-_st(self["@connectors"])._addConnectorId_("0");
-_st(_st(self["@connectors"])._at_("0"))._at_put_((0),_st(_st("body")._asJQuery())._get_((0)));
-self["@connectorId"]="0";
+_st(self["@connectors"])._addConnectorId_("");
+_st(_st("body")._asJQuery())._append_("<div id = 0> </div>");
+_st(_st(self["@connectors"])._at_(""))._at_put_((0),_st(_st("#0")._asJQuery())._get_((0)));
 return self}, function($ctx1) {$ctx1.fill(self,"root",{}, smalltalk.Component)})}
 }),
 smalltalk.Component);
@@ -273,8 +270,7 @@ smalltalk.method({
 selector: "setConnectors",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"setConnectors",{}, smalltalk.Component)})}
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"setConnectors",{}, smalltalk.Component)})}
 }),
 smalltalk.Component);
 
@@ -284,8 +280,7 @@ smalltalk.method({
 selector: "setEquations",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"setEquations",{}, smalltalk.Component)})}
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"setEquations",{}, smalltalk.Component)})}
 }),
 smalltalk.Component);
 
@@ -295,8 +290,7 @@ smalltalk.method({
 selector: "setVariables",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"setVariables",{}, smalltalk.Component)})}
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"setVariables",{}, smalltalk.Component)})}
 }),
 smalltalk.Component);
 
