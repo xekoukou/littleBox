@@ -107,7 +107,7 @@ parent bindComp: self atCon: aConnectorId atPos: aPosition
 connect: aConnectorId to: aParent
 
 
-self connect: aConnectorId at: ((aParent connectors at: aConnectorId size)+1) to: aParent
+self connect: aConnectorId at: ((aParent connectors at: aConnectorId) size+1) to: aParent
 !
 
 initialize
@@ -120,9 +120,9 @@ root
 
 pid:=''.
 connectors:=Connectors new.
-connectors addConnectorId: '0'.
-(connectors at:'0') at:0 put: ('body' asJQuery get:0).
-connectorId:='0'.
+connectors addConnectorId: ''.
+'body' asJQuery append:'<div id = 0> </div>'.
+(connectors at:'') at:0 put: ('#0' asJQuery get:0).
 ! !
 
 !Component methodsFor: 'private'!
@@ -134,11 +134,11 @@ realize
  jq := ('#',(parent pid),connectorId) asJQuery.
  (jq children length = 0)
  ifTrue:[
-   	selector := '#',(parent pid),connectorId.
+   	selector := '#',(parent pid),connectorId,'0'.
  	jq := selector asJQuery.
 	jq append: '<div id = ', pid ,'></div>'. ]
   ifFalse:[
-selector := '#',(parent pid),connectorId,' ',':nth-child(',position asString,')'.
+selector := '#',(parent pid),connectorId,'0 ',':nth-child(',position asString,')'.
 jq := selector asJQuery.
 jq after: '<div id = ', pid ,'></div>'.
 ].

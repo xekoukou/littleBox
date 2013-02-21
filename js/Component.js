@@ -135,11 +135,11 @@ selector: "connect:to:",
 category: 'initializing',
 fn: function (aConnectorId,aParent){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._connect_at_to_(aConnectorId,_st(_st(_st(aParent)._connectors())._at_(_st(aConnectorId)._size())).__plus((1)),aParent);
+return smalltalk.withContext(function($ctx1) { _st(self)._connect_at_to_(aConnectorId,_st(_st(_st(_st(aParent)._connectors())._at_(aConnectorId))._size()).__plus((1)),aParent);
 return self}, function($ctx1) {$ctx1.fill(self,"connect:to:",{aConnectorId:aConnectorId,aParent:aParent}, smalltalk.Component)})},
 args: ["aConnectorId", "aParent"],
-source: "connect: aConnectorId to: aParent\x0a\x0a\x0aself connect: aConnectorId at: ((aParent connectors at: aConnectorId size)+1) to: aParent",
-messageSends: ["connect:at:to:", "+", "at:", "size", "connectors"],
+source: "connect: aConnectorId to: aParent\x0a\x0a\x0aself connect: aConnectorId at: ((aParent connectors at: aConnectorId) size+1) to: aParent",
+messageSends: ["connect:at:to:", "+", "size", "at:", "connectors"],
 referencedClasses: []
 }),
 smalltalk.Component);
@@ -212,7 +212,7 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"function",{}, smalltalk.Component)})},
 args: [],
-source: "function\x0a\x0a\x22here is the functionality of the component\x0ahere it sets what to do with input from the user or the server\x0ahere the component can also act as a creator of other components\x22\x0a",
+source: "function\x0a\x0a\x22here is the functionality of the component\x0ahere it sets what to do with input from the user or the server\x0ahere the component can also act as a creator of other components\x22\x0a\x0a",
 messageSends: [],
 referencedClasses: []
 }),
@@ -280,13 +280,13 @@ return smalltalk.withContext(function($ctx1) { var $1;
 jq=_st(_st(_st("#").__comma(_st(self["@parent"])._pid())).__comma(self["@connectorId"]))._asJQuery();
 $1=_st(_st(_st(jq)._children())._length()).__eq((0));
 if(smalltalk.assert($1)){
-selector=_st(_st("#").__comma(_st(self["@parent"])._pid())).__comma(self["@connectorId"]);
+selector=_st(_st(_st("#").__comma(_st(self["@parent"])._pid())).__comma(self["@connectorId"])).__comma("0");
 selector;
 jq=_st(selector)._asJQuery();
 jq;
 _st(jq)._append_(_st(_st("<div id = ").__comma(self["@pid"])).__comma("></div>"));
 } else {
-selector=_st(_st(_st(_st(_st(_st("#").__comma(_st(self["@parent"])._pid())).__comma(self["@connectorId"])).__comma(" ")).__comma(":nth-child(")).__comma(_st(self["@position"])._asString())).__comma(")");
+selector=_st(_st(_st(_st(_st(_st("#").__comma(_st(self["@parent"])._pid())).__comma(self["@connectorId"])).__comma("0 ")).__comma(":nth-child(")).__comma(_st(self["@position"])._asString())).__comma(")");
 selector;
 jq=_st(selector)._asJQuery();
 jq;
@@ -298,7 +298,7 @@ css=_st((smalltalk.CSSCanvas || CSSCanvas))._new_(self);
 _st(self)._paintOn_(css);
 return self}, function($ctx1) {$ctx1.fill(self,"realize",{html:html,css:css,selector:selector,jq:jq}, smalltalk.Component)})},
 args: [],
-source: "realize\x0a\x0a|html css selector jq|\x0a\x0a jq := ('#',(parent pid),connectorId) asJQuery.\x0a (jq children length = 0)\x0a ifTrue:[\x0a   \x09selector := '#',(parent pid),connectorId.\x0a \x09jq := selector asJQuery.\x0a\x09jq append: '<div id = ', pid ,'></div>'. ]\x0a  ifFalse:[\x0aselector := '#',(parent pid),connectorId,' ',':nth-child(',position asString,')'.\x0ajq := selector asJQuery.\x0ajq after: '<div id = ', pid ,'></div>'.\x0a].\x0ahtml := HTMLCanvas onJQuery: ('#',pid) asJQuery.\x0aself renderOn: html.\x0acss := CSSCanvas new: self.\x0aself paintOn:css\x0a\x0a\x0a",
+source: "realize\x0a\x0a|html css selector jq|\x0a\x0a jq := ('#',(parent pid),connectorId) asJQuery.\x0a (jq children length = 0)\x0a ifTrue:[\x0a   \x09selector := '#',(parent pid),connectorId,'0'.\x0a \x09jq := selector asJQuery.\x0a\x09jq append: '<div id = ', pid ,'></div>'. ]\x0a  ifFalse:[\x0aselector := '#',(parent pid),connectorId,'0 ',':nth-child(',position asString,')'.\x0ajq := selector asJQuery.\x0ajq after: '<div id = ', pid ,'></div>'.\x0a].\x0ahtml := HTMLCanvas onJQuery: ('#',pid) asJQuery.\x0aself renderOn: html.\x0acss := CSSCanvas new: self.\x0aself paintOn:css\x0a\x0a\x0a",
 messageSends: ["asJQuery", ",", "pid", "ifTrue:ifFalse:", "append:", "asString", "after:", "=", "length", "children", "onJQuery:", "renderOn:", "new:", "paintOn:"],
 referencedClasses: ["HTMLCanvas", "CSSCanvas"]
 }),
@@ -328,13 +328,13 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@pid"]="";
 self["@connectors"]=_st((smalltalk.Connectors || Connectors))._new();
-_st(self["@connectors"])._addConnectorId_("0");
-_st(_st(self["@connectors"])._at_("0"))._at_put_((0),_st(_st("body")._asJQuery())._get_((0)));
-self["@connectorId"]="0";
+_st(self["@connectors"])._addConnectorId_("");
+_st(_st("body")._asJQuery())._append_("<div id = 0> </div>");
+_st(_st(self["@connectors"])._at_(""))._at_put_((0),_st(_st("#0")._asJQuery())._get_((0)));
 return self}, function($ctx1) {$ctx1.fill(self,"root",{}, smalltalk.Component)})},
 args: [],
-source: "root\x0a\x0apid:=''.\x0aconnectors:=Connectors new.\x0aconnectors addConnectorId: '0'.\x0a(connectors at:'0') at:0 put: ('body' asJQuery get:0).\x0aconnectorId:='0'.",
-messageSends: ["new", "addConnectorId:", "at:put:", "get:", "asJQuery", "at:"],
+source: "root\x0a\x0apid:=''.\x0aconnectors:=Connectors new.\x0aconnectors addConnectorId: ''.\x0a'body' asJQuery append:'<div id = 0> </div>'.\x0a(connectors at:'') at:0 put: ('#0' asJQuery get:0).",
+messageSends: ["new", "addConnectorId:", "append:", "asJQuery", "at:put:", "get:", "at:"],
 referencedClasses: ["Connectors"]
 }),
 smalltalk.Component);
