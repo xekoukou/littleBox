@@ -2,18 +2,18 @@ smalltalk.addPackage('Markdown', {});
 smalltalk.addClass('Latex', smalltalk.Object, [], 'Markdown');
 
 smalltalk.addMethod(
-"_convert_",
+"_id_",
 smalltalk.method({
-selector: "convert:",
+selector: "id:",
 category: 'not yet classified',
-fn: function (aSelector){
+fn: function (aString){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st((smalltalk.MathJax || MathJax))._Hub())._Queue_(["Typeset",(smalltalk.MathJax || MathJax),(smalltalk.Hub || Hub),aSelector]);
-return self}, function($ctx1) {$ctx1.fill(self,"convert:",{aSelector:aSelector}, smalltalk.Latex.klass)})},
-args: ["aSelector"],
-source: "convert: aSelector\x0a\x0aMathJax Hub Queue: {'Typeset'. MathJax.Hub. aSelector}.",
-messageSends: ["Queue:", "Hub"],
-referencedClasses: ["MathJax", "Hub"]
+return smalltalk.withContext(function($ctx1) { MathJax.Hub.Queue(["Typeset",MathJax.Hub,aString]);;
+return self}, function($ctx1) {$ctx1.fill(self,"id:",{aString:aString}, smalltalk.Latex.klass)})},
+args: ["aString"],
+source: "id: aString\x0a\x0a<MathJax.Hub.Queue([\x22Typeset\x22,MathJax.Hub,aString]);>",
+messageSends: [],
+referencedClasses: []
 }),
 smalltalk.Latex.klass);
 

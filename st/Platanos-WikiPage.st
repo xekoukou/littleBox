@@ -32,7 +32,7 @@ css selector: '#',pid,'10' attr: 'left' val: '20%'.
 css selector: '#',pid,'10' attr: 'font' val:'12px/25px Arial, sans-serif'.
 
 "mathConverter"
-Latex convert: '#',pid,'10'.
+Latex id: pid,'10'.
 !
 
 renderOn: html

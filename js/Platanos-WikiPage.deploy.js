@@ -37,7 +37,7 @@ _st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"
 _st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"width","60%");
 _st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"left","20%");
 _st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"font","12px/25px Arial, sans-serif");
-_st((smalltalk.Latex || Latex))._convert_(_st(_st("#").__comma(self["@pid"])).__comma("10"));
+_st((smalltalk.Latex || Latex))._id_(_st(self["@pid"]).__comma("10"));
 return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css}, smalltalk.WikiPage)})}
 }),
 smalltalk.WikiPage);

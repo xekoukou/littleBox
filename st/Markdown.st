@@ -5,9 +5,9 @@ Object subclass: #Latex
 
 !Latex class methodsFor: 'not yet classified'!
 
-convert: aSelector
+id: aString
 
-MathJax Hub Queue: {'Typeset'. MathJax.Hub. aSelector}.
+<MathJax.Hub.Queue(["Typeset",MathJax.Hub,aString]);>
 ! !
 
 Object subclass: #Pagedown

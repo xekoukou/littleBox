@@ -48,11 +48,11 @@ _st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"
 _st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"width","60%");
 _st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"left","20%");
 _st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"font","12px/25px Arial, sans-serif");
-_st((smalltalk.Latex || Latex))._convert_(_st(_st("#").__comma(self["@pid"])).__comma("10"));
+_st((smalltalk.Latex || Latex))._id_(_st(self["@pid"]).__comma("10"));
 return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css}, smalltalk.WikiPage)})},
 args: ["css"],
-source: "paintOn: css\x0a\x0a\x0acss selector: '#',pid,'10' attr:'position' val: 'relative'.\x0a\x22css selector: '#',pid,'10' attr: 'border-style' val: 'solid'.\x22\x0acss selector: '#',pid,'10' attr: 'padding' val: '7px'.\x0acss selector: '#',pid,'10' attr: 'border-width' val: '1px'.\x0a\x22css selector: '#',pid,'10' attr: 'border-color' val: 'forestgreen'.\x22\x0acss selector: '#',pid,'10' attr: 'box-shadow' val: '3px 3px 5px rgba(0, 0, 0, 0.5)'.\x0acss selector: '#',pid,'10' attr: 'border-radius' val: '4px'.\x0acss selector: '#',pid,'10' attr: 'width' val: '60%'.\x0acss selector: '#',pid,'10' attr: 'left' val: '20%'.\x0a\x0acss selector: '#',pid,'10' attr: 'font' val:'12px/25px Arial, sans-serif'.\x0a\x0a\x22mathConverter\x22\x0aLatex convert: '#',pid,'10'. \x0a",
-messageSends: ["selector:attr:val:", ",", "convert:"],
+source: "paintOn: css\x0a\x0a\x0acss selector: '#',pid,'10' attr:'position' val: 'relative'.\x0a\x22css selector: '#',pid,'10' attr: 'border-style' val: 'solid'.\x22\x0acss selector: '#',pid,'10' attr: 'padding' val: '7px'.\x0acss selector: '#',pid,'10' attr: 'border-width' val: '1px'.\x0a\x22css selector: '#',pid,'10' attr: 'border-color' val: 'forestgreen'.\x22\x0acss selector: '#',pid,'10' attr: 'box-shadow' val: '3px 3px 5px rgba(0, 0, 0, 0.5)'.\x0acss selector: '#',pid,'10' attr: 'border-radius' val: '4px'.\x0acss selector: '#',pid,'10' attr: 'width' val: '60%'.\x0acss selector: '#',pid,'10' attr: 'left' val: '20%'.\x0a\x0acss selector: '#',pid,'10' attr: 'font' val:'12px/25px Arial, sans-serif'.\x0a\x0a\x22mathConverter\x22\x0aLatex id: pid,'10'. \x0a",
+messageSends: ["selector:attr:val:", ",", "id:"],
 referencedClasses: ["Latex"]
 }),
 smalltalk.WikiPage);
