@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My First Amber Project</title>
+    <title>Platanos</title>
+</script>
+<script type="text/javascript"
+  src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script src="../../Markdown/Markdown.Converter.js" type="text/javascript"></script>
+<script src="../../Markdown/Markdown.Sanitizer.js" type="text/javascript"></script>
     <script src="../../js/amber.js" type="text/javascript"></script>
     <script type="text/javascript">
       loadAmber({
-        files: ['DomBinding.js' , 'CSSCanvas.js' , 'Component.js', 'Platanos.js' ,  'Platanos-Search.js'],
+        files: [ 'Markdown.js' , 'DomBinding.js' , 'CSSCanvas.js' , 'Component.js', 'Platanos.js' ,  'Platanos-Search.js' , 'Platanos-WikiPage.js'],
         prefix: './js',
         ready: function() {
 
@@ -14,8 +21,8 @@
     <script>
     $(document).keyup(function(e) {
   if (e.keyCode == 113) {smalltalk.Browser._open()}   // esc
-});</script>
-
+});
+</script>
   </head>
   <body>
   </body>
