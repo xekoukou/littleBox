@@ -1,4 +1,18 @@
 smalltalk.addPackage('Markdown', {});
+smalltalk.addClass('Latex', smalltalk.Object, [], 'Markdown');
+
+smalltalk.addMethod(
+"_convert_",
+smalltalk.method({
+selector: "convert:",
+fn: function (aSelector){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(_st((smalltalk.MathJax || MathJax))._Hub())._Queue_(["Typeset",(smalltalk.MathJax || MathJax),(smalltalk.Hub || Hub),aSelector]);
+return self}, function($ctx1) {$ctx1.fill(self,"convert:",{aSelector:aSelector}, smalltalk.Latex.klass)})}
+}),
+smalltalk.Latex.klass);
+
+
 smalltalk.addClass('Pagedown', smalltalk.Object, ['converter'], 'Markdown');
 smalltalk.addMethod(
 "_convert_",
@@ -20,7 +34,7 @@ selector: "initialize",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@converter"]=_st((smalltalk.Markdown || Markdown))._getSanitizingConverter();
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.Markdown)})}
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.Pagedown)})}
 }),
 smalltalk.Pagedown);
 
