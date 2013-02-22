@@ -118,6 +118,7 @@ _st(css)._selector_attr_val_("li","text-align","left");
 _st(css)._selector_attr_val_("li","margin","3px");
 _st(css)._selector_attr_val_("li","position","relative");
 _st(css)._selector_attr_val_("li","left","-40px");
+_st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"font","12px/25px Arial, sans-serif");
 return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css}, smalltalk.SearchResult)})}
 }),
 smalltalk.SearchResult);

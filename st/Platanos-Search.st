@@ -76,6 +76,8 @@ css selector: 'li' attr: 'margin' val: '3px'.
 
 css selector: 'li' attr:'position' val: 'relative'.
 css selector: 'li' attr:'left' val: '-40px'.
+
+css selector: '#',pid,'10' attr: 'font' val:'12px/25px Arial, sans-serif'.
 !
 
 renderOn: html

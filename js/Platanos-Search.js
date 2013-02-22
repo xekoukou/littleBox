@@ -159,10 +159,11 @@ _st(css)._selector_attr_val_("li","text-align","left");
 _st(css)._selector_attr_val_("li","margin","3px");
 _st(css)._selector_attr_val_("li","position","relative");
 _st(css)._selector_attr_val_("li","left","-40px");
+_st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"font","12px/25px Arial, sans-serif");
 return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css}, smalltalk.SearchResult)})},
 args: ["css"],
-source: "paintOn: css\x0a\x0a\x0a\x22css selector: 'li' attr: 'border-style' val: 'solid'.\x0acss selector: 'li' attr: 'border-width' val: '1px'.\x22\x0acss selector: 'li' attr: 'padding' val: '5px'.\x0acss selector: 'li' attr: 'border-color' val: 'forestgreen'.\x0acss selector: 'li' attr: 'box-shadow' val: '1px 1px 3px rgba(0, 0, 0, 0.5)'.\x0acss selector: 'li' attr: 'border-radius' val: '2px'.\x0acss selector: 'li' attr: 'text-align' val: 'left'.\x0acss selector: 'li' attr: 'margin' val: '3px'.\x0a\x0acss selector: 'li' attr:'position' val: 'relative'.\x0acss selector: 'li' attr:'left' val: '-40px'.\x0a",
-messageSends: ["selector:attr:val:"],
+source: "paintOn: css\x0a\x0a\x0a\x22css selector: 'li' attr: 'border-style' val: 'solid'.\x0acss selector: 'li' attr: 'border-width' val: '1px'.\x22\x0acss selector: 'li' attr: 'padding' val: '5px'.\x0acss selector: 'li' attr: 'border-color' val: 'forestgreen'.\x0acss selector: 'li' attr: 'box-shadow' val: '1px 1px 3px rgba(0, 0, 0, 0.5)'.\x0acss selector: 'li' attr: 'border-radius' val: '2px'.\x0acss selector: 'li' attr: 'text-align' val: 'left'.\x0acss selector: 'li' attr: 'margin' val: '3px'.\x0a\x0acss selector: 'li' attr:'position' val: 'relative'.\x0acss selector: 'li' attr:'left' val: '-40px'.\x0a\x0acss selector: '#',pid,'10' attr: 'font' val:'12px/25px Arial, sans-serif'.\x0a",
+messageSends: ["selector:attr:val:", ","],
 referencedClasses: []
 }),
 smalltalk.SearchResult);
