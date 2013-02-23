@@ -1445,8 +1445,10 @@ remove: anObject
 !Set methodsFor: 'comparing'!
 
 = aCollection
-	^self class = aCollection class and: [
-		elements = aCollection asArray]
+	self class = aCollection class ifFalse: [ ^ false ].
+    self size = aCollection size ifFalse: [ ^ false ].
+	self do: [:each | (aCollection includes: each) ifFalse: [ ^ false ] ].
+	^ true
 ! !
 
 !Set methodsFor: 'converting'!
@@ -1456,6 +1458,10 @@ asArray
 ! !
 
 !Set methodsFor: 'enumerating'!
+
+collect: aBlock
+	^self class withAll: (elements collect: aBlock)
+!
 
 detect: aBlock ifNone: anotherBlock
 	^elements detect: aBlock ifNone: anotherBlock

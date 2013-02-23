@@ -1480,6 +1480,17 @@ testAt
 	self should: [Set new at: 1 put: 2] raise: Error
 !
 
+testCollect
+	self assert: #(0 2) asSet equals: (#(5 6 8) asSet collect: [ :x | x \\ 3 ])
+!
+
+testComparing
+	self assert: #(0 2) asSet equals: #(0 2) asSet.
+    self assert: #(2 0) asSet equals: #(0 2) asSet.
+    self deny: #(0 2 3) asSet = #(0 2) asSet.
+    self deny: #(1 2) asSet = #(0 2) asSet
+!
+
 testPrintString
 	| set |
 	set := Set new.
