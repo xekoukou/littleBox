@@ -1,4 +1,4 @@
-Smalltalk current createPackage: 'Compiler-Tests' properties: #{}!
+Smalltalk current createPackage: 'Compiler-Tests'!
 TestCase subclass: #AbstractASTInterpreterTest
 	instanceVariableNames: ''
 	package: 'Compiler-Tests'!
@@ -13,37 +13,37 @@ interpreter
 
 analyze: aNode forClass: aClass
 	(SemanticAnalyzer on: aClass) visit: aNode.
-    ^ aNode
+	^ aNode
 !
 
 interpret: aString
-	^ self 
-    	interpret: aString 
-        withArguments: Dictionary new
+	^ self
+		interpret: aString
+		withArguments: Dictionary new
 !
 
 interpret: aString receiver: anObject withArguments: aDictionary
 	"The food is a methodNode. Interpret the sequenceNode only"
-    
-    | ctx |
-    
-    ctx := AIContext new.
-    ctx receiver: anObject.
-    aDictionary keysAndValuesDo: [ :key :value |
-    	ctx localAt: key put: value ].
-    
-    ^ self interpreter
-    	context: ctx;
-    	interpret: (self parse: aString forClass: anObject class) 
-        	nodes first;
-        result
+	
+	| ctx |
+	
+	ctx := AIContext new.
+	ctx receiver: anObject.
+	aDictionary keysAndValuesDo: [ :key :value |
+		ctx localAt: key put: value ].
+	
+	^ self interpreter
+		context: ctx;
+		interpret: (self parse: aString forClass: anObject class)
+			nodes first;
+		result
 !
 
 interpret: aString withArguments: aDictionary
-	^ self 
-    	interpret: aString 
-        receiver: Object new
-        withArguments: aDictionary
+	^ self
+		interpret: aString
+		receiver: Object new
+		withArguments: aDictionary
 ! !
 
 !AbstractASTInterpreterTest methodsFor: 'parsing'!
@@ -74,8 +74,8 @@ testBinarySend
 
 testBlockLiteral
 	self assert: (self interpret: 'foo ^ true ifTrue: [ 1 ] ifFalse: [ 2 ]') equals: 1.
-    self assert: (self interpret: 'foo true ifTrue: [ ^ 1 ] ifFalse: [ 2 ]') equals: 1.
-    self assert: (self interpret: 'foo ^ false ifTrue: [ 1 ] ifFalse: [ 2 ]') equals: 2
+	self assert: (self interpret: 'foo true ifTrue: [ ^ 1 ] ifFalse: [ 2 ]') equals: 1.
+	self assert: (self interpret: 'foo ^ false ifTrue: [ 1 ] ifFalse: [ 2 ]') equals: 2
 !
 
 testCascade
@@ -92,30 +92,30 @@ testDynamicDictionary
 
 testInlinedJSStatement
 	self assert: (self interpret: 'foo <return 2+3>') equals: 5.
-    
-    self 
-    	assert: (self 
-    		interpret: 'foo: anInteger <return 2 + anInteger>' 
-        	withArguments: #{ 'anInteger' -> 3}) 
+	
+	self
+		assert: (self
+			interpret: 'foo: anInteger <return 2 + anInteger>'
+			withArguments: #{ 'anInteger' -> 3})
 		equals: 5
 !
 
 testInstVarAccess
-	self 
-    	assert: (self 
-    		interpret: 'foo ^ x'
-        	receiver: 2@3
-        	withArguments: #{})
-        equals: 2
+	self
+		assert: (self
+			interpret: 'foo ^ x'
+			receiver: 2@3
+			withArguments: #{})
+		equals: 2
 !
 
 testInstVarAssignment
-	self 
-    	assert: (self 
-    		interpret: 'foo: anInteger x := anInteger. ^ x'
-        	receiver: Point new
-        	withArguments: #{'anInteger' -> 2})
-        equals: 2
+	self
+		assert: (self
+			interpret: 'foo: anInteger x := anInteger. ^ x'
+			receiver: Point new
+			withArguments: #{'anInteger' -> 2})
+		equals: 2
 !
 
 testNonlocalReturn
@@ -123,16 +123,22 @@ testNonlocalReturn
 !
 
 testReceiver
-	self 
-    	assert: (self 
-    		interpret: 'foo ^ self'
-        	receiver: 2@3
-        	withArguments: #{})
-        equals: 2@3
+	self
+		assert: (self
+			interpret: 'foo ^ self'
+			receiver: 2@3
+			withArguments: #{})
+		equals: 2@3
 !
 
 testTempAssignment
 	self assert: (self interpret: 'foo | a | a := 2. ^ a') equals: 2
+!
+
+testThisContext
+	self assert: (self interpret: 'foo ^ thisContext') outerContext isNil.
+	self assert: (self interpret: 'foo ^ [ thisContext ] value') outerContext notNil.
+	self assert: (self interpret: 'foo ^ [ thisContext ] value outerContext == thisContext')
 ! !
 
 AbstractASTInterpreterTest subclass: #ASTSteppingInterpreterTest
@@ -149,55 +155,55 @@ interpreter
 
 testAtEnd
 	self interpret: 'foo 1 + 2'.
-    self deny: self interpreter atEnd.
+	self deny: self interpreter atEnd.
 
-    self interpreter step.
-    self deny: self interpreter atEnd.
-    
-    self interpreter step.
-    self deny: self interpreter atEnd.
-    
-    self interpreter step.
-    self deny: self interpreter atEnd.
-    
-    self interpreter step.
-    self assert: self interpreter atEnd
+	self interpreter step.
+	self deny: self interpreter atEnd.
+	
+	self interpreter step.
+	self deny: self interpreter atEnd.
+	
+	self interpreter step.
+	self deny: self interpreter atEnd.
+	
+	self interpreter step.
+	self assert: self interpreter atEnd
 !
 
 testMessageSend
 	self interpret: 'foo 1 + 2'.
-    
-    "SequenceNode"
-    self interpreter step.
-    
-    "SendNode"
-    self interpreter step.
-    
-     "ValueNode"
-    self interpreter step.
-    self assert: self interpreter currentNode value equals: 1.
-    
-    "ValueNode"
-    self interpreter step.
-    self assert: self interpreter currentNode value equals: 2.
-    
-    "Result"
-    self interpreter step.
-    self assert: self interpreter result equals: 3
+	
+	"SequenceNode"
+	self interpreter step.
+	
+	"SendNode"
+	self interpreter step.
+	
+	"ValueNode"
+	self interpreter step.
+	self assert: self interpreter currentNode value equals: 1.
+	
+	"ValueNode"
+	self interpreter step.
+	self assert: self interpreter currentNode value equals: 2.
+	
+	"Result"
+	self interpreter step.
+	self assert: self interpreter result equals: 3
 !
 
 testSimpleStepping
 	self interpret: 'foo 1'.
-    
-    "SequenceNode"
-    self interpreter step.
-    
-    self assert: self interpreter result isNil.
-    
-    "ValueNode"
-    self interpreter step.
-    
-    self assert: self interpreter result equals: 1
+	
+	"SequenceNode"
+	self interpreter step.
+	
+	self assert: self interpreter result isNil.
+	
+	"ValueNode"
+	self interpreter step.
+	
+	self assert: self interpreter result equals: 1
 ! !
 
 TestCase subclass: #CodeGeneratorTest
@@ -252,6 +258,12 @@ testAssignment
 	self should: 'foo | a | ^ a := true ifTrue: [ 1 ]' return: 1
 !
 
+testBackslashSelectors
+	
+	self should: '\ arg ^ 4' return: 4.
+	self should: '\\ arg ^ 42' return: 42
+!
+
 testBlockReturn
 	self should: 'foo ^ #(1 2 3) collect: [ :each | true ifTrue: [ each + 1 ] ]' return: #(2 3 4).
 	self should: 'foo ^ #(1 2 3) collect: [ :each | false ifFalse: [ each + 1 ] ]' return: #(2 3 4).
@@ -265,40 +277,40 @@ testCascades
 
 testDynamicArrayElementsOrdered
 	self should: 'foo
-  | x |
-  x := 1.
-  ^ { x. true ifTrue: [ x := 2 ] }
+	| x |
+	x := 1.
+	^ { x. true ifTrue: [ x := 2 ] }
 ' return: #(1 2).
 !
 
 testDynamicDictionaryElementsOrdered
 	self should: 'foo
-  | x |
-  x := ''foo''->1.
-  ^ #{ x. (true ifTrue: [ x := ''bar''->2 ]) }
+	| x |
+	x := ''foo''->1.
+	^ #{ x. (true ifTrue: [ x := ''bar''->2 ]) }
 ' return: #{'foo'->1. 'bar'->2}.
 !
 
 testInnerTemporalDependentElementsOrdered
 	self should: 'foo
-  | x |
-  x := Array.
-  ^ x with: ''foo''->x with: ''bar''->(true ifTrue: [ x := 2 ])
+	| x |
+	x := Array.
+	^ x with: ''foo''->x with: ''bar''->(true ifTrue: [ x := 2 ])
 ' return: {'foo'->Array. 'bar'->2}.
 	self should: 'foo
-  | x |
-  x := 1.
-  ^ Array with: ''foo''->x with: ''bar''->(true ifTrue: [ x := 2 ])
+	| x |
+	x := 1.
+	^ Array with: ''foo''->x with: ''bar''->(true ifTrue: [ x := 2 ])
 ' return: {'foo'->1. 'bar'->2}.
 	self should: 'foo
-  | x |
-  x := 1.
-  ^ { ''foo''->x. ''bar''->(true ifTrue: [ x := 2 ]) }
+	| x |
+	x := 1.
+	^ { ''foo''->x. ''bar''->(true ifTrue: [ x := 2 ]) }
 ' return: {'foo'->1. 'bar'->2}.
 	self should: 'foo
-  | x |
-  x := 1.
-  ^ #{ ''foo''->x. ''bar''->(true ifTrue: [ x := 2 ]) }
+	| x |
+	x := 1.
+	^ #{ ''foo''->x. ''bar''->(true ifTrue: [ x := 2 ]) }
 ' return: #{'foo'->1. 'bar'->2}.
 !
 
@@ -332,6 +344,15 @@ testMessageSends
 	self should: 'foo ^ 1 to: 5 by: 2' return: #(1 3 5)
 !
 
+testMutableLiterals
+	"Mutable literals must be aliased in cascades.
+	See https://github.com/amber-smalltalk/amber/issues/428"
+	
+	self 
+		should: 'foo ^ #( 1 2 ) at: 1 put: 3; yourself' 
+		return: #(3 2)
+!
+
 testNestedIfTrue
 	self should: 'foo ^ true ifTrue: [ false ifFalse: [ 1 ] ]' return: 1.
 	self should: 'foo ^ true ifTrue: [ false ifTrue: [ 1 ] ]' return: nil.
@@ -347,17 +368,22 @@ testNonLocalReturn
 	self should: 'foo [ :x | ^ x + x ] value: 4. ^ 2' return: 8
 !
 
+testPascalCaseGlobal
+	self should: 'foo ^Object' return: (smalltalk at: 'Object').
+	self should: 'foo ^NonExistent' return: nil
+!
+
 testSendReceiverAndArgumentsOrdered
 	self should: 'foo
-  | x |
-  x := 1.
-  ^ Array with: x with: (true ifTrue: [ x := 2 ])
+	| x |
+	x := 1.
+	^ Array with: x with: (true ifTrue: [ x := 2 ])
 ' return: #(1 2).
 
 	self should: 'foo
-  | x |
-  x := Array.
-  ^ x with: x with: (true ifTrue: [ x := 2 ])
+	| x |
+	x := Array.
+	^ x with: x with: (true ifTrue: [ x := 2 ])
 ' return: {Array. 2}.
 !
 
@@ -399,6 +425,17 @@ testifNotNil
 
 	self should: 'foo 1 ifNotNil: [ ^ 2 ]' return: 2.
 	self should: 'foo nil ifNotNil: [ ^ 2 ]' return: receiver.
+!
+
+testifNotNilWithArgument
+	self should: 'foo ^ 1 ifNotNil: [ :val | val + 2 ]' return: 3.
+	self should: 'foo ^ nil ifNotNil: [ :val | val + 2 ]' return: nil.
+	
+	self should: 'foo ^ 1 ifNil: [ 5 ] ifNotNil: [ :val | val + 2 ]' return: 3.
+	self should: 'foo ^ nil ifNil: [ 5 ] ifNotNil: [ :val | val + 2 ]' return: 5.
+	
+	self should: 'foo ^ 1 ifNotNil: [ :val | val + 2 ] ifNil: [ 5 ]' return: 3.
+	self should: 'foo ^ nil ifNotNil: [ :val | val + 2 ] ifNil: [ 5 ]' return: 5
 !
 
 testifTrue
@@ -547,8 +584,8 @@ testScopeLevel
 	ast := smalltalk parse: src.
 	analyzer visit: ast.
 
-	self assert: ast scope scopeLevel = 1.
-	self assert: ast nodes first nodes last nodes first nodes first scope scopeLevel = 3
+	self assert: ast scope scopeLevel equals: 1.
+	self assert: ast nodes first nodes last nodes first nodes first scope scopeLevel equals: 3
 !
 
 testUnknownVariables

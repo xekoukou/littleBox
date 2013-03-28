@@ -1,4 +1,4 @@
-Smalltalk current createPackage: 'Compiler-Exceptions' properties: #{}!
+Smalltalk current createPackage: 'Compiler-Exceptions'!
 Error subclass: #CompilerError
 	instanceVariableNames: ''
 	package: 'Compiler-Exceptions'!
@@ -9,7 +9,7 @@ CompilerError subclass: #ParseError
 	instanceVariableNames: ''
 	package: 'Compiler-Exceptions'!
 !ParseError commentStamp!
-Instance of ParseError are signaled on any parsing error. 
+Instance of ParseError are signaled on any parsing error.
 See `Smalltalk >> #parse:`!
 
 CompilerError subclass: #SemanticError
@@ -87,5 +87,24 @@ variableName
 
 variableName: aString
 	variableName := aString
+! !
+
+ErrorHandler subclass: #RethrowErrorHandler
+	instanceVariableNames: ''
+	package: 'Compiler-Exceptions'!
+!RethrowErrorHandler commentStamp!
+This class is used in the commandline version of the compiler.
+It uses the handleError: message of ErrorHandler for printing the stacktrace and throws the error again as JS exception.
+As a result Smalltalk errors are not swallowd by the Amber runtime and compilation can be aborted.!
+
+!RethrowErrorHandler methodsFor: 'error handling'!
+
+basicSignal: anError
+	<throw anError>
+!
+
+handleError: anError
+	super handleError: anError.
+	self basicSignal: anError
 ! !
 
