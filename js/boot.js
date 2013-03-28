@@ -71,10 +71,15 @@ function SmalltalkMetaclass() {
 function SmalltalkPackage() {}
 function SmalltalkMethod() {}
 function SmalltalkNil() {}
-function SmalltalkSymbol(string) {
-	this.value = string;
-}
+
 function SmalltalkOrganizer() {
+}
+
+function SmalltalkPackageOrganizer() {
+    this.elements = [];
+}
+
+function SmalltalkClassOrganizer() {
     this.elements = [];
 }
 
@@ -92,6 +97,8 @@ inherits(SmalltalkNil, SmalltalkObject);
 inherits(SmalltalkMethod, SmalltalkObject);
 inherits(SmalltalkPackage, SmalltalkObject);
 inherits(SmalltalkOrganizer, SmalltalkObject);
+inherits(SmalltalkPackageOrganizer, SmalltalkOrganizer);
+inherits(SmalltalkClassOrganizer, SmalltalkOrganizer);
 
 
 function Smalltalk() {
@@ -156,17 +163,6 @@ function Smalltalk() {
 		}
 	};
 
-	/* The symbol table ensures symbol unicity */
-
-	var symbolTable = {};
-	st.symbolFor = function(string) {
-		if(symbolTable[string] === undefined) {
-			symbolTable[string] = new SmalltalkSymbol(string);
-		}
-
-		return symbolTable[string];
-	};
-
 	/* Unique ID number generator */
 
 	var oid = 0;
@@ -184,7 +180,7 @@ function Smalltalk() {
 	function pkg(spec) {
 		var that = new SmalltalkPackage();
 		that.pkgName = spec.pkgName;
-        that.organization = new SmalltalkOrganizer();
+        that.organization = new SmalltalkPackageOrganizer();
 		that.properties = spec.properties || {};
 		return that;
 	}
@@ -233,7 +229,9 @@ function Smalltalk() {
             enumerable:false, configurable: true, writable: false
 		});
 
-		klass.organization = new SmalltalkOrganizer();
+		klass.organization          = new SmalltalkClassOrganizer();
+        klass.organization.theClass = klass;
+
 		Object.defineProperty(klass, "methods", {
 			value: {},
 			enumerable: false, configurable: true, writable: true
@@ -464,14 +462,36 @@ function Smalltalk() {
         delete st[klass.className];
     };
 
-	/* Add/remove a method to/from a class */
+	/* 
+     * Add/remove a method to/from a class 
+     */
 
-	st.addMethod = function(jsSelector, method, klass) {
-		method.jsSelector = jsSelector;
+    /* This is a temporary version of addMethod() for backward compatibility */
+	st.addMethod = function(method_exJsSelector, klass_exMethod, exKlass) {
+        if (typeof method_exJsSelector === "string") { //legacy
+            if (method_exJsSelector !== st.selector(klass_exMethod.selector)) {
+                console.log("DISCREPANCY: arg, in_method");
+                console.log(method_exJsSelector);
+                console.log(st.selector(klass_exMethod.selector));
+                klass_exMethod.jsSelector = method_exJsSelector;
+            }
+            return new_addMethod(klass_exMethod, exKlass);
+        }
+
+        return new_addMethod(method_exJsSelector, klass_exMethod);
+    }
+
+    // later, st.addMethod can be this:
+    function new_addMethod(method, klass) {
+        if (!(method.jsSelector)) {
+            method.jsSelector = st.selector(method.selector);
+        }
 		installMethod(method, klass);
 		klass.methods[method.selector] = method;
 		method.methodClass = klass;
 
+        // During the bootstrap, #addCompiledMethod is not used.
+        // Therefore we populate the organizer here too
         klass.organization.elements.addElement(method.category);
 
         for(var i=0; i<method.messageSends.length; i++) {
@@ -490,17 +510,8 @@ function Smalltalk() {
 	    delete klass.methods[method.selector];
 
 		var selectors = Object.keys(klass.methods);
-		var shouldDeleteProtocol = true;
-
-		for(var i = 0, l = selectors.length; i<l; i++) {
-            if(klass.methods[selectors[i]].category === protocol) {
-                shouldDeleteProtocol = false;
-				break;
-            };
-        };
-        if(shouldDeleteProtocol) {
-            klass.organization.elements.removeElement(protocol)
-        };
+        // Do *not* delete protocols from here.
+        // This is handled by #removeCompiledMethod
     };
 
 	/* Handles unhandled errors during message sends */
@@ -710,6 +721,9 @@ function Smalltalk() {
         }
     };
 
+    /* Backward compatibility with Amber 0.9.1 */
+    st.symbolFor = function(aString) { return aString; }
+
     /* Smalltalk initialization. Called on page load */
 
     st.initialize = function() {
@@ -813,24 +827,26 @@ smalltalk.wrapClassName("Smalltalk", "Kernel-Objects", Smalltalk, smalltalk.Obje
 smalltalk.wrapClassName("Package", "Kernel-Objects", SmalltalkPackage, smalltalk.Object, false);
 smalltalk.wrapClassName("CompiledMethod", "Kernel-Methods", SmalltalkMethod, smalltalk.Object, false);
 smalltalk.wrapClassName("Organizer", "Kernel-Objects", SmalltalkOrganizer, smalltalk.Object, false);
+smalltalk.wrapClassName("PackageOrganizer", "Kernel-Objects", SmalltalkPackageOrganizer, smalltalk.Organizer, false);
+smalltalk.wrapClassName("ClassOrganizer", "Kernel-Objects", SmalltalkClassOrganizer, smalltalk.Organizer, false);
 
 
-smalltalk.wrapClassName("Number", "Kernel", Number, smalltalk.Object);
-smalltalk.wrapClassName("BlockClosure", "Kernel", Function, smalltalk.Object);
-smalltalk.wrapClassName("Boolean", "Kernel", Boolean, smalltalk.Object);
-smalltalk.wrapClassName("Date", "Kernel", Date, smalltalk.Object);
-smalltalk.wrapClassName("UndefinedObject", "Kernel", SmalltalkNil, smalltalk.Object, false);
+smalltalk.wrapClassName("Number", "Kernel-Objects", Number, smalltalk.Object);
+smalltalk.wrapClassName("BlockClosure", "Kernel-Methods", Function, smalltalk.Object);
+smalltalk.wrapClassName("Boolean", "Kernel-Objects", Boolean, smalltalk.Object);
+smalltalk.wrapClassName("Date", "Kernel-Objects", Date, smalltalk.Object);
+smalltalk.wrapClassName("UndefinedObject", "Kernel-Objects", SmalltalkNil, smalltalk.Object, false);
 
-smalltalk.addClass("Collection", smalltalk.Object, null, "Kernel");
-smalltalk.addClass("SequenceableCollection", smalltalk.Collection, null, "Kernel");
-smalltalk.addClass("CharacterArray", smalltalk.SequenceableCollection, null, "Kernel");
-smalltalk.wrapClassName("String", "Kernel", String, smalltalk.CharacterArray);
-smalltalk.wrapClassName("Symbol", "Kernel", SmalltalkSymbol, smalltalk.CharacterArray, false);
-smalltalk.wrapClassName("Array", "Kernel", Array, smalltalk.SequenceableCollection);
-smalltalk.wrapClassName("RegularExpression", "Kernel", RegExp, smalltalk.Object);
+smalltalk.addClass("Collection", smalltalk.Object, null, "Kernel-Collections");
+smalltalk.addClass("IndexableCollection", smalltalk.Collection, null, "Kernel-Collections");
+smalltalk.addClass("SequenceableCollection", smalltalk.IndexableCollection, null, "Kernel-Collections");
+smalltalk.addClass("CharacterArray", smalltalk.SequenceableCollection, null, "Kernel-Collections");
+smalltalk.wrapClassName("String", "Kernel-Collections", String, smalltalk.CharacterArray);
+smalltalk.wrapClassName("Array", "Kernel-Collections", Array, smalltalk.SequenceableCollection);
+smalltalk.wrapClassName("RegularExpression", "Kernel-Collections", RegExp, smalltalk.Object);
 
-smalltalk.wrapClassName("Error", "Kernel", Error, smalltalk.Object);
-smalltalk.wrapClassName("MethodContext", "Kernel", SmalltalkMethodContext, smalltalk.Object, false);
+smalltalk.wrapClassName("Error", "Kernel-Exceptions", Error, smalltalk.Object);
+smalltalk.wrapClassName("MethodContext", "Kernel-Methods", SmalltalkMethodContext, smalltalk.Object, false);
 
 /* Alias definitions */
 
