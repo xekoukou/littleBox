@@ -1,7 +1,6 @@
-smalltalk.addPackage('Platanos', {});
+smalltalk.addPackage('Platanos');
 smalltalk.addClass('Platanos', smalltalk.Object, [], 'Platanos');
 smalltalk.addMethod(
-"_initialize",
 smalltalk.method({
 selector: "initialize",
 category: 'not yet classified',
@@ -17,7 +16,28 @@ referencedClasses: []
 smalltalk.Platanos);
 
 smalltalk.addMethod(
-"_testSearchPage",
+smalltalk.method({
+selector: "testDocGraphCell",
+category: 'not yet classified',
+fn: function (){
+var self=this;
+var json,doc;
+function $Doc(){return smalltalk.Doc||(typeof Doc=="undefined"?nil:Doc)}
+function $Component(){return smalltalk.Component||(typeof Component=="undefined"?nil:Component)}
+function $DocGraphCell(){return smalltalk.DocGraphCell||(typeof DocGraphCell=="undefined"?nil:DocGraphCell)}
+return smalltalk.withContext(function($ctx1) { 
+json="{\x22sha1\x22:345436 , \x22csummary\x22: \x22this is my first commit\x22}";
+doc=_st($Doc())._json_(json);
+_st($DocGraphCell())._connect_at_to_doc_("",(0),_st($Component())._root(),doc);
+return self}, function($ctx1) {$ctx1.fill(self,"testDocGraphCell",{json:json,doc:doc},smalltalk.Platanos)})},
+args: [],
+source: "testDocGraphCell\x0a\x0a|json doc|\x0a\x0ajson := '{\x22sha1\x22:345436 , \x22csummary\x22: \x22this is my first commit\x22}'.\x0adoc := Doc json: json.\x0aDocGraphCell connect: '' at: 0 to: (Component root) doc: doc.",
+messageSends: ["json:", "connect:at:to:doc:", "root"],
+referencedClasses: ["Doc", "Component", "DocGraphCell"]
+}),
+smalltalk.Platanos);
+
+smalltalk.addMethod(
 smalltalk.method({
 selector: "testSearchPage",
 category: 'not yet classified',
@@ -38,7 +58,6 @@ referencedClasses: ["Component", "SearchInput", "SearchResult"]
 smalltalk.Platanos);
 
 smalltalk.addMethod(
-"_testWikiPage",
 smalltalk.method({
 selector: "testWikiPage",
 category: 'not yet classified',

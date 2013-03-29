@@ -1,7 +1,7 @@
-Smalltalk current createPackage: 'Platanos-WikiPage'!
+Smalltalk current createPackage: 'Platanos_WikiPage'!
 Component subclass: #WikiPage
 	instanceVariableNames: 'markdown converter'
-	package: 'Platanos-WikiPage'!
+	package: 'Platanos_WikiPage'!
 
 !WikiPage methodsFor: 'not yet classified'!
 

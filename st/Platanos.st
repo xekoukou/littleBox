@@ -1,4 +1,4 @@
-Smalltalk current createPackage: 'Platanos' properties: #{}!
+Smalltalk current createPackage: 'Platanos'!
 Object subclass: #Platanos
 	instanceVariableNames: ''
 	package: 'Platanos'!
@@ -8,6 +8,15 @@ Object subclass: #Platanos
 initialize
 
 super initialize
+!
+
+testDocGraphCell
+
+|json doc|
+
+json := '{"sha1":345436 , "csummary": "this is my first commit"}'.
+doc := Doc json: json.
+DocGraphCell connect: '' at: 0 to: (Component root) doc: doc.
 !
 
 testSearchPage

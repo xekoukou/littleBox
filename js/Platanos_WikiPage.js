@@ -1,5 +1,5 @@
-smalltalk.addPackage('Platanos-WikiPage');
-smalltalk.addClass('WikiPage', smalltalk.Component, ['markdown', 'converter'], 'Platanos-WikiPage');
+smalltalk.addPackage('Platanos_WikiPage');
+smalltalk.addClass('WikiPage', smalltalk.Component, ['markdown', 'converter'], 'Platanos_WikiPage');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
