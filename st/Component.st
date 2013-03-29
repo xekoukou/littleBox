@@ -1,4 +1,4 @@
-Smalltalk current createPackage: 'Component' properties: #{}!
+Smalltalk current createPackage: 'Component'!
 Object subclass: #Component
 	instanceVariableNames: 'connectorId position parent pid mid connectors variables equations'
 	package: 'Component'!
@@ -95,6 +95,7 @@ parent := aParent.
 pid := parent assignId.
 position:=aPosition.
 
+self function.
 
 ids:=self realize.
 self setConnectors.

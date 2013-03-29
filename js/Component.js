@@ -1,7 +1,6 @@
-smalltalk.addPackage('Component', {});
+smalltalk.addPackage('Component');
 smalltalk.addClass('Component', smalltalk.Object, ['connectorId', 'position', 'parent', 'pid', 'mid', 'connectors', 'variables', 'equations'], 'Component');
 smalltalk.addMethod(
-"_assignId",
 smalltalk.method({
 selector: "assignId",
 category: 'initializing',
@@ -27,7 +26,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_bindComp_atCon_atPos_",
 smalltalk.method({
 selector: "bindComp:atCon:atPos:",
 category: 'binding',
@@ -55,7 +53,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_bindVars_conId_pos_",
 smalltalk.method({
 selector: "bindVars:conId:pos:",
 category: 'binding',
@@ -104,32 +101,32 @@ referencedClasses: ["Array"]
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_connect_at_to_",
 smalltalk.method({
 selector: "connect:at:to:",
 category: 'initializing',
 fn: function (aConnectorId,aPosition,aParent){
 var self=this;
 var ids;
-return smalltalk.withContext(function($ctx1) { self["@connectorId"]=aConnectorId;
+return smalltalk.withContext(function($ctx1) { 
+self["@connectorId"]=aConnectorId;
 self["@parent"]=aParent;
 self["@pid"]=_st(self["@parent"])._assignId();
 self["@position"]=aPosition;
+_st(self)._function();
 ids=_st(self)._realize();
 _st(self)._setConnectors();
 _st(self)._setVariables();
 _st(self)._setEquations();
 _st(self["@parent"])._bindComp_atCon_atPos_(self,aConnectorId,aPosition);
-return self}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorId:aConnectorId,aPosition:aPosition,aParent:aParent,ids:ids}, smalltalk.Component)})},
+return self}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorId:aConnectorId,aPosition:aPosition,aParent:aParent,ids:ids},smalltalk.Component)})},
 args: ["aConnectorId", "aPosition", "aParent"],
-source: "connect: aConnectorId at: aPosition to: aParent\x0a\x0a\x22the connectorId is the id of the element that a connector represents wthout the pid of the parent\x22\x0a|ids|\x0a\x0aconnectorId := aConnectorId.\x0aparent := aParent.\x0apid := parent assignId.\x0aposition:=aPosition.\x0a\x0a\x0aids:=self realize.\x0aself setConnectors.\x0aself setVariables.\x0aself setEquations.\x0a\x0aparent bindComp: self atCon: aConnectorId atPos: aPosition\x0a\x0a",
-messageSends: ["assignId", "realize", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:"],
+source: "connect: aConnectorId at: aPosition to: aParent\x0a\x0a\x22the connectorId is the id of the element that a connector represents wthout the pid of the parent\x22\x0a|ids|\x0a\x0aconnectorId := aConnectorId.\x0aparent := aParent.\x0apid := parent assignId.\x0aposition:=aPosition.\x0a\x0aself function.\x0a\x0aids:=self realize.\x0aself setConnectors.\x0aself setVariables.\x0aself setEquations.\x0a\x0aparent bindComp: self atCon: aConnectorId atPos: aPosition\x0a",
+messageSends: ["assignId", "function", "realize", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:"],
 referencedClasses: []
 }),
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_connect_to_",
 smalltalk.method({
 selector: "connect:to:",
 category: 'initializing',
@@ -145,7 +142,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_connectors",
 smalltalk.method({
 selector: "connectors",
 category: 'accessing',
@@ -163,7 +159,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_disconnectCompAt_at_",
 smalltalk.method({
 selector: "disconnectCompAt:at:",
 category: 'diconnecting',
@@ -186,7 +181,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_equations",
 smalltalk.method({
 selector: "equations",
 category: 'accessing',
@@ -204,7 +198,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_function",
 smalltalk.method({
 selector: "function",
 category: 'subclassing',
@@ -219,7 +212,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_initialize",
 smalltalk.method({
 selector: "initialize",
 category: 'initializing',
@@ -236,7 +228,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_paintOn_",
 smalltalk.method({
 selector: "paintOn:",
 category: 'subclassing',
@@ -251,7 +242,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_pid",
 smalltalk.method({
 selector: "pid",
 category: 'accessing',
@@ -269,7 +259,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_realize",
 smalltalk.method({
 selector: "realize",
 category: 'private',
@@ -305,7 +294,6 @@ referencedClasses: ["HTMLCanvas", "CSSCanvas"]
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_renderOn_",
 smalltalk.method({
 selector: "renderOn:",
 category: 'subclassing',
@@ -320,7 +308,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_root",
 smalltalk.method({
 selector: "root",
 category: 'initializing',
@@ -340,7 +327,6 @@ referencedClasses: ["Connectors"]
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_setConnectors",
 smalltalk.method({
 selector: "setConnectors",
 category: 'subclassing',
@@ -355,7 +341,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_setEquations",
 smalltalk.method({
 selector: "setEquations",
 category: 'subclassing',
@@ -370,7 +355,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_setVariables",
 smalltalk.method({
 selector: "setVariables",
 category: 'subclassing',
@@ -385,7 +369,6 @@ referencedClasses: []
 smalltalk.Component);
 
 smalltalk.addMethod(
-"_variables",
 smalltalk.method({
 selector: "variables",
 category: 'accessing',
@@ -404,7 +387,6 @@ smalltalk.Component);
 
 
 smalltalk.addMethod(
-"_connect_at_to_",
 smalltalk.method({
 selector: "connect:at:to:",
 category: 'not yet classified',
@@ -425,7 +407,6 @@ referencedClasses: []
 smalltalk.Component.klass);
 
 smalltalk.addMethod(
-"_connect_to_",
 smalltalk.method({
 selector: "connect:to:",
 category: 'not yet classified',
@@ -446,7 +427,6 @@ referencedClasses: []
 smalltalk.Component.klass);
 
 smalltalk.addMethod(
-"_root",
 smalltalk.method({
 selector: "root",
 category: 'not yet classified',
@@ -469,7 +449,6 @@ smalltalk.Component.klass);
 
 smalltalk.addClass('Connectors', smalltalk.Dictionary, [], 'Component');
 smalltalk.addMethod(
-"_addConnectorId_",
 smalltalk.method({
 selector: "addConnectorId:",
 category: 'initializing',
@@ -485,7 +464,6 @@ referencedClasses: ["Array"]
 smalltalk.Connectors);
 
 smalltalk.addMethod(
-"_initialize",
 smalltalk.method({
 selector: "initialize",
 category: 'initializing',
@@ -505,7 +483,6 @@ smalltalk.Connectors);
 smalltalk.addClass('Equation', smalltalk.Object, ['input', 'output'], 'Component');
 smalltalk.Equation.comment="\x22An equation is a static part of a component that links its variables with the variables of the connected components variables\x0a\x0ainput\x0aDictionary dim 1 mid of parent connector\x0a                  dim 2 child position or -1 that means any position\x0a                  dim 3 selector without the pid of the attached component\x0a                  dim 4 type of attribute/variable (attr, styleAttr, intermediary variable)\x0a                  dim 5 value of attribute (height, etc only if it is not an intermediary variable)\x0a                  dim 6 the actual variable\x0a                  \x0aThe first 5 dimensions are static and play the role of the rules whether an input var is part of the equation or not\x0a\x0aoutput\x0a    Array\x0a    \x0aSince the equation lives inside a component there is no output api. This is static\x0a\x0a\x22"
 smalltalk.addMethod(
-"_addInputVar_",
 smalltalk.method({
 selector: "addInputVar:",
 category: 'connecting',
@@ -553,7 +530,6 @@ referencedClasses: []
 smalltalk.Equation);
 
 smalltalk.addMethod(
-"_compute",
 smalltalk.method({
 selector: "compute",
 category: 'computing',
@@ -569,7 +545,6 @@ referencedClasses: []
 smalltalk.Equation);
 
 smalltalk.addMethod(
-"_defineConnectionRules",
 smalltalk.method({
 selector: "defineConnectionRules",
 category: 'private',
@@ -585,7 +560,6 @@ referencedClasses: []
 smalltalk.Equation);
 
 smalltalk.addMethod(
-"_initialize",
 smalltalk.method({
 selector: "initialize",
 category: 'initializing',
@@ -601,7 +575,6 @@ referencedClasses: []
 smalltalk.Equation);
 
 smalltalk.addMethod(
-"_output_",
 smalltalk.method({
 selector: "output:",
 category: 'initializing',
@@ -617,7 +590,6 @@ referencedClasses: []
 smalltalk.Equation);
 
 smalltalk.addMethod(
-"_removeCompVarFrom_from_",
 smalltalk.method({
 selector: "removeCompVarFrom:from:",
 category: 'connecting',
@@ -650,7 +622,6 @@ referencedClasses: []
 smalltalk.Equation);
 
 smalltalk.addMethod(
-"_reverseCompute",
 smalltalk.method({
 selector: "reverseCompute",
 category: 'computing',
@@ -667,7 +638,6 @@ smalltalk.Equation);
 
 
 smalltalk.addMethod(
-"_new_",
 smalltalk.method({
 selector: "new:",
 category: 'not yet classified',
