@@ -1,28 +1,80 @@
 Smalltalk current createPackage: 'Platanos_Graph'!
 Component subclass: #DocGraph
-	instanceVariableNames: 'doc'
+	instanceVariableNames: 'json pointer docs position lines initDoc'
 	package: 'Platanos_Graph'!
 !DocGraph commentStamp!
 "The Json that is passed to this function has this form:
 
 
-{initialDoc:dsff , descendants:[docs]}"!
+{ ascendants:[docs]}
+
+or
+{ descendants:[docs]}
+
+pointer is the doc that is currently viewed
+
+"!
 
 !DocGraph methodsFor: 'not yet classified'!
 
 doc: aDoc
 
-doc := aDoc.
+initDoc := aDoc.
+!
+
+function
+
+|nodes|
+
+self loadJson: json.
 !
 
 initialize
 
 super initialize.
+
+docs := HashedCollection new.
+lines := Dictionary new.
+position := 0.
+pointer := nil.
+!
+
+lines
+
+^lines
+!
+
+loadJson: aJson
+
+|a initialDoc more direction|
+
+a := JSON parse: json.
+
+direction := 1.
+more := a at: 'ascendants' ifAbsent:[more := a at: 'descendants'. direction := -1.].
+"freeing the memory"
+json := nil.
+
+more do: [:each| 
+	|doc|	
+	
+	doc := Doc jsono: each.
+	docs at: (doc at:'sha1') put:doc.
+].
+
+docs do:[:each|
+	docs do:[:other| |temp|
+		temp := other at:'psha1' detect:[:psha1| 
+						(psha1 = (each at: 'sha1'))].
+		temp ifNotNil:[each addAsc:(other at:'sha1')].
+		]
+	].
+
+
+self putInLines: direction .
 !
 
 paintOn: css
-
-
 
 css selector: '' attr: 'padding' val: '5px'.
 css selector: '' attr: 'box-shadow' val: '1px 1px 3px rgba(0, 0, 0, 0.5)'.
@@ -35,6 +87,90 @@ css selector: '' attr:'position' val: 'fixed'.
 css selector: '#',pid,'10' attr: 'font' val:'12px/25px Arial, sans-serif'.
 !
 
+putInLines: direction
+
+(direction == -1) ifTrue:[ self putInLinesDesc]
+                         ifFalse:[ self putInLinesAsc].
+!
+
+putInLinesAsc
+
+| nodes oldnodes prevnodes|
+
+nodes := lines at:position.
+oldnodes := HashedCollection new.  "nodes that one of their parent hasnt been found yet"
+prevnodes := HashedCollection new. "previous (found) nodes that have at least one oldnode child"
+
+[(nodes size) > 0] whileTrue:[ |nnodes all| 
+	nnodes := HashedCollection new.
+	nodes do:[:node| node ascDo:[:each| 
+	|temp|
+	temp := each ascDetect:[:psha1| (nodes includes:psha1) not].
+	
+	temp ifNil: [nnodes at:(each at:'sha1') put: each.].
+	temp ifNotNil:[ oldnodes  at:(each at:'sha1') put: each. 
+				prevnodes at:(node at:'sha1') put: node.
+				].
+	]].
+	all := HashedCollection new.
+	all addAll: nodes.
+	all addAll:prevnodes.
+	oldnodes do:[:each| 
+	|temp|
+	temp := each ascDetect:[:psha1| (all includes:psha1) not].
+	
+	temp ifNil: [nnodes at:(each at:'sha1') put: each.
+		"remove their parents as well."
+		each ascDo:[:psha1| prevnodes removeKey:psha1].
+		oldnodes removeKey: each at: 'sha1'.
+		].
+	].
+	
+	position := position + 1.
+	lines at: position put:nnodes.
+    nodes := nnodes.
+]
+!
+
+putInLinesDesc
+
+| nodes oldnodes prevnodes|
+
+nodes := lines at:position.
+oldnodes := HashedCollection new.  "nodes that one of their parent hasnt been found yet"
+prevnodes := HashedCollection new. "previous (found) nodes that have at least one oldnode child"
+
+[(nodes size) > 0] whileTrue:[ |nnodes all| 
+	nnodes := HashedCollection new.
+	nodes do:[:node| node ascDo:[:each| 
+	|temp|
+	temp := each at: 'psha1' detect:[:psha1| (nodes includesKey:psha1) not].
+	
+	temp ifNil: [nnodes at:(each at:'sha1') put: each.].
+	temp ifNotNil:[ oldnodes  at:(each at:'sha1') put: each. 
+				prevnodes at:(node at:'sha1') put: node.
+				].
+	]].
+	all := HashedCollection new.
+	all addAll: nodes.
+	all addAll:prevnodes.
+	oldnodes do:[:each| 
+	|temp|
+	temp := each at: 'psha1' detect:[:psha1| (all includesKey:psha1) not].
+	
+	temp ifNil: [nnodes at:(each at:'sha1') put: each.
+		"remove their parents as well."
+		each at: 'psha1' do:[:psha1| prevnodes removeKey:psha1].
+		oldnodes removeKey: each at: 'sha1'.
+		].
+	].
+	
+	position := position - 1.
+	lines at: position put:nnodes.
+    nodes := nnodes.
+]
+!
+
 renderOn: html
 
 html div with: (doc at: 'csummary').
@@ -42,9 +178,9 @@ html div with: (doc at: 'csummary').
 
 !DocGraph class methodsFor: 'not yet classified'!
 
-connect: anElementId at: aPosition to: aParent json: aJson
+connect: anElementId at: aPosition to: aParent doc: aDoc
 
-self new json: aJson; connect: anElementId at: aPosition to: aParent.
+self new doc: aDoc; connect: anElementId at: aPosition to: aParent.
 ! !
 
 Component subclass: #DocGraphCell
@@ -88,5 +224,34 @@ html div with: (doc at: 'csummary').
 connect: anElementId at: aPosition to: aParent doc: aDoc
 
 self new doc: aDoc; connect: anElementId at: aPosition to: aParent.
+! !
+
+Object subclass: #Vector
+	instanceVariableNames: ''
+	package: 'Platanos_Graph'!
+
+!Vector methodsFor: 'not yet classified'!
+
+initialize
+
+super initialize
+!
+
+on: aCanvasId start: aStartPoint end: anEndPoint
+
+|ctx|
+
+ctx :=  '#',aCanvasId asJQuery at:0.
+ctx beginPath.
+ctx moveTo: (aStartPoint x) and: (aStartPoint y).
+ctx lineTo: (anEndPoint x) and: (anEndPoint y).
+ctx stroke.
+! !
+
+!Vector class methodsFor: 'not yet classified'!
+
+on: aCanvas start: aStart end: anEnd
+
+^ self new on aCanvas start:aStart end: anEnd; yourself.
 ! !
 
