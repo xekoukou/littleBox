@@ -16,14 +16,14 @@ testDocGraphCell
 
 json := '{"sha1":345436 , "csummary": "this is my first commit"}'.
 doc := Doc json: json.
-DocGraphCell connect: '' at: 0 to: (Component root) doc: doc.
+DocGraphCell connect: '' at: 0 to: (Component root:'http://127.0.0.1:4000/platanos.html') doc: doc.
 !
 
 testSearchPage
 
 |si|
 
-si:=SearchInput connect: '' at: 0 to: (Component root).
+si:=SearchInput connect: '' at: 0 to: (Component root:'http://127.0.0.1:4000/platanos.html').
 
 SearchResult connect:'1' at:'1' to: si with:'Craig fergusons show breaks all records'.
 SearchResult connect:'1' at:'2' to: si with:'Potatoes at 4 euros a bag, come and get them'.
@@ -35,7 +35,7 @@ testWikiPage
 
 |si|
 
-si:=WikiPage connect: '' at: 0 to: (Component root) with: 'I need some help with properly written `.htaccess` file. I did try my best but it doesnt work always as expected. What I want to achieve is this:
+si:=WikiPage connect: '' at: 0 to: (Component root:'http://127.0.0.1:4000/platanos.html') with: 'I need some help with properly written `.htaccess` file. I did try my best but it doesnt work always as expected. What I want to achieve is this:
 
  - first of all, if browser requests `favicon.ico`, it immediately gets 404, no exceptions, no rewrites/redirects (my current code still rewrites it, and then returns 404),
  - if subdomain is `admin.`, rewrite traffic to `/admin/` folder (leaving `admin.` in URL), otherwise rewrite to `www.`
