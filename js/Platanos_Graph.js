@@ -23,14 +23,18 @@ selector: "function",
 category: 'not yet classified',
 fn: function (){
 var self=this;
-var nodes;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._loadJson_(self["@json"]);
-return self}, function($ctx1) {$ctx1.fill(self,"function",{nodes:nodes},smalltalk.DocGraph)})},
+var $1,$2;
+$1=_st($Array())._new();
+_st($1)._add_(self["@initDoc"]);
+$2=_st($1)._yourself();
+_st(self)._requestGraph_($2);
+return self}, function($ctx1) {$ctx1.fill(self,"function",{},smalltalk.DocGraph)})},
 args: [],
-source: "function\x0a\x0a|nodes|\x0a\x0aself loadJson: json.",
-messageSends: ["loadJson:"],
-referencedClasses: []
+source: "function\x0a\x0aself requestGraph: (Array new add: initDoc; yourself).",
+messageSends: ["requestGraph:", "add:", "new", "yourself"],
+referencedClasses: ["Array"]
 }),
 smalltalk.DocGraph);
 
@@ -43,15 +47,20 @@ var self=this;
 function $HashedCollection(){return smalltalk.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
 function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
 smalltalk.Component.fn.prototype._initialize.apply(_st(self), []);
 self["@docs"]=_st($HashedCollection())._new();
 self["@lines"]=_st($Dictionary())._new();
 self["@position"]=(0);
+$1=_st($HashedCollection())._new();
+_st($1)._at_put_(_st(self["@initDoc"])._at_("sha1"),self["@initDoc"]);
+$2=_st($1)._yourself();
+_st(self["@lines"])._at_put_(self["@position"],$2);
 self["@pointer"]=nil;
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.DocGraph)})},
 args: [],
-source: "initialize\x0a\x0asuper initialize.\x0a\x0adocs := HashedCollection new.\x0alines := Dictionary new.\x0aposition := 0.\x0apointer := nil.",
-messageSends: ["initialize", "new"],
+source: "initialize\x0a\x0asuper initialize.\x0a\x0adocs := HashedCollection new.\x0alines := Dictionary new.\x0aposition := 0.\x0alines at: position put: (HashedCollection new at: (initDoc at: 'sha1') put: initDoc ;yourself).\x0apointer := nil.",
+messageSends: ["initialize", "new", "at:put:", "at:", "yourself"],
 referencedClasses: ["HashedCollection", "Dictionary"]
 }),
 smalltalk.DocGraph);
@@ -139,14 +148,14 @@ return smalltalk.withContext(function($ctx1) {
 _st(css)._selector_attr_val_("","padding","5px");
 _st(css)._selector_attr_val_("","box-shadow","1px 1px 3px rgba(0, 0, 0, 0.5)");
 _st(css)._selector_attr_val_("","border-radius","2px");
-_st(css)._selector_attr_val_("","text-align","left");
 _st(css)._selector_attr_val_("","margin","3px");
 _st(css)._selector_attr_val_("","position","fixed");
-_st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"font","12px/25px Arial, sans-serif");
+_st(css)._selector_attr_val_("","left","0px");
+_st(css)._selector_attr_val_("","top","0px");
 return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css},smalltalk.DocGraph)})},
 args: ["css"],
-source: "paintOn: css\x0a\x0acss selector: '' attr: 'padding' val: '5px'.\x0acss selector: '' attr: 'box-shadow' val: '1px 1px 3px rgba(0, 0, 0, 0.5)'.\x0acss selector: '' attr: 'border-radius' val: '2px'.\x0acss selector: '' attr: 'text-align' val: 'left'.\x0acss selector: '' attr: 'margin' val: '3px'.\x0a\x0acss selector: '' attr:'position' val: 'fixed'.\x0a\x0acss selector: '#',pid,'10' attr: 'font' val:'12px/25px Arial, sans-serif'.",
-messageSends: ["selector:attr:val:", ","],
+source: "paintOn: css\x0a\x0acss selector: '' attr: 'padding' val: '5px'.\x0acss selector: '' attr: 'box-shadow' val: '1px 1px 3px rgba(0, 0, 0, 0.5)'.\x0acss selector: '' attr: 'border-radius' val: '2px'.\x0acss selector: '' attr: 'margin' val: '3px'.\x0a\x0acss selector: '' attr:'position' val: 'fixed'.\x0acss selector: '' attr:'left' val: '0px'.\x0acss selector: '' attr:'top' val: '0px'.",
+messageSends: ["selector:attr:val:"],
 referencedClasses: []
 }),
 smalltalk.DocGraph);
@@ -347,12 +356,36 @@ selector: "renderOn:",
 category: 'not yet classified',
 fn: function (html){
 var self=this;
+var iter,maxLength;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(html)._div())._with_(_st(self["@doc"])._at_("csummary"));
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.DocGraph)})},
+var $1,$2;
+$1=_st(html)._canvas();
+_st($1)._id_(_st(self)._assignId());
+_st($1)._width_("20%");
+$2=_st($1)._height_("100%");
+iter=self["@position"];
+maxLength=(20);
+_st((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self["@lines"])._includesKey_(_st(maxLength).__plus(self["@position"]));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileFalse_((function(){
+return smalltalk.withContext(function($ctx2) {
+maxLength=_st(maxLength).__minus((1));
+return maxLength;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(iter).__lt_eq(maxLength)).__plus(self["@position"]);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileTrue_((function(){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(html)._div())._id_(_st(self)._assignId());
+iter=_st(iter).__plus((1));
+return iter;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html,iter:iter,maxLength:maxLength},smalltalk.DocGraph)})},
 args: ["html"],
-source: "renderOn: html\x0a\x0ahtml div with: (doc at: 'csummary').",
-messageSends: ["with:", "at:", "div"],
+source: "renderOn: html\x0a\x0a|iter maxLength|\x0a\x0ahtml canvas id: self assignId; width:'20%';height:'100%'.\x0a\x0aiter := position.\x0a\x0amaxLength :=20.\x0a[lines includesKey: (maxLength+position)] whileFalse: [ maxLength := maxLength -1.].\x0a\x0a[iter<= maxLength+position] whileTrue:[\x0a\x09html div id:self assignId.\x0a\x09iter := iter + 1.\x0a\x09]",
+messageSends: ["id:", "assignId", "canvas", "width:", "height:", "whileFalse:", "-", "includesKey:", "+", "whileTrue:", "div", "<="],
 referencedClasses: []
 }),
 smalltalk.DocGraph);
@@ -363,15 +396,22 @@ selector: "requestGraph:",
 category: 'not yet classified',
 fn: function (nodes){
 var self=this;
-var ajax;
+var ajax,string;
 function $Ajax(){return smalltalk.Ajax||(typeof Ajax=="undefined"?nil:Ajax)}
+function $JSON(){return smalltalk.JSON||(typeof JSON=="undefined"?nil:JSON)}
 return smalltalk.withContext(function($ctx1) { 
-ajax=_st($Ajax())._new();
-return self}, function($ctx1) {$ctx1.fill(self,"requestGraph:",{nodes:nodes,ajax:ajax},smalltalk.DocGraph)})},
+ajax=_st($Ajax())._url_(self["@url"]);
+string=_st($JSON())._stringify_(nodes);
+_st(ajax)._send_to_onResponce_(string,"docGraph",(function(data){
+return smalltalk.withContext(function($ctx2) {
+_st(self)._loadJSON_(data);
+return _st(self)._realize();
+}, function($ctx2) {$ctx2.fillBlock({data:data},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"requestGraph:",{nodes:nodes,ajax:ajax,string:string},smalltalk.DocGraph)})},
 args: ["nodes"],
-source: "requestGraph: nodes\x0a\x0a\x22an Array\x22\x0a\x0a|ajax|\x0a\x0aajax := Ajax new.",
-messageSends: ["new"],
-referencedClasses: ["Ajax"]
+source: "requestGraph: nodes\x0a\x0a\x22an Array\x22\x0a\x0a|ajax string|\x0a\x0aajax := Ajax url: url.\x0a\x0astring := JSON stringify: nodes.\x0aajax send: string to:'docGraph' onResponce: [:data| self loadJSON:data.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09self realize.].",
+messageSends: ["url:", "stringify:", "send:to:onResponce:", "loadJSON:", "realize"],
+referencedClasses: ["Ajax", "JSON"]
 }),
 smalltalk.DocGraph);
 

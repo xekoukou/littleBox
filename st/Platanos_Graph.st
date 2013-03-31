@@ -24,9 +24,7 @@ initDoc := aDoc.
 
 function
 
-|nodes|
-
-self loadJson: json.
+self requestGraph: (Array new add: initDoc; yourself).
 !
 
 initialize
@@ -36,6 +34,7 @@ super initialize.
 docs := HashedCollection new.
 lines := Dictionary new.
 position := 0.
+lines at: position put: (HashedCollection new at: (initDoc at: 'sha1') put: initDoc ;yourself).
 pointer := nil.
 !
 
@@ -79,12 +78,11 @@ paintOn: css
 css selector: '' attr: 'padding' val: '5px'.
 css selector: '' attr: 'box-shadow' val: '1px 1px 3px rgba(0, 0, 0, 0.5)'.
 css selector: '' attr: 'border-radius' val: '2px'.
-css selector: '' attr: 'text-align' val: 'left'.
 css selector: '' attr: 'margin' val: '3px'.
 
 css selector: '' attr:'position' val: 'fixed'.
-
-css selector: '#',pid,'10' attr: 'font' val:'12px/25px Arial, sans-serif'.
+css selector: '' attr:'left' val: '0px'.
+css selector: '' attr:'top' val: '0px'.
 !
 
 putInLines: direction
@@ -173,16 +171,32 @@ prevnodes := HashedCollection new. "previous (found) nodes that have at least on
 
 renderOn: html
 
-html div with: (doc at: 'csummary').
+|iter maxLength|
+
+html canvas id: self assignId; width:'20%';height:'100%'.
+
+iter := position.
+
+maxLength :=20.
+[lines includesKey: (maxLength+position)] whileFalse: [ maxLength := maxLength -1.].
+
+[iter<= maxLength+position] whileTrue:[
+	html div id:self assignId.
+	iter := iter + 1.
+	]
 !
 
 requestGraph: nodes
 
 "an Array"
 
-|ajax|
+|ajax string|
 
-ajax := Ajax new.
+ajax := Ajax url: url.
+
+string := JSON stringify: nodes.
+ajax send: string to:'docGraph' onResponce: [:data| self loadJSON:data.
+																		self realize.].
 ! !
 
 !DocGraph class methodsFor: 'not yet classified'!

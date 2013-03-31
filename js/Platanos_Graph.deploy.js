@@ -16,11 +16,15 @@ smalltalk.method({
 selector: "function",
 fn: function (){
 var self=this;
-var nodes;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._loadJson_(self["@json"]);
-return self}, function($ctx1) {$ctx1.fill(self,"function",{nodes:nodes},smalltalk.DocGraph)})},
-messageSends: ["loadJson:"]}),
+var $1,$2;
+$1=_st($Array())._new();
+_st($1)._add_(self["@initDoc"]);
+$2=_st($1)._yourself();
+_st(self)._requestGraph_($2);
+return self}, function($ctx1) {$ctx1.fill(self,"function",{},smalltalk.DocGraph)})},
+messageSends: ["requestGraph:", "add:", "new", "yourself"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -31,13 +35,18 @@ var self=this;
 function $HashedCollection(){return smalltalk.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
 function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
 smalltalk.Component.fn.prototype._initialize.apply(_st(self), []);
 self["@docs"]=_st($HashedCollection())._new();
 self["@lines"]=_st($Dictionary())._new();
 self["@position"]=(0);
+$1=_st($HashedCollection())._new();
+_st($1)._at_put_(_st(self["@initDoc"])._at_("sha1"),self["@initDoc"]);
+$2=_st($1)._yourself();
+_st(self["@lines"])._at_put_(self["@position"],$2);
 self["@pointer"]=nil;
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.DocGraph)})},
-messageSends: ["initialize", "new"]}),
+messageSends: ["initialize", "new", "at:put:", "at:", "yourself"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -112,12 +121,12 @@ return smalltalk.withContext(function($ctx1) {
 _st(css)._selector_attr_val_("","padding","5px");
 _st(css)._selector_attr_val_("","box-shadow","1px 1px 3px rgba(0, 0, 0, 0.5)");
 _st(css)._selector_attr_val_("","border-radius","2px");
-_st(css)._selector_attr_val_("","text-align","left");
 _st(css)._selector_attr_val_("","margin","3px");
 _st(css)._selector_attr_val_("","position","fixed");
-_st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"font","12px/25px Arial, sans-serif");
+_st(css)._selector_attr_val_("","left","0px");
+_st(css)._selector_attr_val_("","top","0px");
 return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css},smalltalk.DocGraph)})},
-messageSends: ["selector:attr:val:", ","]}),
+messageSends: ["selector:attr:val:"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -300,10 +309,34 @@ smalltalk.method({
 selector: "renderOn:",
 fn: function (html){
 var self=this;
+var iter,maxLength;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(html)._div())._with_(_st(self["@doc"])._at_("csummary"));
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.DocGraph)})},
-messageSends: ["with:", "at:", "div"]}),
+var $1,$2;
+$1=_st(html)._canvas();
+_st($1)._id_(_st(self)._assignId());
+_st($1)._width_("20%");
+$2=_st($1)._height_("100%");
+iter=self["@position"];
+maxLength=(20);
+_st((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self["@lines"])._includesKey_(_st(maxLength).__plus(self["@position"]));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileFalse_((function(){
+return smalltalk.withContext(function($ctx2) {
+maxLength=_st(maxLength).__minus((1));
+return maxLength;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(iter).__lt_eq(maxLength)).__plus(self["@position"]);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileTrue_((function(){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(html)._div())._id_(_st(self)._assignId());
+iter=_st(iter).__plus((1));
+return iter;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html,iter:iter,maxLength:maxLength},smalltalk.DocGraph)})},
+messageSends: ["id:", "assignId", "canvas", "width:", "height:", "whileFalse:", "-", "includesKey:", "+", "whileTrue:", "div", "<="]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -311,12 +344,19 @@ smalltalk.method({
 selector: "requestGraph:",
 fn: function (nodes){
 var self=this;
-var ajax;
+var ajax,string;
 function $Ajax(){return smalltalk.Ajax||(typeof Ajax=="undefined"?nil:Ajax)}
+function $JSON(){return smalltalk.JSON||(typeof JSON=="undefined"?nil:JSON)}
 return smalltalk.withContext(function($ctx1) { 
-ajax=_st($Ajax())._new();
-return self}, function($ctx1) {$ctx1.fill(self,"requestGraph:",{nodes:nodes,ajax:ajax},smalltalk.DocGraph)})},
-messageSends: ["new"]}),
+ajax=_st($Ajax())._url_(self["@url"]);
+string=_st($JSON())._stringify_(nodes);
+_st(ajax)._send_to_onResponce_(string,"docGraph",(function(data){
+return smalltalk.withContext(function($ctx2) {
+_st(self)._loadJSON_(data);
+return _st(self)._realize();
+}, function($ctx2) {$ctx2.fillBlock({data:data},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"requestGraph:",{nodes:nodes,ajax:ajax,string:string},smalltalk.DocGraph)})},
+messageSends: ["url:", "stringify:", "send:to:onResponce:", "loadJSON:", "realize"]}),
 smalltalk.DocGraph);
 
 
