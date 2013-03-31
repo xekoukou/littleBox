@@ -1,12 +1,79 @@
 smalltalk.addPackage('Component');
-smalltalk.addClass('Component', smalltalk.Object, ['connectorId', 'position', 'parent', 'pid', 'mid', 'connectors', 'variables', 'equations'], 'Component');
+smalltalk.addClass('Connectors', smalltalk.Dictionary, [], 'Component');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "addConnectorId:",
+fn: function (anElementId){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._at_put_(anElementId,_st((smalltalk.Array || Array))._new());
+return self}, function($ctx1) {$ctx1.fill(self,"addConnectorId:",{anElementId:anElementId}, smalltalk.Connectors)})},
+messageSends: ["at:put:", "new"]}),
+smalltalk.Connectors);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { smalltalk.Dictionary.fn.prototype._initialize.apply(_st(self), []);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.Connector)})},
+messageSends: ["initialize"]}),
+smalltalk.Connectors);
+
+
+
+smalltalk.addClass('Domain', smalltalk.Object, ['url'], 'Component');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "url",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@url"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"url",{},smalltalk.Domain)})},
+messageSends: []}),
+smalltalk.Domain);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "url:",
+fn: function (anUrl){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@url"]=anUrl;
+return self}, function($ctx1) {$ctx1.fill(self,"url:",{anUrl:anUrl},smalltalk.Domain)})},
+messageSends: []}),
+smalltalk.Domain);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "url:",
+fn: function (anUrl){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._url_(anUrl);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"url:",{anUrl:anUrl},smalltalk.Domain.klass)})},
+messageSends: ["url:", "new", "yourself"]}),
+smalltalk.Domain.klass);
+
+
+smalltalk.addClass('Component', smalltalk.Domain, ['connectorId', 'position', 'parent', 'pid', 'mid', 'connectors', 'variables', 'equations'], 'Component');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "assignId",
 fn: function (){
 var self=this;
 var smid;
-return smalltalk.withContext(function($ctx1) { var $1,$2;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
 self["@mid"]=_st(self["@mid"]).__plus((1));
 $1=_st(_st(_st(self["@mid"]).__slash((10)))._truncated()).__eq(_st(self["@mid"]).__slash((10)));
 if(smalltalk.assert($1)){
@@ -16,7 +83,7 @@ self["@mid"];
 smid=_st(_st(self["@pid"]).__comma(_st(self["@mid"])._asString())).__comma("0");
 $2=smid;
 return $2;
-}, function($ctx1) {$ctx1.fill(self,"assignId",{smid:smid}, smalltalk.Component)})},
+}, function($ctx1) {$ctx1.fill(self,"assignId",{smid:smid},smalltalk.Component)})},
 messageSends: ["+", "ifTrue:", "=", "/", "truncated", ",", "asString"]}),
 smalltalk.Component);
 
@@ -25,7 +92,8 @@ smalltalk.method({
 selector: "bindComp:atCon:atPos:",
 fn: function (aComponent,aConnectorId,aPosition){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1,$2;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
 $1=_st(self)._connectors();
 if(($receiver = $1) == nil || $receiver == undefined){
 $1;
@@ -38,7 +106,7 @@ $2;
 } else {
 _st(self)._bindVars_conId_pos_(_st(aComponent)._variables(),aConnectorId,aPosition);
 };
-return self}, function($ctx1) {$ctx1.fill(self,"bindComp:atCon:atPos:",{aComponent:aComponent,aConnectorId:aConnectorId,aPosition:aPosition}, smalltalk.Component)})},
+return self}, function($ctx1) {$ctx1.fill(self,"bindComp:atCon:atPos:",{aComponent:aComponent,aConnectorId:aConnectorId,aPosition:aPosition},smalltalk.Component)})},
 messageSends: ["ifNotNil:", "at:put:", "at:", "connectors", "bindVars:conId:pos:", "variables", "equations"]}),
 smalltalk.Component);
 
@@ -47,11 +115,15 @@ smalltalk.method({
 selector: "bindVars:conId:pos:",
 fn: function (aVariables,aConnectorId,aPosition){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1,$2,$3,$4,$5;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4,$5;
 _st(_st(self)._equations())._do_((function(equation){
-return smalltalk.withContext(function($ctx2) {return _st(aVariables)._do_((function(variable){
+return smalltalk.withContext(function($ctx2) {
+return _st(aVariables)._do_((function(variable){
 var vector;
-return smalltalk.withContext(function($ctx3) {vector=_st((smalltalk.Array || Array))._new();
+return smalltalk.withContext(function($ctx3) {
+vector=_st($Array())._new();
 vector;
 $1=vector;
 _st($1)._add_(aConnectorId);
@@ -81,7 +153,7 @@ _st(vector)._add_(variable);
 return _st(equation)._addInputVar_(vector);
 }, function($ctx3) {$ctx3.fillBlock({variable:variable,vector:vector},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({equation:equation},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"bindVars:conId:pos:",{aVariables:aVariables,aConnectorId:aConnectorId,aPosition:aPosition}, smalltalk.Component)})},
+return self}, function($ctx1) {$ctx1.fill(self,"bindVars:conId:pos:",{aVariables:aVariables,aConnectorId:aConnectorId,aPosition:aPosition},smalltalk.Component)})},
 messageSends: ["do:", "new", "add:", "selector", "ifTrue:ifFalse:", "attr", "isContent", "isStyleAttr", "isIntermediate", "addInputVar:", "equations"]}),
 smalltalk.Component);
 
@@ -92,6 +164,7 @@ fn: function (aConnectorId,aPosition,aParent){
 var self=this;
 var ids;
 return smalltalk.withContext(function($ctx1) { 
+self["@url"]=_st(aParent)._url();
 self["@connectorId"]=aConnectorId;
 self["@parent"]=aParent;
 self["@pid"]=_st(self["@parent"])._assignId();
@@ -103,7 +176,7 @@ _st(self)._setVariables();
 _st(self)._setEquations();
 _st(self["@parent"])._bindComp_atCon_atPos_(self,aConnectorId,aPosition);
 return self}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorId:aConnectorId,aPosition:aPosition,aParent:aParent,ids:ids},smalltalk.Component)})},
-messageSends: ["assignId", "function", "realize", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:"]}),
+messageSends: ["url", "assignId", "function", "realize", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:"]}),
 smalltalk.Component);
 
 smalltalk.addMethod(
@@ -111,8 +184,9 @@ smalltalk.method({
 selector: "connect:to:",
 fn: function (aConnectorId,aParent){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._connect_at_to_(aConnectorId,_st(_st(_st(_st(aParent)._connectors())._at_(aConnectorId))._size()).__plus((1)),aParent);
-return self}, function($ctx1) {$ctx1.fill(self,"connect:to:",{aConnectorId:aConnectorId,aParent:aParent}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._connect_at_to_(aConnectorId,_st(_st(_st(_st(aParent)._connectors())._at_(aConnectorId))._size()).__plus((1)),aParent);
+return self}, function($ctx1) {$ctx1.fill(self,"connect:to:",{aConnectorId:aConnectorId,aParent:aParent},smalltalk.Component)})},
 messageSends: ["connect:at:to:", "+", "size", "at:", "connectors"]}),
 smalltalk.Component);
 
@@ -121,10 +195,11 @@ smalltalk.method({
 selector: "connectors",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
 $1=self["@connectors"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"connectors",{}, smalltalk.Component)})},
+}, function($ctx1) {$ctx1.fill(self,"connectors",{},smalltalk.Component)})},
 messageSends: []}),
 smalltalk.Component);
 
@@ -134,14 +209,17 @@ selector: "disconnectCompAt:at:",
 fn: function (aConnectorId,aPosition){
 var self=this;
 var selector;
-return smalltalk.withContext(function($ctx1) { selector=_st(_st(_st(_st(_st(self["@pid"]).__comma(aConnectorId)).__comma(" ")).__comma(":nth-child(")).__comma(_st(_st(aPosition).__minus((1)))._asString())).__comma(")");
+return smalltalk.withContext(function($ctx1) { 
+selector=_st(_st(_st(_st(_st(self["@pid"]).__comma(aConnectorId)).__comma(" ")).__comma(":nth-child(")).__comma(_st(_st(aPosition).__minus((1)))._asString())).__comma(")");
 _st(_st(selector)._asJQuery())._remove();
 _st(_st(_st(self)._connectors())._at_(aConnectorId))._remove_ifAbsent_(aPosition,(function(){
-return smalltalk.withContext(function($ctx2) {}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return smalltalk.withContext(function($ctx2) {
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st(_st(self)._equations())._do_((function(each){
-return smalltalk.withContext(function($ctx2) {return _st(each)._removeCompVarFrom_from_(aConnectorId,aPosition);
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._removeCompVarFrom_from_(aConnectorId,aPosition);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"disconnectCompAt:at:",{aConnectorId:aConnectorId,aPosition:aPosition,selector:selector}, smalltalk.Component)})},
+return self}, function($ctx1) {$ctx1.fill(self,"disconnectCompAt:at:",{aConnectorId:aConnectorId,aPosition:aPosition,selector:selector},smalltalk.Component)})},
 messageSends: [",", "asString", "-", "remove", "asJQuery", "remove:ifAbsent:", "at:", "connectors", "do:", "removeCompVarFrom:from:", "equations"]}),
 smalltalk.Component);
 
@@ -150,10 +228,11 @@ smalltalk.method({
 selector: "equations",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
 $1=self["@equations"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"equations",{}, smalltalk.Component)})},
+}, function($ctx1) {$ctx1.fill(self,"equations",{},smalltalk.Component)})},
 messageSends: []}),
 smalltalk.Component);
 
@@ -162,7 +241,8 @@ smalltalk.method({
 selector: "function",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"function",{}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"function",{},smalltalk.Component)})},
 messageSends: []}),
 smalltalk.Component);
 
@@ -171,9 +251,10 @@ smalltalk.method({
 selector: "initialize",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.Domain.fn.prototype._initialize.apply(_st(self), []);
 self["@mid"]=(0);
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.Component)})},
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.Component)})},
 messageSends: ["initialize"]}),
 smalltalk.Component);
 
@@ -182,7 +263,8 @@ smalltalk.method({
 selector: "paintOn:",
 fn: function (css){
 var self=this;
-return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css},smalltalk.Component)})},
 messageSends: []}),
 smalltalk.Component);
 
@@ -191,10 +273,11 @@ smalltalk.method({
 selector: "pid",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
 $1=self["@pid"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"pid",{}, smalltalk.Component)})},
+}, function($ctx1) {$ctx1.fill(self,"pid",{},smalltalk.Component)})},
 messageSends: []}),
 smalltalk.Component);
 
@@ -204,7 +287,10 @@ selector: "realize",
 fn: function (){
 var self=this;
 var html,css,selector,jq;
-return smalltalk.withContext(function($ctx1) { var $1;
+function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
+function $CSSCanvas(){return smalltalk.CSSCanvas||(typeof CSSCanvas=="undefined"?nil:CSSCanvas)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
 jq=_st(_st(_st("#").__comma(_st(self["@parent"])._pid())).__comma(self["@connectorId"]))._asJQuery();
 $1=_st(_st(_st(jq)._children())._length()).__eq((0));
 if(smalltalk.assert($1)){
@@ -220,11 +306,11 @@ jq=_st(selector)._asJQuery();
 jq;
 _st(jq)._after_(_st(_st("<div id = ").__comma(self["@pid"])).__comma("></div>"));
 };
-html=_st((smalltalk.HTMLCanvas || HTMLCanvas))._onJQuery_(_st(_st("#").__comma(self["@pid"]))._asJQuery());
+html=_st($HTMLCanvas())._onJQuery_(_st(_st("#").__comma(self["@pid"]))._asJQuery());
 _st(self)._renderOn_(html);
-css=_st((smalltalk.CSSCanvas || CSSCanvas))._new_(self);
+css=_st($CSSCanvas())._new_(self);
 _st(self)._paintOn_(css);
-return self}, function($ctx1) {$ctx1.fill(self,"realize",{html:html,css:css,selector:selector,jq:jq}, smalltalk.Component)})},
+return self}, function($ctx1) {$ctx1.fill(self,"realize",{html:html,css:css,selector:selector,jq:jq},smalltalk.Component)})},
 messageSends: ["asJQuery", ",", "pid", "ifTrue:ifFalse:", "append:", "asString", "after:", "=", "length", "children", "onJQuery:", "renderOn:", "new:", "paintOn:"]}),
 smalltalk.Component);
 
@@ -233,21 +319,25 @@ smalltalk.method({
 selector: "renderOn:",
 fn: function (html){
 var self=this;
-return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.Component)})},
 messageSends: []}),
 smalltalk.Component);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "root",
-fn: function (){
+selector: "root:",
+fn: function (anUrl){
 var self=this;
-return smalltalk.withContext(function($ctx1) { self["@pid"]="";
-self["@connectors"]=_st((smalltalk.Connectors || Connectors))._new();
+function $Connectors(){return smalltalk.Connectors||(typeof Connectors=="undefined"?nil:Connectors)}
+return smalltalk.withContext(function($ctx1) { 
+self["@url"]=anUrl;
+self["@pid"]="";
+self["@connectors"]=_st($Connectors())._new();
 _st(self["@connectors"])._addConnectorId_("");
 _st(_st("body")._asJQuery())._append_("<div id = 0> </div>");
 _st(_st(self["@connectors"])._at_(""))._at_put_((0),_st(_st("#0")._asJQuery())._get_((0)));
-return self}, function($ctx1) {$ctx1.fill(self,"root",{}, smalltalk.Component)})},
+return self}, function($ctx1) {$ctx1.fill(self,"root:",{anUrl:anUrl},smalltalk.Component)})},
 messageSends: ["new", "addConnectorId:", "append:", "asJQuery", "at:put:", "get:", "at:"]}),
 smalltalk.Component);
 
@@ -256,7 +346,8 @@ smalltalk.method({
 selector: "setConnectors",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"setConnectors",{}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"setConnectors",{},smalltalk.Component)})},
 messageSends: []}),
 smalltalk.Component);
 
@@ -265,7 +356,8 @@ smalltalk.method({
 selector: "setEquations",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"setEquations",{}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"setEquations",{},smalltalk.Component)})},
 messageSends: []}),
 smalltalk.Component);
 
@@ -274,7 +366,8 @@ smalltalk.method({
 selector: "setVariables",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"setVariables",{}, smalltalk.Component)})},
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"setVariables",{},smalltalk.Component)})},
 messageSends: []}),
 smalltalk.Component);
 
@@ -283,10 +376,11 @@ smalltalk.method({
 selector: "variables",
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
 $1=self["@variables"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"variables",{}, smalltalk.Component)})},
+}, function($ctx1) {$ctx1.fill(self,"variables",{},smalltalk.Component)})},
 messageSends: []}),
 smalltalk.Component);
 
@@ -296,13 +390,14 @@ smalltalk.method({
 selector: "connect:at:to:",
 fn: function (anElementId,aPosition,aParent){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
 $2=_st(self)._new();
 _st($2)._connect_at_to_(anElementId,aPosition,aParent);
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{anElementId:anElementId,aPosition:aPosition,aParent:aParent}, smalltalk.Component.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{anElementId:anElementId,aPosition:aPosition,aParent:aParent},smalltalk.Component.klass)})},
 messageSends: ["connect:at:to:", "new", "yourself"]}),
 smalltalk.Component.klass);
 
@@ -311,53 +406,32 @@ smalltalk.method({
 selector: "connect:to:",
 fn: function (anElementId,aParent){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
 $2=_st(self)._new();
 _st($2)._connect_to_(anElementId,aParent);
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"connect:to:",{anElementId:anElementId,aParent:aParent}, smalltalk.Component.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"connect:to:",{anElementId:anElementId,aParent:aParent},smalltalk.Component.klass)})},
 messageSends: ["connect:to:", "new", "yourself"]}),
 smalltalk.Component.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "root",
-fn: function (){
+selector: "root:",
+fn: function (anUrl){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
 $2=_st(self)._new();
-_st($2)._root();
+_st($2)._root_(anUrl);
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"root",{}, smalltalk.Component.klass)})},
-messageSends: ["root", "new", "yourself"]}),
+}, function($ctx1) {$ctx1.fill(self,"root:",{anUrl:anUrl},smalltalk.Component.klass)})},
+messageSends: ["root:", "new", "yourself"]}),
 smalltalk.Component.klass);
-
-
-smalltalk.addClass('Connectors', smalltalk.Dictionary, [], 'Component');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "addConnectorId:",
-fn: function (anElementId){
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._at_put_(anElementId,_st((smalltalk.Array || Array))._new());
-return self}, function($ctx1) {$ctx1.fill(self,"addConnectorId:",{anElementId:anElementId}, smalltalk.Connectors)})},
-messageSends: ["at:put:", "new"]}),
-smalltalk.Connectors);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initialize",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { smalltalk.Dictionary.fn.prototype._initialize.apply(_st(self), []);
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.Connector)})},
-messageSends: ["initialize"]}),
-smalltalk.Connectors);
-
 
 
 smalltalk.addClass('Equation', smalltalk.Object, ['input', 'output'], 'Component');
