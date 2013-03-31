@@ -203,7 +203,6 @@ selector: "connect:at:to:",
 category: 'initializing',
 fn: function (aConnectorId,aPosition,aParent){
 var self=this;
-var ids;
 return smalltalk.withContext(function($ctx1) { 
 self["@url"]=_st(aParent)._url();
 self["@connectorId"]=aConnectorId;
@@ -211,15 +210,14 @@ self["@parent"]=aParent;
 self["@pid"]=_st(self["@parent"])._assignId();
 self["@position"]=aPosition;
 _st(self)._function();
-ids=_st(self)._realize();
 _st(self)._setConnectors();
 _st(self)._setVariables();
 _st(self)._setEquations();
-_st(self["@parent"])._bindComp_atCon_atPos_(self,aConnectorId,aPosition);
-return self}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorId:aConnectorId,aPosition:aPosition,aParent:aParent,ids:ids},smalltalk.Component)})},
+_st(self["@parent"])._bindComp_atCon_atPos_(self,aConnectorId,_st(_st(aPosition)._self())._realize());
+return self}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorId:aConnectorId,aPosition:aPosition,aParent:aParent},smalltalk.Component)})},
 args: ["aConnectorId", "aPosition", "aParent"],
-source: "connect: aConnectorId at: aPosition to: aParent\x0a\x0a\x22the connectorId is the id of the element that a connector represents wthout the pid of the parent\x22\x0a|ids|\x0a\x0aurl := aParent url.\x0a\x0aconnectorId := aConnectorId.\x0aparent := aParent.\x0apid := parent assignId.\x0aposition:=aPosition.\x0a\x0aself function.\x0a\x0aids:=self realize.\x0aself setConnectors.\x0aself setVariables.\x0aself setEquations.\x0a\x0aparent bindComp: self atCon: aConnectorId atPos: aPosition",
-messageSends: ["url", "assignId", "function", "realize", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:"],
+source: "connect: aConnectorId at: aPosition to: aParent\x0a\x0a\x22the connectorId is the id of the element that a connector represents wthout the pid of the parent\x22\x0a\x0a\x0aurl := aParent url.\x0a\x0aconnectorId := aConnectorId.\x0aparent := aParent.\x0apid := parent assignId.\x0aposition:=aPosition.\x0a\x0aself function.\x0a\x0a\x0aself setConnectors.\x0aself setVariables.\x0aself setEquations.\x0a\x0aparent bindComp: self atCon: aConnectorId atPos: aPosition\x0aself realize.",
+messageSends: ["url", "assignId", "function", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:", "realize", "self"],
 referencedClasses: []
 }),
 smalltalk.Component);
