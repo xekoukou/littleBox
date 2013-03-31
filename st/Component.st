@@ -1,5 +1,45 @@
 Smalltalk current createPackage: 'Component'!
-Object subclass: #Component
+Dictionary subclass: #Connectors
+	instanceVariableNames: ''
+	package: 'Component'!
+
+!Connectors methodsFor: 'initializing'!
+
+addConnectorId: anElementId
+
+"ElementId should be the internal mid of a connector"
+self at: anElementId put: Array new.
+!
+
+initialize
+
+super initialize
+! !
+
+Object subclass: #Domain
+	instanceVariableNames: 'url'
+	package: 'Component'!
+
+!Domain methodsFor: 'not yet classified'!
+
+url
+
+^ url
+!
+
+url: anUrl
+
+url := anUrl.
+! !
+
+!Domain class methodsFor: 'not yet classified'!
+
+url: anUrl
+
+^ self new url: anUrl; yourself.
+! !
+
+Domain subclass: #Component
 	instanceVariableNames: 'connectorId position parent pid mid connectors variables equations'
 	package: 'Component'!
 
@@ -90,6 +130,8 @@ connect: aConnectorId at: aPosition to: aParent
 "the connectorId is the id of the element that a connector represents wthout the pid of the parent"
 |ids|
 
+url := aParent url.
+
 connectorId := aConnectorId.
 parent := aParent.
 pid := parent assignId.
@@ -117,7 +159,9 @@ super initialize.
 mid := 0.
 !
 
-root
+root: anUrl
+
+url:= anUrl.
 
 pid:=''.
 connectors:=Connectors new.
@@ -194,26 +238,9 @@ connect: anElementId to: aParent
 ^ self new connect: anElementId to: aParent ;yourself.
 !
 
-root
+root: anUrl
 
- ^ self new root ; yourself.
-! !
-
-Dictionary subclass: #Connectors
-	instanceVariableNames: ''
-	package: 'Component'!
-
-!Connectors methodsFor: 'initializing'!
-
-addConnectorId: anElementId
-
-"ElementId should be the internal mid of a connector"
-self at: anElementId put: Array new.
-!
-
-initialize
-
-super initialize
+ ^ self new root:anUrl ; yourself.
 ! !
 
 Object subclass: #Equation
