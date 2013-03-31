@@ -1,5 +1,5 @@
 smalltalk.addPackage('Platanos_Graph');
-smalltalk.addClass('DocGraph', smalltalk.Component, ['json', 'pointer', 'docs', 'position', 'lines', 'initDoc'], 'Platanos_Graph');
+smalltalk.addClass('DocGraph', smalltalk.Component, ['pointer', 'docs', 'position', 'lines', 'initDoc'], 'Platanos_Graph');
 smalltalk.DocGraph.comment="\x22The Json that is passed to this function has this form:\x0a\x0a\x0a{ ascendants:[docs]}\x0a\x0aor\x0a{ descendants:[docs]}\x0a\x0apointer is the doc that is currently viewed\x0a\x0a\x22"
 smalltalk.addMethod(
 smalltalk.method({
@@ -354,6 +354,24 @@ args: ["html"],
 source: "renderOn: html\x0a\x0ahtml div with: (doc at: 'csummary').",
 messageSends: ["with:", "at:", "div"],
 referencedClasses: []
+}),
+smalltalk.DocGraph);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "requestGraph:",
+category: 'not yet classified',
+fn: function (nodes){
+var self=this;
+var ajax;
+function $Ajax(){return smalltalk.Ajax||(typeof Ajax=="undefined"?nil:Ajax)}
+return smalltalk.withContext(function($ctx1) { 
+ajax=_st($Ajax())._new();
+return self}, function($ctx1) {$ctx1.fill(self,"requestGraph:",{nodes:nodes,ajax:ajax},smalltalk.DocGraph)})},
+args: ["nodes"],
+source: "requestGraph: nodes\x0a\x0a\x22an Array\x22\x0a\x0a|ajax|\x0a\x0aajax := Ajax new.",
+messageSends: ["new"],
+referencedClasses: ["Ajax"]
 }),
 smalltalk.DocGraph);
 

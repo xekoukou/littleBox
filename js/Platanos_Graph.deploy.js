@@ -1,5 +1,5 @@
 smalltalk.addPackage('Platanos_Graph');
-smalltalk.addClass('DocGraph', smalltalk.Component, ['json', 'pointer', 'docs', 'position', 'lines', 'initDoc'], 'Platanos_Graph');
+smalltalk.addClass('DocGraph', smalltalk.Component, ['pointer', 'docs', 'position', 'lines', 'initDoc'], 'Platanos_Graph');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "doc:",
@@ -304,6 +304,19 @@ return smalltalk.withContext(function($ctx1) {
 _st(_st(html)._div())._with_(_st(self["@doc"])._at_("csummary"));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.DocGraph)})},
 messageSends: ["with:", "at:", "div"]}),
+smalltalk.DocGraph);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "requestGraph:",
+fn: function (nodes){
+var self=this;
+var ajax;
+function $Ajax(){return smalltalk.Ajax||(typeof Ajax=="undefined"?nil:Ajax)}
+return smalltalk.withContext(function($ctx1) { 
+ajax=_st($Ajax())._new();
+return self}, function($ctx1) {$ctx1.fill(self,"requestGraph:",{nodes:nodes,ajax:ajax},smalltalk.DocGraph)})},
+messageSends: ["new"]}),
 smalltalk.DocGraph);
 
 

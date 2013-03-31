@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'Platanos_Graph'!
 Component subclass: #DocGraph
-	instanceVariableNames: 'json pointer docs position lines initDoc'
+	instanceVariableNames: 'pointer docs position lines initDoc'
 	package: 'Platanos_Graph'!
 !DocGraph commentStamp!
 "The Json that is passed to this function has this form:
@@ -174,6 +174,15 @@ prevnodes := HashedCollection new. "previous (found) nodes that have at least on
 renderOn: html
 
 html div with: (doc at: 'csummary').
+!
+
+requestGraph: nodes
+
+"an Array"
+
+|ajax|
+
+ajax := Ajax new.
 ! !
 
 !DocGraph class methodsFor: 'not yet classified'!
