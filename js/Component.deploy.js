@@ -162,7 +162,6 @@ smalltalk.method({
 selector: "connect:at:to:",
 fn: function (aConnectorId,aPosition,aParent){
 var self=this;
-var ids;
 return smalltalk.withContext(function($ctx1) { 
 self["@url"]=_st(aParent)._url();
 self["@connectorId"]=aConnectorId;
@@ -170,13 +169,12 @@ self["@parent"]=aParent;
 self["@pid"]=_st(self["@parent"])._assignId();
 self["@position"]=aPosition;
 _st(self)._function();
-ids=_st(self)._realize();
 _st(self)._setConnectors();
 _st(self)._setVariables();
 _st(self)._setEquations();
-_st(self["@parent"])._bindComp_atCon_atPos_(self,aConnectorId,aPosition);
-return self}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorId:aConnectorId,aPosition:aPosition,aParent:aParent,ids:ids},smalltalk.Component)})},
-messageSends: ["url", "assignId", "function", "realize", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:"]}),
+_st(self["@parent"])._bindComp_atCon_atPos_(self,aConnectorId,_st(_st(aPosition)._self())._realize());
+return self}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorId:aConnectorId,aPosition:aPosition,aParent:aParent},smalltalk.Component)})},
+messageSends: ["url", "assignId", "function", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:", "realize", "self"]}),
 smalltalk.Component);
 
 smalltalk.addMethod(

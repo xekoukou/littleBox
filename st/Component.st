@@ -128,7 +128,7 @@ smid := pid , mid asString, '0'.
 connect: aConnectorId at: aPosition to: aParent
 
 "the connectorId is the id of the element that a connector represents wthout the pid of the parent"
-|ids|
+
 
 url := aParent url.
 
@@ -139,12 +139,13 @@ position:=aPosition.
 
 self function.
 
-ids:=self realize.
+
 self setConnectors.
 self setVariables.
 self setEquations.
 
 parent bindComp: self atCon: aConnectorId atPos: aPosition
+self realize.
 !
 
 connect: aConnectorId to: aParent
