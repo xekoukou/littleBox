@@ -10,6 +10,11 @@ initialize
 super initialize
 !
 
+send: aString onResponce: aBlock
+
+self send: aString to: '' onResponce: aBlock
+!
+
 send: aString to: responsibleUrl onResponce: aBlock
 
 |turl|
