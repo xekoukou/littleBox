@@ -18,6 +18,22 @@ smalltalk.Ajax);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "send:onResponce:",
+category: 'not yet classified',
+fn: function (aString,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._send_to_onResponce_(aString,"",aBlock);
+return self}, function($ctx1) {$ctx1.fill(self,"send:onResponce:",{aString:aString,aBlock:aBlock},smalltalk.Ajax)})},
+args: ["aString", "aBlock"],
+source: "send: aString onResponce: aBlock\x0a\x0aself send: aString to: '' onResponce: aBlock",
+messageSends: ["send:to:onResponce:"],
+referencedClasses: []
+}),
+smalltalk.Ajax);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "send:to:onResponce:",
 category: 'not yet classified',
 fn: function (aString,responsibleUrl,aBlock){

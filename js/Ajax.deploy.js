@@ -13,6 +13,17 @@ smalltalk.Ajax);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "send:onResponce:",
+fn: function (aString,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._send_to_onResponce_(aString,"",aBlock);
+return self}, function($ctx1) {$ctx1.fill(self,"send:onResponce:",{aString:aString,aBlock:aBlock},smalltalk.Ajax)})},
+messageSends: ["send:to:onResponce:"]}),
+smalltalk.Ajax);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "send:to:onResponce:",
 fn: function (aString,responsibleUrl,aBlock){
 var self=this;
