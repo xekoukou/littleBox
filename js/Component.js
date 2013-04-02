@@ -93,6 +93,21 @@ smalltalk.Domain.klass);
 smalltalk.addClass('Component', smalltalk.Domain, ['connectorId', 'position', 'parent', 'pid', 'mid', 'connectors', 'variables', 'equations'], 'Component');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "afunction",
+category: 'subclassing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"afunction",{},smalltalk.Component)})},
+args: [],
+source: "afunction\x0a\x0a\x22here is the functionality of the component\x22",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.Component);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "assignId",
 category: 'initializing',
 fn: function (){
@@ -113,6 +128,21 @@ return $2;
 args: [],
 source: "assignId\x0a\x22returns a unique id to be used by the connected subcomponent\x22\x0a|smid|\x0a\x0amid := mid + 1.\x0a( ( mid/10 ) truncated = (mid/10)) ifTrue: [mid := mid + 1.].\x0asmid := pid , mid asString, '0'.\x0a^ smid.",
 messageSends: ["+", "ifTrue:", "=", "/", "truncated", ",", "asString"],
+referencedClasses: []
+}),
+smalltalk.Component);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "bfunction",
+category: 'subclassing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"bfunction",{},smalltalk.Component)})},
+args: [],
+source: "bfunction\x0a\x0a\x22here is the functionality of the component\x22\x0a",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.Component);
@@ -209,15 +239,16 @@ self["@connectorId"]=aConnectorId;
 self["@parent"]=aParent;
 self["@pid"]=_st(self["@parent"])._assignId();
 self["@position"]=aPosition;
-_st(self)._function();
+_st(self)._bfunction();
 _st(self)._setConnectors();
 _st(self)._setVariables();
 _st(self)._setEquations();
 _st(self["@parent"])._bindComp_atCon_atPos_(self,aConnectorId,_st(_st(aPosition)._self())._realize());
+_st(self)._afunction();
 return self}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorId:aConnectorId,aPosition:aPosition,aParent:aParent},smalltalk.Component)})},
 args: ["aConnectorId", "aPosition", "aParent"],
-source: "connect: aConnectorId at: aPosition to: aParent\x0a\x0a\x22the connectorId is the id of the element that a connector represents wthout the pid of the parent\x22\x0a\x0a\x0aurl := aParent url.\x0a\x0aconnectorId := aConnectorId.\x0aparent := aParent.\x0apid := parent assignId.\x0aposition:=aPosition.\x0a\x0aself function.\x0a\x0a\x0aself setConnectors.\x0aself setVariables.\x0aself setEquations.\x0a\x0aparent bindComp: self atCon: aConnectorId atPos: aPosition\x0aself realize.",
-messageSends: ["url", "assignId", "function", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:", "realize", "self"],
+source: "connect: aConnectorId at: aPosition to: aParent\x0a\x0a\x22the connectorId is the id of the element that a connector represents wthout the pid of the parent\x22\x0a\x0a\x0aurl := aParent url.\x0a\x0aconnectorId := aConnectorId.\x0aparent := aParent.\x0apid := parent assignId.\x0aposition:=aPosition.\x0a\x0aself bfunction.\x0a\x0a\x0aself setConnectors.\x0aself setVariables.\x0aself setEquations.\x0a\x0aparent bindComp: self atCon: aConnectorId atPos: aPosition\x0aself realize.\x0a\x0aself afunction.",
+messageSends: ["url", "assignId", "bfunction", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:", "realize", "self", "afunction"],
 referencedClasses: []
 }),
 smalltalk.Component);
@@ -294,21 +325,6 @@ return $1;
 }, function($ctx1) {$ctx1.fill(self,"equations",{},smalltalk.Component)})},
 args: [],
 source: "equations\x0a\x0a^equations",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.Component);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "function",
-category: 'subclassing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"function",{},smalltalk.Component)})},
-args: [],
-source: "function\x0a\x0a\x22here is the functionality of the component\x0ahere it sets what to do with input from the user or the server\x0ahere the component can also act as a creator of other components\x22\x0a",
 messageSends: [],
 referencedClasses: []
 }),
