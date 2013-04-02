@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'Platanos_Graph'!
 Component subclass: #DocGraph
-	instanceVariableNames: 'pointer docs position lines initDoc'
+	instanceVariableNames: 'pointer docs rposition lines initDoc minPos maxPos'
 	package: 'Platanos_Graph'!
 !DocGraph commentStamp!
 "The Json that is passed to this function has this form:
@@ -13,9 +13,16 @@ or
 
 pointer is the doc that is currently viewed
 
+
+
+rposition is the position of the first line that is rendered
+minPos and maxPos are the min and max position in which we have information
 "!
 
 !DocGraph methodsFor: 'not yet classified'!
+
+createDocCells
+!
 
 doc: aDoc
 
@@ -24,7 +31,7 @@ initDoc := aDoc.
 
 function
 
-self requestGraph: (Array new add: initDoc; yourself).
+self requestGraph: (Array new add: initDoc; yourself) direction: 1 start: 0.
 !
 
 initialize
@@ -33,8 +40,10 @@ super initialize.
 
 docs := HashedCollection new.
 lines := Dictionary new.
-position := 0.
-lines at: position put: (HashedCollection new at: (initDoc at: 'sha1') put: initDoc ;yourself).
+rposition := 0.
+minPos := 0.
+maxPos := 0.
+lines at: minPos put: (HashedCollection new at: (initDoc at: 'sha1') put: initDoc ;yourself).
 pointer := nil.
 !
 
@@ -43,16 +52,16 @@ lines
 ^lines
 !
 
-loadJson: aJson
+loadJson: aJson start: aPosition
 
 |a initialDoc more direction|
 
-a := JSON parse: json.
+a := JSON parse: aJson.
 
 direction := 1.
 more := a at: 'ascendants' ifAbsent:[more := a at: 'descendants'. direction := -1.].
 "freeing the memory"
-json := nil.
+
 
 more do: [:each| 
 	|doc|	
@@ -70,7 +79,7 @@ docs do:[:each|
 	].
 
 
-self putInLines: direction .
+self putInLines: direction start: aPosition .
 !
 
 paintOn: css
@@ -85,17 +94,19 @@ css selector: '' attr:'left' val: '0px'.
 css selector: '' attr:'top' val: '0px'.
 !
 
-putInLines: direction
+putInLines: direction start: aPosition
 
-(direction == -1) ifTrue:[ self putInLinesDesc]
-                         ifFalse:[ self putInLinesAsc].
+(direction == -1) ifTrue:[ self putInLinesDesc: aPosition]
+                         ifFalse:[ self putInLinesAsc: aPosition].
 !
 
-putInLinesAsc
+putInLinesAsc: aPosition
 
-| nodes oldnodes prevnodes|
+| nodes oldnodes prevnodes pos|
 
-nodes := lines at:position.
+pos := aPosition.
+
+nodes := lines at: pos.
 oldnodes := HashedCollection new.  "nodes that one of their parent hasnt been found yet"
 prevnodes := HashedCollection new. "previous (found) nodes that have at least one oldnode child"
 
@@ -124,17 +135,21 @@ prevnodes := HashedCollection new. "previous (found) nodes that have at least on
 		].
 	].
 	
-	position := position + 1.
-	lines at: position put:nnodes.
+	pos := pos + 1.
+	lines at: pos put:nnodes.
     nodes := nnodes.
-]
+].
+
+maxPos := pos.
 !
 
-putInLinesDesc
+putInLinesDesc: aPosition
 
-| nodes oldnodes prevnodes|
+| nodes oldnodes prevnodes pos|
 
-nodes := lines at:position.
+pos := aPosition.
+
+nodes := lines at:pos.
 oldnodes := HashedCollection new.  "nodes that one of their parent hasnt been found yet"
 prevnodes := HashedCollection new. "previous (found) nodes that have at least one oldnode child"
 
@@ -163,10 +178,12 @@ prevnodes := HashedCollection new. "previous (found) nodes that have at least on
 		].
 	].
 	
-	position := position - 1.
-	lines at: position put:nnodes.
+	pos := pos - 1.
+	lines at: pos put:nnodes.
     nodes := nnodes.
-]
+].
+
+minPos := pos.
 !
 
 renderOn: html
@@ -175,28 +192,30 @@ renderOn: html
 
 html canvas id: self assignId; width:'20%';height:'100%'.
 
-iter := position.
-
-maxLength :=20.
-[lines includesKey: (maxLength+position)] whileFalse: [ maxLength := maxLength -1.].
-
-[iter<= maxLength+position] whileTrue:[
-	html div id:self assignId.
-	iter := iter + 1.
-	]
+"the docCell connector div"
+html div id: self assignId.
 !
 
-requestGraph: nodes
+requestGraph: nodes direction: aDirection start: aPosition
 
 "an Array"
 
-|ajax string|
+|ajax data|
 
 ajax := Ajax url: url.
 
-string := JSON stringify: nodes.
-ajax send: string to:'docGraph' onResponce: [:data| self loadJSON:data.
+data := HashedCollection new.
+data at: 'request' put:'docGraph'; at: 'data' put:(HashedCollection new at: 'direction' put: aDirection; at: 'initNodes' put: nodes; yourself).
+ajax send: data asJSONString onResponce: [:resp| self loadJSON:resp start: aPosition.
 																		self realize.].
+!
+
+setConnectors
+
+connectors:= Connectors new.
+
+"DocCell connector"
+connectors addConnectorId: '2'.
 ! !
 
 !DocGraph class methodsFor: 'not yet classified'!

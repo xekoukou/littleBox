@@ -1,14 +1,32 @@
-<!DOCTYPE html> 
-<html> 
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My First Amber Project</title>
+    <script src="../../js/amber.js" type="text/javascript"></script>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+    <script src="../../Markdown/Markdown.Converter.js" type="text/javascript"></script>
+    <script src="../../Markdown/Markdown.Sanitizer.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      loadAmber({
+        files: ['Ajax', 'DomBinding' , 'CSSCanvas' , 'Component','Markdown','Platanos_Doc','Platanos_Graph' ,'Platanos_Search','Platanos_WikiPage','Platanos'],
+        prefix: './js',
+        ready: function() {
 
-  <head> 
-    <title>Amber Smalltalk</title> 
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" /> 
-    <meta name="author" content="Nicolas Petton" /> 
-    <script type='text/javascript' src='js/amber.js'></script> 
-  </head> 
-
-  <body> 
-    <script type='text/javascript'> loadAmber({ready: function() {smalltalk.Browser._open()}}) </script> 
-  </body> 
-</html> 
+        }}); 
+    </script>
+  </head>
+  <body>
+    <article>
+      <h1>My First Amber Project</h1>
+      <img src='http://x.pstatic.gr/media/n/i/4/4034/11038.jpg'>
+      <p>Hello there </p>
+      <button onclick="smalltalk.Browser._open()">class browser</button>
+      <ul>
+	<li>Coffee</li>
+	<li>Milk</li>
+      </ul>
+    </article>
+  </body>
+</html>
