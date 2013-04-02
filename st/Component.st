@@ -137,7 +137,7 @@ parent := aParent.
 pid := parent assignId.
 position:=aPosition.
 
-self function.
+self bfunction.
 
 
 self setConnectors.
@@ -146,6 +146,8 @@ self setEquations.
 
 parent bindComp: self atCon: aConnectorId atPos: aPosition
 self realize.
+
+self afunction.
 !
 
 connect: aConnectorId to: aParent
@@ -196,11 +198,14 @@ self paintOn:css
 
 !Component methodsFor: 'subclassing'!
 
-function
+afunction
 
-"here is the functionality of the component
-here it sets what to do with input from the user or the server
-here the component can also act as a creator of other components"
+"here is the functionality of the component"
+!
+
+bfunction
+
+"here is the functionality of the component"
 !
 
 paintOn: css

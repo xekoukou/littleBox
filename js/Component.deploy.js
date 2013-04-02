@@ -68,6 +68,16 @@ smalltalk.Domain.klass);
 smalltalk.addClass('Component', smalltalk.Domain, ['connectorId', 'position', 'parent', 'pid', 'mid', 'connectors', 'variables', 'equations'], 'Component');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "afunction",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"afunction",{},smalltalk.Component)})},
+messageSends: []}),
+smalltalk.Component);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "assignId",
 fn: function (){
 var self=this;
@@ -85,6 +95,16 @@ $2=smid;
 return $2;
 }, function($ctx1) {$ctx1.fill(self,"assignId",{smid:smid},smalltalk.Component)})},
 messageSends: ["+", "ifTrue:", "=", "/", "truncated", ",", "asString"]}),
+smalltalk.Component);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "bfunction",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"bfunction",{},smalltalk.Component)})},
+messageSends: []}),
 smalltalk.Component);
 
 smalltalk.addMethod(
@@ -168,13 +188,14 @@ self["@connectorId"]=aConnectorId;
 self["@parent"]=aParent;
 self["@pid"]=_st(self["@parent"])._assignId();
 self["@position"]=aPosition;
-_st(self)._function();
+_st(self)._bfunction();
 _st(self)._setConnectors();
 _st(self)._setVariables();
 _st(self)._setEquations();
 _st(self["@parent"])._bindComp_atCon_atPos_(self,aConnectorId,_st(_st(aPosition)._self())._realize());
+_st(self)._afunction();
 return self}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorId:aConnectorId,aPosition:aPosition,aParent:aParent},smalltalk.Component)})},
-messageSends: ["url", "assignId", "function", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:", "realize", "self"]}),
+messageSends: ["url", "assignId", "bfunction", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:", "realize", "self", "afunction"]}),
 smalltalk.Component);
 
 smalltalk.addMethod(
@@ -231,16 +252,6 @@ var $1;
 $1=self["@equations"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"equations",{},smalltalk.Component)})},
-messageSends: []}),
-smalltalk.Component);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "function",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"function",{},smalltalk.Component)})},
 messageSends: []}),
 smalltalk.Component);
 
