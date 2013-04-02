@@ -165,4 +165,96 @@ return $5;
 messageSends: ["new", "at:put:", "at:", "ifNotNil:"]}),
 smalltalk.Doc.klass);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sha1:csummary:psha1:",
+fn: function (aSha1,aCSummary,aPsha1){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._sha1_summary_content_csummary_psha1_(aSha1,nil,nil,aCSummary,aPsha1);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sha1:csummary:psha1:",{aSha1:aSha1,aCSummary:aCSummary,aPsha1:aPsha1},smalltalk.Doc.klass)})},
+messageSends: ["sha1:summary:content:csummary:psha1:"]}),
+smalltalk.Doc.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sha1:summary:",
+fn: function (aSha1,aSummary){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._sha1_summary_content_csummary_psha1_(aSha1,aSummary,nil,nil,nil);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sha1:summary:",{aSha1:aSha1,aSummary:aSummary},smalltalk.Doc.klass)})},
+messageSends: ["sha1:summary:content:csummary:psha1:"]}),
+smalltalk.Doc.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sha1:summary:content:",
+fn: function (aSha1,aSummary,aContent){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._sha1_summary_content_csummary_psha1_(aSha1,aSummary,aContent,nil,nil);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sha1:summary:content:",{aSha1:aSha1,aSummary:aSummary,aContent:aContent},smalltalk.Doc.klass)})},
+messageSends: ["sha1:summary:content:csummary:psha1:"]}),
+smalltalk.Doc.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sha1:summary:content:csummary:psha1:",
+fn: function (aSha1,aSummary,aContent,aCSummary,aPsha1){
+var self=this;
+var a;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4,$5;
+a=_st(self)._new();
+_st(a)._at_put_("sha1",aSha1);
+$1=aSummary;
+if(($receiver = $1) == nil || $receiver == undefined){
+$1;
+} else {
+_st(a)._at_put_("summary",aSummary);
+};
+$2=aCSummary;
+if(($receiver = $2) == nil || $receiver == undefined){
+$2;
+} else {
+_st(a)._at_put_("csummary",aCSummary);
+};
+$3=aContent;
+if(($receiver = $3) == nil || $receiver == undefined){
+$3;
+} else {
+_st(a)._at_put_("content",aContent);
+};
+$4=aPsha1;
+if(($receiver = $4) == nil || $receiver == undefined){
+$4;
+} else {
+_st(a)._at_put_("psha1",aPsha1);
+};
+$5=a;
+return $5;
+}, function($ctx1) {$ctx1.fill(self,"sha1:summary:content:csummary:psha1:",{aSha1:aSha1,aSummary:aSummary,aContent:aContent,aCSummary:aCSummary,aPsha1:aPsha1,a:a},smalltalk.Doc.klass)})},
+messageSends: ["new", "at:put:", "ifNotNil:"]}),
+smalltalk.Doc.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sha1:summary:psha1:",
+fn: function (aSha1,aSummary,aPsha1){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._sha1_summary_content_csummary_psha1_(aSha1,aSummary,nil,nil,aPsha1);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sha1:summary:psha1:",{aSha1:aSha1,aSummary:aSummary,aPsha1:aPsha1},smalltalk.Doc.klass)})},
+messageSends: ["sha1:summary:content:csummary:psha1:"]}),
+smalltalk.Doc.klass);
+
 

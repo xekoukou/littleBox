@@ -200,4 +200,121 @@ referencedClasses: []
 }),
 smalltalk.Doc.klass);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sha1:csummary:psha1:",
+category: 'not yet classified',
+fn: function (aSha1,aCSummary,aPsha1){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._sha1_summary_content_csummary_psha1_(aSha1,nil,nil,aCSummary,aPsha1);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sha1:csummary:psha1:",{aSha1:aSha1,aCSummary:aCSummary,aPsha1:aPsha1},smalltalk.Doc.klass)})},
+args: ["aSha1", "aCSummary", "aPsha1"],
+source: "sha1: aSha1 csummary: aCSummary psha1: aPsha1\x0a\x0a^ self sha1: aSha1 summary: nil content: nil csummary: aCSummary psha1: aPsha1",
+messageSends: ["sha1:summary:content:csummary:psha1:"],
+referencedClasses: []
+}),
+smalltalk.Doc.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sha1:summary:",
+category: 'not yet classified',
+fn: function (aSha1,aSummary){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._sha1_summary_content_csummary_psha1_(aSha1,aSummary,nil,nil,nil);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sha1:summary:",{aSha1:aSha1,aSummary:aSummary},smalltalk.Doc.klass)})},
+args: ["aSha1", "aSummary"],
+source: "sha1: aSha1 summary: aSummary\x0a\x0a^ self sha1: aSha1 summary: aSummary content: nil csummary: nil psha1: nil",
+messageSends: ["sha1:summary:content:csummary:psha1:"],
+referencedClasses: []
+}),
+smalltalk.Doc.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sha1:summary:content:",
+category: 'not yet classified',
+fn: function (aSha1,aSummary,aContent){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._sha1_summary_content_csummary_psha1_(aSha1,aSummary,aContent,nil,nil);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sha1:summary:content:",{aSha1:aSha1,aSummary:aSummary,aContent:aContent},smalltalk.Doc.klass)})},
+args: ["aSha1", "aSummary", "aContent"],
+source: "sha1: aSha1 summary: aSummary content: aContent\x0a\x0a^ self sha1: aSha1 summary: aSummary content: aContent csummary: nil psha1: nil",
+messageSends: ["sha1:summary:content:csummary:psha1:"],
+referencedClasses: []
+}),
+smalltalk.Doc.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sha1:summary:content:csummary:psha1:",
+category: 'not yet classified',
+fn: function (aSha1,aSummary,aContent,aCSummary,aPsha1){
+var self=this;
+var a;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4,$5;
+a=_st(self)._new();
+_st(a)._at_put_("sha1",aSha1);
+$1=aSummary;
+if(($receiver = $1) == nil || $receiver == undefined){
+$1;
+} else {
+_st(a)._at_put_("summary",aSummary);
+};
+$2=aCSummary;
+if(($receiver = $2) == nil || $receiver == undefined){
+$2;
+} else {
+_st(a)._at_put_("csummary",aCSummary);
+};
+$3=aContent;
+if(($receiver = $3) == nil || $receiver == undefined){
+$3;
+} else {
+_st(a)._at_put_("content",aContent);
+};
+$4=aPsha1;
+if(($receiver = $4) == nil || $receiver == undefined){
+$4;
+} else {
+_st(a)._at_put_("psha1",aPsha1);
+};
+$5=a;
+return $5;
+}, function($ctx1) {$ctx1.fill(self,"sha1:summary:content:csummary:psha1:",{aSha1:aSha1,aSummary:aSummary,aContent:aContent,aCSummary:aCSummary,aPsha1:aPsha1,a:a},smalltalk.Doc.klass)})},
+args: ["aSha1", "aSummary", "aContent", "aCSummary", "aPsha1"],
+source: "sha1: aSha1 summary: aSummary content: aContent csummary: aCSummary psha1: aPsha1\x0a\x0a|a|\x0a\x0aa := self new.\x0aa at:'sha1' put: aSha1. \x22the sha1 of all all the below\x22\x0aaSummary ifNotNil: [a at:'summary' put: aSummary].\x0aaCSummary ifNotNil: [a at:'csummary' put: aCSummary].\x0aaContent ifNotNil: [a at:'content' put: aContent].\x0aaPsha1 ifNotNil: [a at:'psha1' put: aPsha1].   \x22an Array of the previous sha1\x22\x0a\x0a^a",
+messageSends: ["new", "at:put:", "ifNotNil:"],
+referencedClasses: []
+}),
+smalltalk.Doc.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sha1:summary:psha1:",
+category: 'not yet classified',
+fn: function (aSha1,aSummary,aPsha1){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._sha1_summary_content_csummary_psha1_(aSha1,aSummary,nil,nil,aPsha1);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sha1:summary:psha1:",{aSha1:aSha1,aSummary:aSummary,aPsha1:aPsha1},smalltalk.Doc.klass)})},
+args: ["aSha1", "aSummary", "aPsha1"],
+source: "sha1: aSha1 summary: aSummary psha1: aPsha1\x0a\x0a^ self sha1: aSha1 summary: aSummary content: nil csummary: nil psha1: aPsha1",
+messageSends: ["sha1:summary:content:csummary:psha1:"],
+referencedClasses: []
+}),
+smalltalk.Doc.klass);
+
 

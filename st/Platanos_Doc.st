@@ -69,5 +69,39 @@ temp := (b at: 'psha1').
 temp ifNotNil: [a at:'psha1' put: temp].   "an Array of the previous sha1"
 
 ^a
+!
+
+sha1: aSha1 csummary: aCSummary psha1: aPsha1
+
+^ self sha1: aSha1 summary: nil content: nil csummary: aCSummary psha1: aPsha1
+!
+
+sha1: aSha1 summary: aSummary
+
+^ self sha1: aSha1 summary: aSummary content: nil csummary: nil psha1: nil
+!
+
+sha1: aSha1 summary: aSummary content: aContent
+
+^ self sha1: aSha1 summary: aSummary content: aContent csummary: nil psha1: nil
+!
+
+sha1: aSha1 summary: aSummary content: aContent csummary: aCSummary psha1: aPsha1
+
+|a|
+
+a := self new.
+a at:'sha1' put: aSha1. "the sha1 of all all the below"
+aSummary ifNotNil: [a at:'summary' put: aSummary].
+aCSummary ifNotNil: [a at:'csummary' put: aCSummary].
+aContent ifNotNil: [a at:'content' put: aContent].
+aPsha1 ifNotNil: [a at:'psha1' put: aPsha1].   "an Array of the previous sha1"
+
+^a
+!
+
+sha1: aSha1 summary: aSummary psha1: aPsha1
+
+^ self sha1: aSha1 summary: aSummary content: nil csummary: nil psha1: aPsha1
 ! !
 
