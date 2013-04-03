@@ -192,10 +192,11 @@ _st(self)._bfunction();
 _st(self)._setConnectors();
 _st(self)._setVariables();
 _st(self)._setEquations();
-_st(self["@parent"])._bindComp_atCon_atPos_(self,aConnectorId,_st(_st(aPosition)._self())._realize());
+_st(self["@parent"])._bindComp_atCon_atPos_(self,aConnectorId,aPosition);
+_st(self)._realize();
 _st(self)._afunction();
 return self}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorId:aConnectorId,aPosition:aPosition,aParent:aParent},smalltalk.Component)})},
-messageSends: ["url", "assignId", "bfunction", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:", "realize", "self", "afunction"]}),
+messageSends: ["url", "assignId", "bfunction", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:", "realize", "afunction"]}),
 smalltalk.Component);
 
 smalltalk.addMethod(

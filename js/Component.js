@@ -243,12 +243,13 @@ _st(self)._bfunction();
 _st(self)._setConnectors();
 _st(self)._setVariables();
 _st(self)._setEquations();
-_st(self["@parent"])._bindComp_atCon_atPos_(self,aConnectorId,_st(_st(aPosition)._self())._realize());
+_st(self["@parent"])._bindComp_atCon_atPos_(self,aConnectorId,aPosition);
+_st(self)._realize();
 _st(self)._afunction();
 return self}, function($ctx1) {$ctx1.fill(self,"connect:at:to:",{aConnectorId:aConnectorId,aPosition:aPosition,aParent:aParent},smalltalk.Component)})},
 args: ["aConnectorId", "aPosition", "aParent"],
-source: "connect: aConnectorId at: aPosition to: aParent\x0a\x0a\x22the connectorId is the id of the element that a connector represents wthout the pid of the parent\x22\x0a\x0a\x0aurl := aParent url.\x0a\x0aconnectorId := aConnectorId.\x0aparent := aParent.\x0apid := parent assignId.\x0aposition:=aPosition.\x0a\x0aself bfunction.\x0a\x0a\x0aself setConnectors.\x0aself setVariables.\x0aself setEquations.\x0a\x0aparent bindComp: self atCon: aConnectorId atPos: aPosition\x0aself realize.\x0a\x0aself afunction.",
-messageSends: ["url", "assignId", "bfunction", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:", "realize", "self", "afunction"],
+source: "connect: aConnectorId at: aPosition to: aParent\x0a\x0a\x22the connectorId is the id of the element that a connector represents wthout the pid of the parent\x22\x0a\x0a\x0aurl := aParent url.\x0a\x0aconnectorId := aConnectorId.\x0aparent := aParent.\x0apid := parent assignId.\x0aposition:=aPosition.\x0a\x0aself bfunction.\x0a\x0a\x0aself setConnectors.\x0aself setVariables.\x0aself setEquations.\x0a\x0aparent bindComp: self atCon: aConnectorId atPos: aPosition.\x0aself realize.\x0a\x0aself afunction.",
+messageSends: ["url", "assignId", "bfunction", "setConnectors", "setVariables", "setEquations", "bindComp:atCon:atPos:", "realize", "afunction"],
 referencedClasses: []
 }),
 smalltalk.Component);

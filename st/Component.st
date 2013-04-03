@@ -144,7 +144,7 @@ self setConnectors.
 self setVariables.
 self setEquations.
 
-parent bindComp: self atCon: aConnectorId atPos: aPosition
+parent bindComp: self atCon: aConnectorId atPos: aPosition.
 self realize.
 
 self afunction.
