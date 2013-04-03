@@ -50,10 +50,16 @@ smalltalk.method({
 selector: "doc:",
 fn: function (aDoc){
 var self=this;
+function $HashedCollection(){return smalltalk.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
 self["@initDoc"]=aDoc;
+$1=_st($HashedCollection())._new();
+_st($1)._at_put_(_st(self["@initDoc"])._at_("sha1"),self["@initDoc"]);
+$2=_st($1)._yourself();
+_st(self["@lines"])._at_put_(self["@minPos"],$2);
 return self}, function($ctx1) {$ctx1.fill(self,"doc:",{aDoc:aDoc},smalltalk.DocGraph)})},
-messageSends: []}),
+messageSends: ["at:put:", "at:", "new", "yourself"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -64,20 +70,15 @@ var self=this;
 function $HashedCollection(){return smalltalk.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
 function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
 smalltalk.Component.fn.prototype._initialize.apply(_st(self), []);
 self["@docs"]=_st($HashedCollection())._new();
 self["@lines"]=_st($Dictionary())._new();
 self["@rposition"]=(0);
 self["@minPos"]=(0);
 self["@maxPos"]=(0);
-$1=_st($HashedCollection())._new();
-_st($1)._at_put_(_st(self["@initDoc"])._at_("sha1"),self["@initDoc"]);
-$2=_st($1)._yourself();
-_st(self["@lines"])._at_put_(self["@minPos"],$2);
 self["@pointer"]=nil;
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.DocGraph)})},
-messageSends: ["initialize", "new", "at:put:", "at:", "yourself"]}),
+messageSends: ["initialize", "new"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(

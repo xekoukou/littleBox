@@ -62,13 +62,19 @@ selector: "doc:",
 category: 'not yet classified',
 fn: function (aDoc){
 var self=this;
+function $HashedCollection(){return smalltalk.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
 self["@initDoc"]=aDoc;
+$1=_st($HashedCollection())._new();
+_st($1)._at_put_(_st(self["@initDoc"])._at_("sha1"),self["@initDoc"]);
+$2=_st($1)._yourself();
+_st(self["@lines"])._at_put_(self["@minPos"],$2);
 return self}, function($ctx1) {$ctx1.fill(self,"doc:",{aDoc:aDoc},smalltalk.DocGraph)})},
 args: ["aDoc"],
-source: "doc: aDoc\x0a\x0ainitDoc := aDoc.",
-messageSends: [],
-referencedClasses: []
+source: "doc: aDoc\x0a\x0a\x22should only be used at the beginning\x22\x0ainitDoc := aDoc.\x0alines at: minPos put: (HashedCollection new at: (initDoc at: 'sha1') put: initDoc ;yourself).",
+messageSends: ["at:put:", "at:", "new", "yourself"],
+referencedClasses: ["HashedCollection"]
 }),
 smalltalk.DocGraph);
 
@@ -81,22 +87,17 @@ var self=this;
 function $HashedCollection(){return smalltalk.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
 function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
 smalltalk.Component.fn.prototype._initialize.apply(_st(self), []);
 self["@docs"]=_st($HashedCollection())._new();
 self["@lines"]=_st($Dictionary())._new();
 self["@rposition"]=(0);
 self["@minPos"]=(0);
 self["@maxPos"]=(0);
-$1=_st($HashedCollection())._new();
-_st($1)._at_put_(_st(self["@initDoc"])._at_("sha1"),self["@initDoc"]);
-$2=_st($1)._yourself();
-_st(self["@lines"])._at_put_(self["@minPos"],$2);
 self["@pointer"]=nil;
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.DocGraph)})},
 args: [],
-source: "initialize\x0a\x0asuper initialize.\x0a\x0adocs := HashedCollection new.\x0alines := Dictionary new.\x0arposition := 0.\x0aminPos := 0.\x0amaxPos := 0.\x0alines at: minPos put: (HashedCollection new at: (initDoc at: 'sha1') put: initDoc ;yourself).\x0apointer := nil.",
-messageSends: ["initialize", "new", "at:put:", "at:", "yourself"],
+source: "initialize\x0a\x0asuper initialize.\x0a\x0adocs := HashedCollection new.\x0alines := Dictionary new.\x0arposition := 0.\x0aminPos := 0.\x0amaxPos := 0.\x0apointer := nil.",
+messageSends: ["initialize", "new"],
 referencedClasses: ["HashedCollection", "Dictionary"]
 }),
 smalltalk.DocGraph);

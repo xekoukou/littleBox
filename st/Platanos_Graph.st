@@ -48,7 +48,9 @@ withIndexDo:[:each :index|
 
 doc: aDoc
 
+"should only be used at the beginning"
 initDoc := aDoc.
+lines at: minPos put: (HashedCollection new at: (initDoc at: 'sha1') put: initDoc ;yourself).
 !
 
 initialize
@@ -60,7 +62,6 @@ lines := Dictionary new.
 rposition := 0.
 minPos := 0.
 maxPos := 0.
-lines at: minPos put: (HashedCollection new at: (initDoc at: 'sha1') put: initDoc ;yourself).
 pointer := nil.
 !
 
