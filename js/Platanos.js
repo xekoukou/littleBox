@@ -17,6 +17,28 @@ smalltalk.Platanos);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "testDocGraph",
+category: 'not yet classified',
+fn: function (){
+var self=this;
+var json,doc;
+function $Doc(){return smalltalk.Doc||(typeof Doc=="undefined"?nil:Doc)}
+function $Component(){return smalltalk.Component||(typeof Component=="undefined"?nil:Component)}
+function $DocGraph(){return smalltalk.DocGraph||(typeof DocGraph=="undefined"?nil:DocGraph)}
+return smalltalk.withContext(function($ctx1) { 
+json="{\x22sha1\x22:\x220\x22 , \x22csummary\x22: \x220 commit\x22 , \x22psha1\x22:[\x221\x22]}";
+doc=_st($Doc())._json_(json);
+_st($DocGraph())._connect_at_to_doc_("",(0),_st($Component())._root_("https://127.0.0.1:8000"),doc);
+return self}, function($ctx1) {$ctx1.fill(self,"testDocGraph",{json:json,doc:doc},smalltalk.Platanos)})},
+args: [],
+source: "testDocGraph\x0a\x0a|json doc|\x0a\x0ajson := '{\x22sha1\x22:\x220\x22 , \x22csummary\x22: \x220 commit\x22 , \x22psha1\x22:[\x221\x22]}'.\x0adoc := Doc json: json.\x0aDocGraph connect: '' at: 0 to: (Component root:'https://127.0.0.1:8000') doc: doc.",
+messageSends: ["json:", "connect:at:to:doc:", "root:"],
+referencedClasses: ["Doc", "Component", "DocGraph"]
+}),
+smalltalk.Platanos);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "testDocGraphCell",
 category: 'not yet classified',
 fn: function (){
@@ -26,12 +48,12 @@ function $Doc(){return smalltalk.Doc||(typeof Doc=="undefined"?nil:Doc)}
 function $Component(){return smalltalk.Component||(typeof Component=="undefined"?nil:Component)}
 function $DocGraphCell(){return smalltalk.DocGraphCell||(typeof DocGraphCell=="undefined"?nil:DocGraphCell)}
 return smalltalk.withContext(function($ctx1) { 
-json="{\x22sha1\x22:345436 , \x22csummary\x22: \x22this is my first commit\x22}";
+json="{\x22sha1\x22:\x220\x22 , \x22csummary\x22: \x220 commit\x22 , \x22psha1\x22:[\x221\x22]}";
 doc=_st($Doc())._json_(json);
 _st($DocGraphCell())._connect_at_to_doc_("",(0),_st($Component())._root_("https://127.0.0.1:8000"),doc);
 return self}, function($ctx1) {$ctx1.fill(self,"testDocGraphCell",{json:json,doc:doc},smalltalk.Platanos)})},
 args: [],
-source: "testDocGraphCell\x0a\x0a|json doc|\x0a\x0ajson := '{\x22sha1\x22:345436 , \x22csummary\x22: \x22this is my first commit\x22}'.\x0adoc := Doc json: json.\x0aDocGraphCell connect: '' at: 0 to: (Component root:'https://127.0.0.1:8000') doc: doc.",
+source: "testDocGraphCell\x0a\x0a|json doc|\x0a\x0ajson := '{\x22sha1\x22:\x220\x22 , \x22csummary\x22: \x220 commit\x22 , \x22psha1\x22:[\x221\x22]}'.\x0adoc := Doc json: json.\x0aDocGraphCell connect: '' at: 0 to: (Component root:'https://127.0.0.1:8000') doc: doc.",
 messageSends: ["json:", "connect:at:to:doc:", "root:"],
 referencedClasses: ["Doc", "Component", "DocGraphCell"]
 }),

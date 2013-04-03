@@ -10,11 +10,20 @@ initialize
 super initialize
 !
 
+testDocGraph
+
+|json doc|
+
+json := '{"sha1":"0" , "csummary": "0 commit" , "psha1":["1"]}'.
+doc := Doc json: json.
+DocGraph connect: '' at: 0 to: (Component root:'https://127.0.0.1:8000') doc: doc.
+!
+
 testDocGraphCell
 
 |json doc|
 
-json := '{"sha1":345436 , "csummary": "this is my first commit"}'.
+json := '{"sha1":"0" , "csummary": "0 commit" , "psha1":["1"]}'.
 doc := Doc json: json.
 DocGraphCell connect: '' at: 0 to: (Component root:'https://127.0.0.1:8000') doc: doc.
 !

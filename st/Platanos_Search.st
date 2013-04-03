@@ -12,9 +12,6 @@ super initialize.
 
 !SearchInput methodsFor: 'subclassing'!
 
-function
-!
-
 paintOn: css
 
 css selector: 'input' attr:'position' val: 'relative'.

@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'Platanos_Graph'!
 Component subclass: #DocGraph
-	instanceVariableNames: 'pointer docs rposition lines initDoc minPos maxPos'
+	instanceVariableNames: 'pointer docs rposition lines plines initDoc minPos maxPos'
 	package: 'Platanos_Graph'!
 !DocGraph commentStamp!
 "The Json that is passed to this function has this form:
@@ -21,17 +21,34 @@ minPos and maxPos are the min and max position in which we have information
 
 !DocGraph methodsFor: 'not yet classified'!
 
+afunction
+
+
+
+self requestGraph: (Array new add: initDoc; yourself) direction: 1 start: 0.
+!
+
 createDocCells
+
+plines 
+withIndexDo:[:each :index|
+	each
+	keysAndValuesDo:[:key :value|
+		DocGraph connect: '2' to: self doc: ((lines at:index) at: key)  point: (Point x:value y:index).
+		"paint vector"
+		((lines at:index) at: key) ascDo:[:other| |x y|
+			y := other myPosition: self.
+			x := (plines at: y) at: (other at: 'sha1').
+			
+			Vector on: '10' start: (Point x:(value*50) y:(index*50)) end:(Point x:(x*50) y:(y*50)).
+		]
+	]
+]
 !
 
 doc: aDoc
 
 initDoc := aDoc.
-!
-
-function
-
-self requestGraph: (Array new add: initDoc; yourself) direction: 1 start: 0.
 !
 
 initialize
@@ -80,6 +97,7 @@ docs do:[:each|
 
 
 self putInLines: direction start: aPosition .
+self putInpLines.
 !
 
 paintOn: css
@@ -186,11 +204,65 @@ prevnodes := HashedCollection new. "previous (found) nodes that have at least on
 minPos := pos.
 !
 
+putInpLines
+
+|iter pos current nodes siter|
+
+iter := nil.
+
+plines := Dictionary new.
+
+current := Array new.
+nodes := HashedCollection new.
+plines at:minPos put: nodes.
+
+siter := 0.
+(lines at: minPos) do: [:each| 
+	nodes at: (each at:'sha1') put: siter.  
+	current at: siter put: each. 
+	siter:= siter  + 1.
+].
+
+pos := minPos+1.
+[pos <= maxPos] 
+whileTrue:[
+	|ncurrent|
+	
+	ncurrent:= Dictionary new.
+	siter:= 0.
+	nodes := HashedCollection new.
+    plines at:pos put: nodes.
+	
+	iter := lines at: pos.
+	current 
+	do:[:each| 
+		each 
+		ascDo:[:other|
+			(iter includesKey: (other at:'sha1')) 
+			ifTrue:[ 
+				(nodes includesKey:(other at:'sha1')) 
+				ifFalse:[
+					nodes at: (other at:'sha1') put: siter. 
+					ncurrent at: siter put: other.
+					siter:= siter  + 1. 
+				]
+			]
+			ifFalse:[
+				ncurrent at: siter put: each.
+				siter :=siter + 1.
+			]
+		]
+	 ].
+	current := ncurrent.
+	pos:= pos +1.
+]
+!
+
 renderOn: html
 
 |iter maxLength|
 
-html canvas id: self assignId; width:'20%';height:'100%'.
+html canvas id: self assignId; width:'80%';height:'100%'.
 
 "the docCell connector div"
 html div id: self assignId.
@@ -226,7 +298,7 @@ self new doc: aDoc; connect: anElementId at: aPosition to: aParent.
 ! !
 
 Component subclass: #DocGraphCell
-	instanceVariableNames: 'doc'
+	instanceVariableNames: 'doc point'
 	package: 'Platanos_Graph'!
 
 !DocGraphCell methodsFor: 'not yet classified'!
@@ -252,8 +324,15 @@ css selector: '' attr: 'text-align' val: 'left'.
 css selector: '' attr: 'margin' val: '3px'.
 
 css selector: '' attr:'position' val: 'fixed'.
+css selector: '' attr:'left' val: (((point y) *50) asString),'px'.
+css selector: '' attr:'bottom' val: (((point y) *50) asString),'px'.
 
 css selector: '#',pid,'10' attr: 'font' val:'12px/25px Arial, sans-serif'.
+!
+
+point: aPoint
+
+point:= aPoint
 !
 
 renderOn: html
@@ -263,9 +342,9 @@ html div with: (doc at: 'csummary').
 
 !DocGraphCell class methodsFor: 'not yet classified'!
 
-connect: anElementId at: aPosition to: aParent doc: aDoc
+connect: anElementId to: aParent doc: aDoc point: aPoint
 
-self new doc: aDoc; connect: anElementId at: aPosition to: aParent.
+self new doc: aDoc; point: aPoint; connect: anElementId to: aParent.
 ! !
 
 Object subclass: #Vector

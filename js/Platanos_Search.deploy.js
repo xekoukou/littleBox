@@ -2,15 +2,6 @@ smalltalk.addPackage('Platanos_Search');
 smalltalk.addClass('SearchInput', smalltalk.Component, [], 'Platanos_Search');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "function",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"function",{}, smalltalk.SearchInput)})},
-messageSends: []}),
-smalltalk.SearchInput);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "initialize",
 fn: function (){
 var self=this;
