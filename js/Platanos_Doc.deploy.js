@@ -7,12 +7,12 @@ fn: function (aSha1){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self)._at_includes_("asc",aSha1);
+$1=_st(_st(self)._at_("asc"))._includes_(aSha1);
 if(! smalltalk.assert($1)){
-_st(self)._at_add_("asc",aSha1);
+_st(_st(self)._at_("asc"))._add_(aSha1);
 };
 return self}, function($ctx1) {$ctx1.fill(self,"addAsc:",{aSha1:aSha1},smalltalk.Doc)})},
-messageSends: ["ifFalse:", "at:add:", "at:includes:"]}),
+messageSends: ["ifFalse:", "add:", "at:", "includes:"]}),
 smalltalk.Doc);
 
 smalltalk.addMethod(
@@ -21,9 +21,20 @@ selector: "ascDetect:",
 fn: function (aBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._at_detect_("asc",aBlock);
+_st(_st(self)._at_("asc"))._detect_(aBlock);
 return self}, function($ctx1) {$ctx1.fill(self,"ascDetect:",{aBlock:aBlock},smalltalk.Doc)})},
-messageSends: ["at:detect:"]}),
+messageSends: ["detect:", "at:"]}),
+smalltalk.Doc);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "ascDetect:ifNone:",
+fn: function (aBlock,anotherBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._at_("asc"))._detect_ifNone_(aBlock,anotherBlock);
+return self}, function($ctx1) {$ctx1.fill(self,"ascDetect:ifNone:",{aBlock:aBlock,anotherBlock:anotherBlock},smalltalk.Doc)})},
+messageSends: ["detect:ifNone:", "at:"]}),
 smalltalk.Doc);
 
 smalltalk.addMethod(
@@ -32,9 +43,9 @@ selector: "ascDo:",
 fn: function (aBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._at_do_("asc",aBlock);
+_st(_st(self)._at_("asc"))._do_(aBlock);
 return self}, function($ctx1) {$ctx1.fill(self,"ascDo:",{aBlock:aBlock},smalltalk.Doc)})},
-messageSends: ["at:do:"]}),
+messageSends: ["do:", "at:"]}),
 smalltalk.Doc);
 
 smalltalk.addMethod(

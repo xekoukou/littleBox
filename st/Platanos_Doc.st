@@ -7,17 +7,22 @@ HashedCollection subclass: #Doc
 
 addAsc: aSha1
 
-(self at:'asc' includes: aSha1) ifFalse:[self at:'asc' add:aSha1].
+((self at:'asc') includes: aSha1) ifFalse:[(self at:'asc') add:aSha1].
 !
 
 ascDetect: aBlock
 
-self at:'asc' detect: aBlock.
+(self at:'asc') detect: aBlock.
+!
+
+ascDetect: aBlock ifNone: anotherBlock
+
+(self at:'asc') detect: aBlock ifNone:anotherBlock.
 !
 
 ascDo: aBlock
 
-self at:'asc' do: aBlock.
+(self at:'asc') do: aBlock.
 !
 
 initialize

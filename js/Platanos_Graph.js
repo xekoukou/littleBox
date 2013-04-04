@@ -14,10 +14,11 @@ $1=_st($Array())._new();
 _st($1)._add_(self["@initDoc"]);
 $2=_st($1)._yourself();
 _st(self)._requestGraph_direction_start_($2,(1),(0));
+_st(self)._createDocCells();
 return self}, function($ctx1) {$ctx1.fill(self,"afunction",{},smalltalk.DocGraph)})},
 args: [],
-source: "afunction\x0a\x0a\x0a\x0aself requestGraph: (Array new add: initDoc; yourself) direction: 1 start: 0.\x0a\x0a\x0a\x09",
-messageSends: ["requestGraph:direction:start:", "add:", "new", "yourself"],
+source: "afunction\x0a\x0a\x0a\x0aself requestGraph: (Array new add: initDoc; yourself) direction: 1 start: 0.\x0aself createDocCells.\x0a\x0a\x0a\x09",
+messageSends: ["requestGraph:direction:start:", "add:", "new", "yourself", "createDocCells"],
 referencedClasses: ["Array"]
 }),
 smalltalk.DocGraph);
@@ -152,10 +153,14 @@ return smalltalk.withContext(function($ctx2) {
 return _st(self["@docs"])._do_((function(other){
 var temp;
 return smalltalk.withContext(function($ctx3) {
-temp=_st(other)._at_detect_("psha1",(function(psha1){
+temp=_st(_st(other)._at_("psha1"))._detect_ifNone_((function(psha1){
 return smalltalk.withContext(function($ctx4) {
 return _st(psha1).__eq(_st(each)._at_("sha1"));
-}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}));
+}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}),(function(){
+return smalltalk.withContext(function($ctx4) {
+temp=nil;
+return temp;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 temp;
 $1=temp;
 if(($receiver = $1) == nil || $receiver == undefined){
@@ -169,8 +174,8 @@ _st(self)._putInLines_start_(direction,aPosition);
 _st(self)._putInpLines();
 return self}, function($ctx1) {$ctx1.fill(self,"loadJson:start:",{aJson:aJson,aPosition:aPosition,a:a,initialDoc:initialDoc,more:more,direction:direction},smalltalk.DocGraph)})},
 args: ["aJson", "aPosition"],
-source: "loadJson: aJson start: aPosition\x0a\x0a|a initialDoc more direction|\x0a\x0aa := JSON parse: aJson.\x0a\x0adirection := 1.\x0amore := a at: 'ascendants' ifAbsent:[more := a at: 'descendants'. direction := -1.].\x0a\x22freeing the memory\x22\x0a\x0a\x0amore do: [:each| \x0a\x09|doc|\x09\x0a\x09\x0a\x09doc := Doc jsono: each.\x0a\x09docs at: (doc at:'sha1') put:doc.\x0a].\x0a\x0adocs do:[:each|\x0a\x09docs do:[:other| |temp|\x0a\x09\x09temp := other at:'psha1' detect:[:psha1| \x0a\x09\x09\x09\x09\x09\x09(psha1 = (each at: 'sha1'))].\x0a\x09\x09temp ifNotNil:[each addAsc:(other at:'sha1')].\x0a\x09\x09]\x0a\x09].\x0a\x0a\x0aself putInLines: direction start: aPosition .\x0aself putInpLines.",
-messageSends: ["parse:", "at:ifAbsent:", "at:", "do:", "jsono:", "at:put:", "at:detect:", "=", "ifNotNil:", "addAsc:", "putInLines:start:", "putInpLines"],
+source: "loadJson: aJson start: aPosition\x0a\x0a|a initialDoc more direction|\x0a\x0aa := JSON parse: aJson.\x0a\x0adirection := 1.\x0amore := a at: 'ascendants' ifAbsent:[more := a at: 'descendants'. direction := -1.].\x0a\x22freeing the memory\x22\x0a\x0a\x0amore do: [:each| \x0a\x09|doc|\x09\x0a\x09\x0a\x09doc := Doc jsono: each.\x0a\x09docs at: (doc at:'sha1') put:doc.\x0a].\x0a\x0adocs do:[:each|\x0a\x09docs do:[:other| |temp|\x0a\x09\x09temp := (other at:'psha1') detect:[:psha1| \x0a\x09\x09\x09\x09\x09\x09(psha1 = (each at: 'sha1'))] ifNone:[temp := nil.].\x0a\x09\x09temp ifNotNil:[each addAsc:(other at:'sha1')].\x0a\x09\x09]\x0a\x09].\x0a\x0a\x0aself putInLines: direction start: aPosition .\x0aself putInpLines.",
+messageSends: ["parse:", "at:ifAbsent:", "at:", "do:", "jsono:", "at:put:", "detect:ifNone:", "=", "ifNotNil:", "addAsc:", "putInLines:start:", "putInpLines"],
 referencedClasses: ["JSON", "Doc"]
 }),
 smalltalk.DocGraph);
@@ -246,10 +251,14 @@ return smalltalk.withContext(function($ctx3) {
 return _st(node)._ascDo_((function(each){
 var temp;
 return smalltalk.withContext(function($ctx4) {
-temp=_st(each)._ascDetect_((function(psha1){
+temp=_st(each)._ascDetect_ifNone_((function(psha1){
 return smalltalk.withContext(function($ctx5) {
 return _st(_st(nodes)._includes_(psha1))._not();
-}, function($ctx5) {$ctx5.fillBlock({psha1:psha1},$ctx1)})}));
+}, function($ctx5) {$ctx5.fillBlock({psha1:psha1},$ctx1)})}),(function(){
+return smalltalk.withContext(function($ctx5) {
+temp=nil;
+return temp;
+}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 temp;
 $1=temp;
 if(($receiver = $1) == nil || $receiver == undefined){
@@ -273,10 +282,14 @@ _st(all)._addAll_(prevnodes);
 _st(oldnodes)._do_((function(each){
 var temp;
 return smalltalk.withContext(function($ctx3) {
-temp=_st(each)._ascDetect_((function(psha1){
+temp=_st(each)._ascDetect_ifNone_((function(psha1){
 return smalltalk.withContext(function($ctx4) {
 return _st(_st(all)._includes_(psha1))._not();
-}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}));
+}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}),(function(){
+return smalltalk.withContext(function($ctx4) {
+temp=nil;
+return temp;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 temp;
 $3=temp;
 if(($receiver = $3) == nil || $receiver == undefined){
@@ -299,8 +312,8 @@ return nodes;
 self["@maxPos"]=pos;
 return self}, function($ctx1) {$ctx1.fill(self,"putInLinesAsc:",{aPosition:aPosition,nodes:nodes,oldnodes:oldnodes,prevnodes:prevnodes,pos:pos},smalltalk.DocGraph)})},
 args: ["aPosition"],
-source: "putInLinesAsc: aPosition\x0a\x0a| nodes oldnodes prevnodes pos|\x0a\x0apos := aPosition.\x0a\x0anodes := lines at: pos.\x0aoldnodes := HashedCollection new.  \x22nodes that one of their parent hasnt been found yet\x22\x0aprevnodes := HashedCollection new. \x22previous (found) nodes that have at least one oldnode child\x22\x0a\x0a[(nodes size) > 0] whileTrue:[ |nnodes all| \x0a\x09nnodes := HashedCollection new.\x0a\x09nodes do:[:node| node ascDo:[:each| \x0a\x09|temp|\x0a\x09temp := each ascDetect:[:psha1| (nodes includes:psha1) not].\x0a\x09\x0a\x09temp ifNil: [nnodes at:(each at:'sha1') put: each.].\x0a\x09temp ifNotNil:[ oldnodes  at:(each at:'sha1') put: each. \x0a\x09\x09\x09\x09prevnodes at:(node at:'sha1') put: node.\x0a\x09\x09\x09\x09].\x0a\x09]].\x0a\x09all := HashedCollection new.\x0a\x09all addAll: nodes.\x0a\x09all addAll:prevnodes.\x0a\x09oldnodes do:[:each| \x0a\x09|temp|\x0a\x09temp := each ascDetect:[:psha1| (all includes:psha1) not].\x0a\x09\x0a\x09temp ifNil: [nnodes at:(each at:'sha1') put: each.\x0a\x09\x09\x22remove their parents as well.\x22\x0a\x09\x09each ascDo:[:psha1| prevnodes removeKey:psha1].\x0a\x09\x09oldnodes removeKey: each at: 'sha1'.\x0a\x09\x09].\x0a\x09].\x0a\x09\x0a\x09pos := pos + 1.\x0a\x09lines at: pos put:nnodes.\x0a    nodes := nnodes.\x0a].\x0a\x0amaxPos := pos.",
-messageSends: ["at:", "new", "whileTrue:", "do:", "ascDo:", "ascDetect:", "not", "includes:", "ifNil:", "at:put:", "ifNotNil:", "addAll:", "removeKey:", "removeKey:at:", "+", ">", "size"],
+source: "putInLinesAsc: aPosition\x0a\x0a| nodes oldnodes prevnodes pos|\x0a\x0apos := aPosition.\x0a\x0anodes := lines at: pos.\x0aoldnodes := HashedCollection new.  \x22nodes that one of their parent hasnt been found yet\x22\x0aprevnodes := HashedCollection new. \x22previous (found) nodes that have at least one oldnode child\x22\x0a\x0a[(nodes size) > 0] whileTrue:[ |nnodes all| \x0a\x09nnodes := HashedCollection new.\x0a\x09nodes do:[:node| node ascDo:[:each| \x0a\x09|temp|\x0a\x09temp := each ascDetect:[:psha1| (nodes includes:psha1) not] ifNone:[temp:=nil.].\x0a\x09\x0a\x09temp ifNil: [nnodes at:(each at:'sha1') put: each.].\x0a\x09temp ifNotNil:[ oldnodes  at:(each at:'sha1') put: each. \x0a\x09\x09\x09\x09prevnodes at:(node at:'sha1') put: node.\x0a\x09\x09\x09\x09].\x0a\x09]].\x0a\x09all := HashedCollection new.\x0a\x09all addAll: nodes.\x0a\x09all addAll:prevnodes.\x0a\x09oldnodes do:[:each| \x0a\x09|temp|\x0a\x09temp := each ascDetect:[:psha1| (all includes:psha1) not] ifNone:[temp:=nil.].\x0a\x09\x0a\x09temp ifNil: [nnodes at:(each at:'sha1') put: each.\x0a\x09\x09\x22remove their parents as well.\x22\x0a\x09\x09each ascDo:[:psha1| prevnodes removeKey:psha1].\x0a\x09\x09oldnodes removeKey: each at: 'sha1'.\x0a\x09\x09].\x0a\x09].\x0a\x09\x0a\x09pos := pos + 1.\x0a\x09lines at: pos put:nnodes.\x0a    nodes := nnodes.\x0a].\x0a\x0amaxPos := pos.",
+messageSends: ["at:", "new", "whileTrue:", "do:", "ascDo:", "ascDetect:ifNone:", "not", "includes:", "ifNil:", "at:put:", "ifNotNil:", "addAll:", "removeKey:", "removeKey:at:", "+", ">", "size"],
 referencedClasses: ["HashedCollection"]
 }),
 smalltalk.DocGraph);
@@ -332,10 +345,14 @@ return smalltalk.withContext(function($ctx3) {
 return _st(node)._ascDo_((function(each){
 var temp;
 return smalltalk.withContext(function($ctx4) {
-temp=_st(each)._at_detect_("psha1",(function(psha1){
+temp=_st(_st(each)._at_("psha1"))._detect_ifNone_((function(psha1){
 return smalltalk.withContext(function($ctx5) {
 return _st(_st(nodes)._includesKey_(psha1))._not();
-}, function($ctx5) {$ctx5.fillBlock({psha1:psha1},$ctx1)})}));
+}, function($ctx5) {$ctx5.fillBlock({psha1:psha1},$ctx1)})}),(function(){
+return smalltalk.withContext(function($ctx5) {
+temp=nil;
+return temp;
+}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 temp;
 $1=temp;
 if(($receiver = $1) == nil || $receiver == undefined){
@@ -359,10 +376,14 @@ _st(all)._addAll_(prevnodes);
 _st(oldnodes)._do_((function(each){
 var temp;
 return smalltalk.withContext(function($ctx3) {
-temp=_st(each)._at_detect_("psha1",(function(psha1){
+temp=_st(_st(each)._at_("psha1"))._detect_ifNone_((function(psha1){
 return smalltalk.withContext(function($ctx4) {
 return _st(_st(all)._includesKey_(psha1))._not();
-}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}));
+}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}),(function(){
+return smalltalk.withContext(function($ctx4) {
+temp=nil;
+return temp;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 temp;
 $3=temp;
 if(($receiver = $3) == nil || $receiver == undefined){
@@ -385,8 +406,8 @@ return nodes;
 self["@minPos"]=pos;
 return self}, function($ctx1) {$ctx1.fill(self,"putInLinesDesc:",{aPosition:aPosition,nodes:nodes,oldnodes:oldnodes,prevnodes:prevnodes,pos:pos},smalltalk.DocGraph)})},
 args: ["aPosition"],
-source: "putInLinesDesc: aPosition\x0a\x0a| nodes oldnodes prevnodes pos|\x0a\x0apos := aPosition.\x0a\x0anodes := lines at:pos.\x0aoldnodes := HashedCollection new.  \x22nodes that one of their parent hasnt been found yet\x22\x0aprevnodes := HashedCollection new. \x22previous (found) nodes that have at least one oldnode child\x22\x0a\x0a[(nodes size) > 0] whileTrue:[ |nnodes all| \x0a\x09nnodes := HashedCollection new.\x0a\x09nodes do:[:node| node ascDo:[:each| \x0a\x09|temp|\x0a\x09temp := each at: 'psha1' detect:[:psha1| (nodes includesKey:psha1) not].\x0a\x09\x0a\x09temp ifNil: [nnodes at:(each at:'sha1') put: each.].\x0a\x09temp ifNotNil:[ oldnodes  at:(each at:'sha1') put: each. \x0a\x09\x09\x09\x09prevnodes at:(node at:'sha1') put: node.\x0a\x09\x09\x09\x09].\x0a\x09]].\x0a\x09all := HashedCollection new.\x0a\x09all addAll: nodes.\x0a\x09all addAll:prevnodes.\x0a\x09oldnodes do:[:each| \x0a\x09|temp|\x0a\x09temp := each at: 'psha1' detect:[:psha1| (all includesKey:psha1) not].\x0a\x09\x0a\x09temp ifNil: [nnodes at:(each at:'sha1') put: each.\x0a\x09\x09\x22remove their parents as well.\x22\x0a\x09\x09each at: 'psha1' do:[:psha1| prevnodes removeKey:psha1].\x0a\x09\x09oldnodes removeKey: each at: 'sha1'.\x0a\x09\x09].\x0a\x09].\x0a\x09\x0a\x09pos := pos - 1.\x0a\x09lines at: pos put:nnodes.\x0a    nodes := nnodes.\x0a].\x0a\x0aminPos := pos.",
-messageSends: ["at:", "new", "whileTrue:", "do:", "ascDo:", "at:detect:", "not", "includesKey:", "ifNil:", "at:put:", "ifNotNil:", "addAll:", "at:do:", "removeKey:", "removeKey:at:", "-", ">", "size"],
+source: "putInLinesDesc: aPosition\x0a\x0a| nodes oldnodes prevnodes pos|\x0a\x0apos := aPosition.\x0a\x0anodes := lines at:pos.\x0aoldnodes := HashedCollection new.  \x22nodes that one of their parent hasnt been found yet\x22\x0aprevnodes := HashedCollection new. \x22previous (found) nodes that have at least one oldnode child\x22\x0a\x0a[(nodes size) > 0] whileTrue:[ |nnodes all| \x0a\x09nnodes := HashedCollection new.\x0a\x09nodes do:[:node| node ascDo:[:each| \x0a\x09|temp|\x0a\x09temp := (each at: 'psha1') detect:[:psha1| (nodes includesKey:psha1) not] ifNone:[temp := nil.].\x0a\x09\x0a\x09temp ifNil: [nnodes at:(each at:'sha1') put: each.].\x0a\x09temp ifNotNil:[ oldnodes  at:(each at:'sha1') put: each. \x0a\x09\x09\x09\x09prevnodes at:(node at:'sha1') put: node.\x0a\x09\x09\x09\x09].\x0a\x09]].\x0a\x09all := HashedCollection new.\x0a\x09all addAll: nodes.\x0a\x09all addAll:prevnodes.\x0a\x09oldnodes do:[:each| \x0a\x09|temp|\x0a\x09temp := (each at: 'psha1') detect:[:psha1| (all includesKey:psha1) not] ifNone:[temp := nil.].\x0a\x09\x0a\x09temp ifNil: [nnodes at:(each at:'sha1') put: each.\x0a\x09\x09\x22remove their parents as well.\x22\x0a\x09\x09each at: 'psha1' do:[:psha1| prevnodes removeKey:psha1].\x0a\x09\x09oldnodes removeKey: each at: 'sha1'.\x0a\x09\x09].\x0a\x09].\x0a\x09\x0a\x09pos := pos - 1.\x0a\x09lines at: pos put:nnodes.\x0a    nodes := nnodes.\x0a].\x0a\x0aminPos := pos.",
+messageSends: ["at:", "new", "whileTrue:", "do:", "ascDo:", "detect:ifNone:", "not", "includesKey:", "ifNil:", "at:put:", "ifNotNil:", "addAll:", "at:do:", "removeKey:", "removeKey:at:", "-", ">", "size"],
 referencedClasses: ["HashedCollection"]
 }),
 smalltalk.DocGraph);
@@ -509,13 +530,13 @@ $4=_st($3)._yourself();
 $2=_st($1)._at_put_("data",$4);
 _st(ajax)._send_onResponce_(_st(data)._asJSONString(),(function(resp){
 return smalltalk.withContext(function($ctx2) {
-_st(self)._loadJSON_start_(resp,aPosition);
+_st(self)._loadJson_start_(resp,aPosition);
 return _st(self)._realize();
 }, function($ctx2) {$ctx2.fillBlock({resp:resp},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"requestGraph:direction:start:",{nodes:nodes,aDirection:aDirection,aPosition:aPosition,ajax:ajax,data:data},smalltalk.DocGraph)})},
 args: ["nodes", "aDirection", "aPosition"],
-source: "requestGraph: nodes direction: aDirection start: aPosition\x0a\x0a\x22an Array\x22\x0a\x0a|ajax data|\x0a\x0aajax := Ajax url: url.\x0a\x0adata := HashedCollection new.\x0adata at: 'request' put:'docGraph'; at: 'data' put:(HashedCollection new at: 'direction' put: aDirection; at: 'initNodes' put: nodes; yourself).\x0aajax send: data asJSONString onResponce: [:resp| self loadJSON:resp start: aPosition.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09self realize.].",
-messageSends: ["url:", "new", "at:put:", "yourself", "send:onResponce:", "asJSONString", "loadJSON:start:", "realize"],
+source: "requestGraph: nodes direction: aDirection start: aPosition\x0a\x0a\x22an Array\x22\x0a\x0a|ajax data|\x0a\x0aajax := Ajax url: url.\x0a\x0adata := HashedCollection new.\x0adata at: 'request' put:'docGraph'; at: 'data' put:(HashedCollection new at: 'direction' put: aDirection; at: 'initNodes' put: nodes; yourself).\x0aajax send: data asJSONString onResponce: [:resp| self loadJson:resp start: aPosition.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09self realize.].",
+messageSends: ["url:", "new", "at:put:", "yourself", "send:onResponce:", "asJSONString", "loadJson:start:", "realize"],
 referencedClasses: ["Ajax", "HashedCollection"]
 }),
 smalltalk.DocGraph);

@@ -8,14 +8,14 @@ fn: function (aSha1){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self)._at_includes_("asc",aSha1);
+$1=_st(_st(self)._at_("asc"))._includes_(aSha1);
 if(! smalltalk.assert($1)){
-_st(self)._at_add_("asc",aSha1);
+_st(_st(self)._at_("asc"))._add_(aSha1);
 };
 return self}, function($ctx1) {$ctx1.fill(self,"addAsc:",{aSha1:aSha1},smalltalk.Doc)})},
 args: ["aSha1"],
-source: "addAsc: aSha1\x0a\x0a(self at:'asc' includes: aSha1) ifFalse:[self at:'asc' add:aSha1].",
-messageSends: ["ifFalse:", "at:add:", "at:includes:"],
+source: "addAsc: aSha1\x0a\x0a((self at:'asc') includes: aSha1) ifFalse:[(self at:'asc') add:aSha1].",
+messageSends: ["ifFalse:", "add:", "at:", "includes:"],
 referencedClasses: []
 }),
 smalltalk.Doc);
@@ -27,11 +27,27 @@ category: 'not yet classified',
 fn: function (aBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._at_detect_("asc",aBlock);
+_st(_st(self)._at_("asc"))._detect_(aBlock);
 return self}, function($ctx1) {$ctx1.fill(self,"ascDetect:",{aBlock:aBlock},smalltalk.Doc)})},
 args: ["aBlock"],
-source: "ascDetect: aBlock\x0a\x0aself at:'asc' detect: aBlock.",
-messageSends: ["at:detect:"],
+source: "ascDetect: aBlock\x0a\x0a(self at:'asc') detect: aBlock.",
+messageSends: ["detect:", "at:"],
+referencedClasses: []
+}),
+smalltalk.Doc);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "ascDetect:ifNone:",
+category: 'not yet classified',
+fn: function (aBlock,anotherBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._at_("asc"))._detect_ifNone_(aBlock,anotherBlock);
+return self}, function($ctx1) {$ctx1.fill(self,"ascDetect:ifNone:",{aBlock:aBlock,anotherBlock:anotherBlock},smalltalk.Doc)})},
+args: ["aBlock", "anotherBlock"],
+source: "ascDetect: aBlock ifNone: anotherBlock\x0a\x0a(self at:'asc') detect: aBlock ifNone:anotherBlock.",
+messageSends: ["detect:ifNone:", "at:"],
 referencedClasses: []
 }),
 smalltalk.Doc);
@@ -43,11 +59,11 @@ category: 'not yet classified',
 fn: function (aBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._at_do_("asc",aBlock);
+_st(_st(self)._at_("asc"))._do_(aBlock);
 return self}, function($ctx1) {$ctx1.fill(self,"ascDo:",{aBlock:aBlock},smalltalk.Doc)})},
 args: ["aBlock"],
-source: "ascDo: aBlock\x0a\x0aself at:'asc' do: aBlock.",
-messageSends: ["at:do:"],
+source: "ascDo: aBlock\x0a\x0a(self at:'asc') do: aBlock.",
+messageSends: ["do:", "at:"],
 referencedClasses: []
 }),
 smalltalk.Doc);

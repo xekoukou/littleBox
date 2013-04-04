@@ -12,8 +12,9 @@ $1=_st($Array())._new();
 _st($1)._add_(self["@initDoc"]);
 $2=_st($1)._yourself();
 _st(self)._requestGraph_direction_start_($2,(1),(0));
+_st(self)._createDocCells();
 return self}, function($ctx1) {$ctx1.fill(self,"afunction",{},smalltalk.DocGraph)})},
-messageSends: ["requestGraph:direction:start:", "add:", "new", "yourself"]}),
+messageSends: ["requestGraph:direction:start:", "add:", "new", "yourself", "createDocCells"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -125,10 +126,14 @@ return smalltalk.withContext(function($ctx2) {
 return _st(self["@docs"])._do_((function(other){
 var temp;
 return smalltalk.withContext(function($ctx3) {
-temp=_st(other)._at_detect_("psha1",(function(psha1){
+temp=_st(_st(other)._at_("psha1"))._detect_ifNone_((function(psha1){
 return smalltalk.withContext(function($ctx4) {
 return _st(psha1).__eq(_st(each)._at_("sha1"));
-}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}));
+}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}),(function(){
+return smalltalk.withContext(function($ctx4) {
+temp=nil;
+return temp;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 temp;
 $1=temp;
 if(($receiver = $1) == nil || $receiver == undefined){
@@ -141,7 +146,7 @@ return _st(each)._addAsc_(_st(other)._at_("sha1"));
 _st(self)._putInLines_start_(direction,aPosition);
 _st(self)._putInpLines();
 return self}, function($ctx1) {$ctx1.fill(self,"loadJson:start:",{aJson:aJson,aPosition:aPosition,a:a,initialDoc:initialDoc,more:more,direction:direction},smalltalk.DocGraph)})},
-messageSends: ["parse:", "at:ifAbsent:", "at:", "do:", "jsono:", "at:put:", "at:detect:", "=", "ifNotNil:", "addAsc:", "putInLines:start:", "putInpLines"]}),
+messageSends: ["parse:", "at:ifAbsent:", "at:", "do:", "jsono:", "at:put:", "detect:ifNone:", "=", "ifNotNil:", "addAsc:", "putInLines:start:", "putInpLines"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -204,10 +209,14 @@ return smalltalk.withContext(function($ctx3) {
 return _st(node)._ascDo_((function(each){
 var temp;
 return smalltalk.withContext(function($ctx4) {
-temp=_st(each)._ascDetect_((function(psha1){
+temp=_st(each)._ascDetect_ifNone_((function(psha1){
 return smalltalk.withContext(function($ctx5) {
 return _st(_st(nodes)._includes_(psha1))._not();
-}, function($ctx5) {$ctx5.fillBlock({psha1:psha1},$ctx1)})}));
+}, function($ctx5) {$ctx5.fillBlock({psha1:psha1},$ctx1)})}),(function(){
+return smalltalk.withContext(function($ctx5) {
+temp=nil;
+return temp;
+}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 temp;
 $1=temp;
 if(($receiver = $1) == nil || $receiver == undefined){
@@ -231,10 +240,14 @@ _st(all)._addAll_(prevnodes);
 _st(oldnodes)._do_((function(each){
 var temp;
 return smalltalk.withContext(function($ctx3) {
-temp=_st(each)._ascDetect_((function(psha1){
+temp=_st(each)._ascDetect_ifNone_((function(psha1){
 return smalltalk.withContext(function($ctx4) {
 return _st(_st(all)._includes_(psha1))._not();
-}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}));
+}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}),(function(){
+return smalltalk.withContext(function($ctx4) {
+temp=nil;
+return temp;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 temp;
 $3=temp;
 if(($receiver = $3) == nil || $receiver == undefined){
@@ -256,7 +269,7 @@ return nodes;
 }, function($ctx2) {$ctx2.fillBlock({nnodes:nnodes,all:all},$ctx1)})}));
 self["@maxPos"]=pos;
 return self}, function($ctx1) {$ctx1.fill(self,"putInLinesAsc:",{aPosition:aPosition,nodes:nodes,oldnodes:oldnodes,prevnodes:prevnodes,pos:pos},smalltalk.DocGraph)})},
-messageSends: ["at:", "new", "whileTrue:", "do:", "ascDo:", "ascDetect:", "not", "includes:", "ifNil:", "at:put:", "ifNotNil:", "addAll:", "removeKey:", "removeKey:at:", "+", ">", "size"]}),
+messageSends: ["at:", "new", "whileTrue:", "do:", "ascDo:", "ascDetect:ifNone:", "not", "includes:", "ifNil:", "at:put:", "ifNotNil:", "addAll:", "removeKey:", "removeKey:at:", "+", ">", "size"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -285,10 +298,14 @@ return smalltalk.withContext(function($ctx3) {
 return _st(node)._ascDo_((function(each){
 var temp;
 return smalltalk.withContext(function($ctx4) {
-temp=_st(each)._at_detect_("psha1",(function(psha1){
+temp=_st(_st(each)._at_("psha1"))._detect_ifNone_((function(psha1){
 return smalltalk.withContext(function($ctx5) {
 return _st(_st(nodes)._includesKey_(psha1))._not();
-}, function($ctx5) {$ctx5.fillBlock({psha1:psha1},$ctx1)})}));
+}, function($ctx5) {$ctx5.fillBlock({psha1:psha1},$ctx1)})}),(function(){
+return smalltalk.withContext(function($ctx5) {
+temp=nil;
+return temp;
+}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 temp;
 $1=temp;
 if(($receiver = $1) == nil || $receiver == undefined){
@@ -312,10 +329,14 @@ _st(all)._addAll_(prevnodes);
 _st(oldnodes)._do_((function(each){
 var temp;
 return smalltalk.withContext(function($ctx3) {
-temp=_st(each)._at_detect_("psha1",(function(psha1){
+temp=_st(_st(each)._at_("psha1"))._detect_ifNone_((function(psha1){
 return smalltalk.withContext(function($ctx4) {
 return _st(_st(all)._includesKey_(psha1))._not();
-}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}));
+}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}),(function(){
+return smalltalk.withContext(function($ctx4) {
+temp=nil;
+return temp;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 temp;
 $3=temp;
 if(($receiver = $3) == nil || $receiver == undefined){
@@ -337,7 +358,7 @@ return nodes;
 }, function($ctx2) {$ctx2.fillBlock({nnodes:nnodes,all:all},$ctx1)})}));
 self["@minPos"]=pos;
 return self}, function($ctx1) {$ctx1.fill(self,"putInLinesDesc:",{aPosition:aPosition,nodes:nodes,oldnodes:oldnodes,prevnodes:prevnodes,pos:pos},smalltalk.DocGraph)})},
-messageSends: ["at:", "new", "whileTrue:", "do:", "ascDo:", "at:detect:", "not", "includesKey:", "ifNil:", "at:put:", "ifNotNil:", "addAll:", "at:do:", "removeKey:", "removeKey:at:", "-", ">", "size"]}),
+messageSends: ["at:", "new", "whileTrue:", "do:", "ascDo:", "detect:ifNone:", "not", "includesKey:", "ifNil:", "at:put:", "ifNotNil:", "addAll:", "at:do:", "removeKey:", "removeKey:at:", "-", ">", "size"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -447,11 +468,11 @@ $4=_st($3)._yourself();
 $2=_st($1)._at_put_("data",$4);
 _st(ajax)._send_onResponce_(_st(data)._asJSONString(),(function(resp){
 return smalltalk.withContext(function($ctx2) {
-_st(self)._loadJSON_start_(resp,aPosition);
+_st(self)._loadJson_start_(resp,aPosition);
 return _st(self)._realize();
 }, function($ctx2) {$ctx2.fillBlock({resp:resp},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"requestGraph:direction:start:",{nodes:nodes,aDirection:aDirection,aPosition:aPosition,ajax:ajax,data:data},smalltalk.DocGraph)})},
-messageSends: ["url:", "new", "at:put:", "yourself", "send:onResponce:", "asJSONString", "loadJSON:start:", "realize"]}),
+messageSends: ["url:", "new", "at:put:", "yourself", "send:onResponce:", "asJSONString", "loadJson:start:", "realize"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(

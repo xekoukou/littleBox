@@ -26,6 +26,7 @@ afunction
 
 
 self requestGraph: (Array new add: initDoc; yourself) direction: 1 start: 0.
+self createDocCells.
 !
 
 createDocCells
@@ -90,8 +91,8 @@ more do: [:each|
 
 docs do:[:each|
 	docs do:[:other| |temp|
-		temp := other at:'psha1' detect:[:psha1| 
-						(psha1 = (each at: 'sha1'))].
+		temp := (other at:'psha1') detect:[:psha1| 
+						(psha1 = (each at: 'sha1'))] ifNone:[temp := nil.].
 		temp ifNotNil:[each addAsc:(other at:'sha1')].
 		]
 	].
@@ -133,7 +134,7 @@ prevnodes := HashedCollection new. "previous (found) nodes that have at least on
 	nnodes := HashedCollection new.
 	nodes do:[:node| node ascDo:[:each| 
 	|temp|
-	temp := each ascDetect:[:psha1| (nodes includes:psha1) not].
+	temp := each ascDetect:[:psha1| (nodes includes:psha1) not] ifNone:[temp:=nil.].
 	
 	temp ifNil: [nnodes at:(each at:'sha1') put: each.].
 	temp ifNotNil:[ oldnodes  at:(each at:'sha1') put: each. 
@@ -145,7 +146,7 @@ prevnodes := HashedCollection new. "previous (found) nodes that have at least on
 	all addAll:prevnodes.
 	oldnodes do:[:each| 
 	|temp|
-	temp := each ascDetect:[:psha1| (all includes:psha1) not].
+	temp := each ascDetect:[:psha1| (all includes:psha1) not] ifNone:[temp:=nil.].
 	
 	temp ifNil: [nnodes at:(each at:'sha1') put: each.
 		"remove their parents as well."
@@ -176,7 +177,7 @@ prevnodes := HashedCollection new. "previous (found) nodes that have at least on
 	nnodes := HashedCollection new.
 	nodes do:[:node| node ascDo:[:each| 
 	|temp|
-	temp := each at: 'psha1' detect:[:psha1| (nodes includesKey:psha1) not].
+	temp := (each at: 'psha1') detect:[:psha1| (nodes includesKey:psha1) not] ifNone:[temp := nil.].
 	
 	temp ifNil: [nnodes at:(each at:'sha1') put: each.].
 	temp ifNotNil:[ oldnodes  at:(each at:'sha1') put: each. 
@@ -188,7 +189,7 @@ prevnodes := HashedCollection new. "previous (found) nodes that have at least on
 	all addAll:prevnodes.
 	oldnodes do:[:each| 
 	|temp|
-	temp := each at: 'psha1' detect:[:psha1| (all includesKey:psha1) not].
+	temp := (each at: 'psha1') detect:[:psha1| (all includesKey:psha1) not] ifNone:[temp := nil.].
 	
 	temp ifNil: [nnodes at:(each at:'sha1') put: each.
 		"remove their parents as well."
@@ -279,7 +280,7 @@ ajax := Ajax url: url.
 
 data := HashedCollection new.
 data at: 'request' put:'docGraph'; at: 'data' put:(HashedCollection new at: 'direction' put: aDirection; at: 'initNodes' put: nodes; yourself).
-ajax send: data asJSONString onResponce: [:resp| self loadJSON:resp start: aPosition.
+ajax send: data asJSONString onResponce: [:resp| self loadJson:resp start: aPosition.
 																		self realize.].
 !
 
