@@ -1,3 +1,6 @@
 [submodule "amber"]
 	path = amber
 	url = git://github.com/amber-smalltalk/amber.git
+[submodule "packages/platanosJsCommon"]
+	path = packages/platanosJsCommon
+	url = https://github.com/xekoukou/platanosJsCommon.git
