@@ -14,11 +14,10 @@ $1=_st($Array())._new();
 _st($1)._add_(self["@initDoc"]);
 $2=_st($1)._yourself();
 _st(self)._requestGraph_direction_start_($2,(1),(0));
-_st(self)._createDocCells();
 return self}, function($ctx1) {$ctx1.fill(self,"afunction",{},smalltalk.DocGraph)})},
 args: [],
-source: "afunction\x0a\x0a\x0a\x0aself requestGraph: (Array new add: initDoc; yourself) direction: 1 start: 0.\x0aself createDocCells.\x0a\x0a\x0a\x09",
-messageSends: ["requestGraph:direction:start:", "add:", "new", "yourself", "createDocCells"],
+source: "afunction\x0a\x0a\x0a\x0aself requestGraph: (Array new add: initDoc; yourself) direction: 1 start: 0.\x0a\x0a\x0a\x0a\x0a\x09",
+messageSends: ["requestGraph:direction:start:", "add:", "new", "yourself"],
 referencedClasses: ["Array"]
 }),
 smalltalk.DocGraph);
@@ -30,14 +29,28 @@ category: 'not yet classified',
 fn: function (){
 var self=this;
 function $Point(){return smalltalk.Point||(typeof Point=="undefined"?nil:Point)}
-function $DocGraph(){return smalltalk.DocGraph||(typeof DocGraph=="undefined"?nil:DocGraph)}
+function $DocGraphCell(){return smalltalk.DocGraphCell||(typeof DocGraphCell=="undefined"?nil:DocGraphCell)}
 function $Vector(){return smalltalk.Vector||(typeof Vector=="undefined"?nil:Vector)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@plines"])._withIndexDo_((function(each,index){
+var $1;
+_st(console)._log_(self["@plines"]);
+$1=self["@plines"];
+if(($receiver = $1) == nil || $receiver == undefined){
+$1;
+} else {
+var index,each;
+index=self["@rposition"];
+index;
+_st((function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(each)._keysAndValuesDo_((function(key,value){
+return _st(self["@plines"])._includesKey_(index);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileTrue_((function(){
+return smalltalk.withContext(function($ctx2) {
+each=_st(self["@plines"])._at_(index);
+each;
+_st(each)._keysAndValuesDo_((function(key,value){
 return smalltalk.withContext(function($ctx3) {
-_st($DocGraph())._connect_to_doc_point_("2",self,_st(_st(self["@lines"])._at_(index))._at_(key),_st($Point())._x_y_(value,index));
+_st($DocGraphCell())._connect_to_doc_point_("2",self,_st(_st(self["@lines"])._at_(index))._at_(key),_st($Point())._x_y_(value,index));
 return _st(_st(_st(self["@lines"])._at_(index))._at_(key))._ascDo_((function(other){
 var x,y;
 return smalltalk.withContext(function($ctx4) {
@@ -48,12 +61,15 @@ x;
 return _st($Vector())._on_start_end_("10",_st($Point())._x_y_(_st(value).__star((50)),_st(index).__star((50))),_st($Point())._x_y_(_st(x).__star((50)),_st(y).__star((50))));
 }, function($ctx4) {$ctx4.fillBlock({other:other,x:x,y:y},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({key:key,value:value},$ctx1)})}));
-}, function($ctx2) {$ctx2.fillBlock({each:each,index:index},$ctx1)})}));
+index=_st(index).__plus((1));
+return index;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+};
 return self}, function($ctx1) {$ctx1.fill(self,"createDocCells",{},smalltalk.DocGraph)})},
 args: [],
-source: "createDocCells\x0a\x0aplines \x0awithIndexDo:[:each :index|\x0a\x09each\x0a\x09keysAndValuesDo:[:key :value|\x0a\x09\x09DocGraph connect: '2' to: self doc: ((lines at:index) at: key)  point: (Point x:value y:index).\x0a\x09\x09\x22paint vector\x22\x0a\x09\x09((lines at:index) at: key) ascDo:[:other| |x y|\x0a\x09\x09\x09y := other myPosition: self.\x0a\x09\x09\x09x := (plines at: y) at: (other at: 'sha1').\x0a\x09\x09\x09\x0a\x09\x09\x09Vector on: '10' start: (Point x:(value*50) y:(index*50)) end:(Point x:(x*50) y:(y*50)).\x0a\x09\x09]\x0a\x09]\x0a]",
-messageSends: ["withIndexDo:", "keysAndValuesDo:", "connect:to:doc:point:", "at:", "x:y:", "ascDo:", "myPosition:", "on:start:end:", "*"],
-referencedClasses: ["Point", "DocGraph", "Vector"]
+source: "createDocCells\x0a\x0aconsole log: plines.\x0a\x0aplines ifNotNil:[\x0a\x09|index each|\x0a\x09index := rposition.\x0a\x09[plines includesKey:index] whileTrue:[\x0a\x09\x09each := plines at: index.\x0a\x09\x09each\x0a\x09\x09keysAndValuesDo:[:key :value|\x0a\x09\x09\x09DocGraphCell connect: '2' to: self doc: ((lines at:index) at: key)  point: (Point x:value y:index).\x0a\x09\x09\x09\x22paint vector\x22\x0a\x09\x09\x09((lines at:index) at: key) ascDo:[:other| |x y|\x0a\x09\x09\x09\x09y := other myPosition: self.\x0a\x09\x09\x09\x09x := (plines at: y) at: (other at: 'sha1').\x0a\x09\x09\x09\x09\x0a\x09\x09\x09\x09Vector on: '10' start: (Point x:(value*50) y:(index*50)) end:(Point x:(x*50) y:(y*50)).\x0a\x09\x09\x09]\x0a\x09\x09].\x0a\x09index := index +1.\x0a\x09]\x0a]",
+messageSends: ["log:", "ifNotNil:", "whileTrue:", "at:", "keysAndValuesDo:", "connect:to:doc:point:", "x:y:", "ascDo:", "myPosition:", "on:start:end:", "*", "+", "includesKey:"],
+referencedClasses: ["Point", "DocGraphCell", "Vector"]
 }),
 smalltalk.DocGraph);
 
@@ -132,6 +148,7 @@ function $JSON(){return smalltalk.JSON||(typeof JSON=="undefined"?nil:JSON)}
 function $Doc(){return smalltalk.Doc||(typeof Doc=="undefined"?nil:Doc)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
+_st(console)._log_(aJson);
 a=_st($JSON())._parse_(aJson);
 direction=(1);
 more=_st(a)._at_ifAbsent_("ascendants",(function(){
@@ -174,8 +191,8 @@ _st(self)._putInLines_start_(direction,aPosition);
 _st(self)._putInpLines();
 return self}, function($ctx1) {$ctx1.fill(self,"loadJson:start:",{aJson:aJson,aPosition:aPosition,a:a,initialDoc:initialDoc,more:more,direction:direction},smalltalk.DocGraph)})},
 args: ["aJson", "aPosition"],
-source: "loadJson: aJson start: aPosition\x0a\x0a|a initialDoc more direction|\x0a\x0aa := JSON parse: aJson.\x0a\x0adirection := 1.\x0amore := a at: 'ascendants' ifAbsent:[more := a at: 'descendants'. direction := -1.].\x0a\x22freeing the memory\x22\x0a\x0a\x0amore do: [:each| \x0a\x09|doc|\x09\x0a\x09\x0a\x09doc := Doc jsono: each.\x0a\x09docs at: (doc at:'sha1') put:doc.\x0a].\x0a\x0adocs do:[:each|\x0a\x09docs do:[:other| |temp|\x0a\x09\x09temp := (other at:'psha1') detect:[:psha1| \x0a\x09\x09\x09\x09\x09\x09(psha1 = (each at: 'sha1'))] ifNone:[temp := nil.].\x0a\x09\x09temp ifNotNil:[each addAsc:(other at:'sha1')].\x0a\x09\x09]\x0a\x09].\x0a\x0a\x0aself putInLines: direction start: aPosition .\x0aself putInpLines.",
-messageSends: ["parse:", "at:ifAbsent:", "at:", "do:", "jsono:", "at:put:", "detect:ifNone:", "=", "ifNotNil:", "addAsc:", "putInLines:start:", "putInpLines"],
+source: "loadJson: aJson start: aPosition\x0a\x0a|a initialDoc more direction|\x0a\x0aconsole log: aJson.\x0a\x0aa := JSON parse: aJson.\x0a\x0adirection := 1.\x0amore := a at: 'ascendants' ifAbsent:[more := a at: 'descendants'. direction := -1.].\x0a\x22freeing the memory\x22\x0a\x0a\x0amore do: [:each| \x0a\x09|doc|\x09\x0a\x09\x0a\x09doc := Doc jsono: each.\x0a\x09docs at: (doc at:'sha1') put:doc.\x0a].\x0a\x0adocs do:[:each|\x0a\x09docs do:[:other| |temp|\x0a\x09\x09temp := (other at:'psha1') detect:[:psha1| \x0a\x09\x09\x09\x09\x09\x09(psha1 = (each at: 'sha1'))] ifNone:[temp := nil.].\x0a\x09\x09temp ifNotNil:[each addAsc:(other at:'sha1')].\x0a\x09\x09]\x0a\x09].\x0a\x0a\x0aself putInLines: direction start: aPosition .\x0aself putInpLines.",
+messageSends: ["log:", "parse:", "at:ifAbsent:", "at:", "do:", "jsono:", "at:put:", "detect:ifNone:", "=", "ifNotNil:", "addAsc:", "putInLines:start:", "putInpLines"],
 referencedClasses: ["JSON", "Doc"]
 }),
 smalltalk.DocGraph);
@@ -480,7 +497,7 @@ return pos;
 }, function($ctx2) {$ctx2.fillBlock({ncurrent:ncurrent},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"putInpLines",{iter:iter,pos:pos,current:current,nodes:nodes,siter:siter},smalltalk.DocGraph)})},
 args: [],
-source: "putInpLines\x0a\x0a|iter pos current nodes siter|\x0a\x0aiter := nil.\x0a\x0aplines := Dictionary new.\x0a\x0acurrent := Array new.\x0anodes := HashedCollection new.\x0aplines at:minPos put: nodes.\x0a\x0asiter := 0.\x0a(lines at: minPos) do: [:each| \x0a\x09nodes at: (each at:'sha1') put: siter.  \x0a\x09current at: siter put: each. \x0a\x09siter:= siter  + 1.\x0a].\x0a\x0apos := minPos+1.\x0a[pos <= maxPos] \x0awhileTrue:[\x0a\x09|ncurrent|\x0a\x09\x0a\x09ncurrent:= Dictionary new.\x0a\x09siter:= 0.\x0a\x09nodes := HashedCollection new.\x0a    plines at:pos put: nodes.\x0a\x09\x0a\x09iter := lines at: pos.\x0a\x09current \x0a\x09do:[:each| \x0a\x09\x09each \x0a\x09\x09ascDo:[:other|\x0a\x09\x09\x09(iter includesKey: (other at:'sha1')) \x0a\x09\x09\x09ifTrue:[ \x0a\x09\x09\x09\x09(nodes includesKey:(other at:'sha1')) \x0a\x09\x09\x09\x09ifFalse:[\x0a\x09\x09\x09\x09\x09nodes at: (other at:'sha1') put: siter. \x0a\x09\x09\x09\x09\x09ncurrent at: siter put: other.\x0a\x09\x09\x09\x09\x09siter:= siter  + 1. \x0a\x09\x09\x09\x09]\x0a\x09\x09\x09]\x0a\x09\x09\x09ifFalse:[\x0a\x09\x09\x09\x09ncurrent at: siter put: each.\x0a\x09\x09\x09\x09siter :=siter + 1.\x0a\x09\x09\x09]\x0a\x09\x09]\x0a\x09 ].\x0a\x09current := ncurrent.\x0a\x09pos:= pos +1.\x0a]",
+source: "putInpLines\x0a\x0a|iter pos current nodes siter|\x0a\x0aiter := nil.\x0a\x0aplines := Dictionary new.\x0a\x0acurrent := Array new.\x0anodes := HashedCollection new.\x0aplines at:minPos put: nodes.\x0a\x0asiter := 0.\x0a(lines at: minPos) do: [:each| \x0a\x09nodes at: (each at:'sha1') put: siter.  \x0a\x09current at: siter put: each. \x0a\x09siter:= siter  + 1.\x0a].\x0a\x0apos := minPos+1.\x0a[pos <= maxPos] \x0awhileTrue:[\x0a\x09|ncurrent|\x0a\x09\x0a\x09ncurrent:= Dictionary new.\x0a\x09siter:= 0.\x0a\x09nodes := HashedCollection new.\x0a    plines at:pos put: nodes.\x0a\x09\x0a\x09iter := lines at: pos.\x0a\x09current \x0a\x09do:[:each| \x0a\x09\x09each \x0a\x09\x09ascDo:[:other|\x0a\x09\x09\x09(iter includesKey: (other at:'sha1')) \x0a\x09\x09\x09ifTrue:[ \x0a\x09\x09\x09\x09(nodes includesKey:(other at:'sha1')) \x0a\x09\x09\x09\x09ifFalse:[\x0a\x09\x09\x09\x09\x09nodes at: (other at:'sha1') put: siter. \x0a\x09\x09\x09\x09\x09ncurrent at: siter put: other.\x0a\x09\x09\x09\x09\x09siter:= siter  + 1. \x0a\x09\x09\x09\x09]\x0a\x09\x09\x09]\x0a\x09\x09\x09ifFalse:[\x0a\x09\x09\x09\x09ncurrent at: siter put: each.\x0a\x09\x09\x09\x09siter :=siter + 1.\x0a\x09\x09\x09]\x0a\x09\x09]\x0a\x09 ].\x0a\x09current := ncurrent.\x0a\x09pos:= pos +1.\x0a].\x0a",
 messageSends: ["new", "at:put:", "do:", "at:", "+", "whileTrue:", "ascDo:", "ifTrue:ifFalse:", "ifFalse:", "includesKey:", "<="],
 referencedClasses: ["Dictionary", "Array", "HashedCollection"]
 }),
@@ -531,12 +548,12 @@ $2=_st($1)._at_put_("data",$4);
 _st(ajax)._send_onResponce_(_st(data)._asJSONString(),(function(resp){
 return smalltalk.withContext(function($ctx2) {
 _st(self)._loadJson_start_(resp,aPosition);
-return _st(self)._realize();
+return _st(self)._createDocCells();
 }, function($ctx2) {$ctx2.fillBlock({resp:resp},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"requestGraph:direction:start:",{nodes:nodes,aDirection:aDirection,aPosition:aPosition,ajax:ajax,data:data},smalltalk.DocGraph)})},
 args: ["nodes", "aDirection", "aPosition"],
-source: "requestGraph: nodes direction: aDirection start: aPosition\x0a\x0a\x22an Array\x22\x0a\x0a|ajax data|\x0a\x0aajax := Ajax url: url.\x0a\x0adata := HashedCollection new.\x0adata at: 'request' put:'docGraph'; at: 'data' put:(HashedCollection new at: 'direction' put: aDirection; at: 'initNodes' put: nodes; yourself).\x0aajax send: data asJSONString onResponce: [:resp| self loadJson:resp start: aPosition.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09self realize.].",
-messageSends: ["url:", "new", "at:put:", "yourself", "send:onResponce:", "asJSONString", "loadJson:start:", "realize"],
+source: "requestGraph: nodes direction: aDirection start: aPosition\x0a\x0a\x22an Array\x22\x0a\x0a|ajax data|\x0a\x0aajax := Ajax url: url.\x0a\x0adata := HashedCollection new.\x0adata at: 'request' put:'docGraph'; at: 'data' put:(HashedCollection new at: 'direction' put: aDirection; at: 'initNodes' put: nodes; yourself).\x0aajax send: data asJSONString onResponce: [:resp| self loadJson:resp start: aPosition. self createDocCells. ].",
+messageSends: ["url:", "new", "at:put:", "yourself", "send:onResponce:", "asJSONString", "loadJson:start:", "createDocCells"],
 referencedClasses: ["Ajax", "HashedCollection"]
 }),
 smalltalk.DocGraph);

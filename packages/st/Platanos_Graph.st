@@ -26,23 +26,29 @@ afunction
 
 
 self requestGraph: (Array new add: initDoc; yourself) direction: 1 start: 0.
-self createDocCells.
 !
 
 createDocCells
 
-plines 
-withIndexDo:[:each :index|
-	each
-	keysAndValuesDo:[:key :value|
-		DocGraph connect: '2' to: self doc: ((lines at:index) at: key)  point: (Point x:value y:index).
-		"paint vector"
-		((lines at:index) at: key) ascDo:[:other| |x y|
-			y := other myPosition: self.
-			x := (plines at: y) at: (other at: 'sha1').
-			
-			Vector on: '10' start: (Point x:(value*50) y:(index*50)) end:(Point x:(x*50) y:(y*50)).
-		]
+console log: plines.
+
+plines ifNotNil:[
+	|index each|
+	index := rposition.
+	[plines includesKey:index] whileTrue:[
+		each := plines at: index.
+		each
+		keysAndValuesDo:[:key :value|
+			DocGraphCell connect: '2' to: self doc: ((lines at:index) at: key)  point: (Point x:value y:index).
+			"paint vector"
+			((lines at:index) at: key) ascDo:[:other| |x y|
+				y := other myPosition: self.
+				x := (plines at: y) at: (other at: 'sha1').
+				
+				Vector on: '10' start: (Point x:(value*50) y:(index*50)) end:(Point x:(x*50) y:(y*50)).
+			]
+		].
+	index := index +1.
 	]
 ]
 !
@@ -74,6 +80,8 @@ lines
 loadJson: aJson start: aPosition
 
 |a initialDoc more direction|
+
+console log: aJson.
 
 a := JSON parse: aJson.
 
@@ -257,7 +265,7 @@ whileTrue:[
 	 ].
 	current := ncurrent.
 	pos:= pos +1.
-]
+].
 !
 
 renderOn: html
@@ -280,8 +288,7 @@ ajax := Ajax url: url.
 
 data := HashedCollection new.
 data at: 'request' put:'docGraph'; at: 'data' put:(HashedCollection new at: 'direction' put: aDirection; at: 'initNodes' put: nodes; yourself).
-ajax send: data asJSONString onResponce: [:resp| self loadJson:resp start: aPosition.
-																		self realize.].
+ajax send: data asJSONString onResponce: [:resp| self loadJson:resp start: aPosition. self createDocCells. ].
 !
 
 setConnectors

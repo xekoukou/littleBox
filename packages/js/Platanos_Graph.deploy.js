@@ -12,9 +12,8 @@ $1=_st($Array())._new();
 _st($1)._add_(self["@initDoc"]);
 $2=_st($1)._yourself();
 _st(self)._requestGraph_direction_start_($2,(1),(0));
-_st(self)._createDocCells();
 return self}, function($ctx1) {$ctx1.fill(self,"afunction",{},smalltalk.DocGraph)})},
-messageSends: ["requestGraph:direction:start:", "add:", "new", "yourself", "createDocCells"]}),
+messageSends: ["requestGraph:direction:start:", "add:", "new", "yourself"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -23,14 +22,28 @@ selector: "createDocCells",
 fn: function (){
 var self=this;
 function $Point(){return smalltalk.Point||(typeof Point=="undefined"?nil:Point)}
-function $DocGraph(){return smalltalk.DocGraph||(typeof DocGraph=="undefined"?nil:DocGraph)}
+function $DocGraphCell(){return smalltalk.DocGraphCell||(typeof DocGraphCell=="undefined"?nil:DocGraphCell)}
 function $Vector(){return smalltalk.Vector||(typeof Vector=="undefined"?nil:Vector)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@plines"])._withIndexDo_((function(each,index){
+var $1;
+_st(console)._log_(self["@plines"]);
+$1=self["@plines"];
+if(($receiver = $1) == nil || $receiver == undefined){
+$1;
+} else {
+var index,each;
+index=self["@rposition"];
+index;
+_st((function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(each)._keysAndValuesDo_((function(key,value){
+return _st(self["@plines"])._includesKey_(index);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileTrue_((function(){
+return smalltalk.withContext(function($ctx2) {
+each=_st(self["@plines"])._at_(index);
+each;
+_st(each)._keysAndValuesDo_((function(key,value){
 return smalltalk.withContext(function($ctx3) {
-_st($DocGraph())._connect_to_doc_point_("2",self,_st(_st(self["@lines"])._at_(index))._at_(key),_st($Point())._x_y_(value,index));
+_st($DocGraphCell())._connect_to_doc_point_("2",self,_st(_st(self["@lines"])._at_(index))._at_(key),_st($Point())._x_y_(value,index));
 return _st(_st(_st(self["@lines"])._at_(index))._at_(key))._ascDo_((function(other){
 var x,y;
 return smalltalk.withContext(function($ctx4) {
@@ -41,9 +54,12 @@ x;
 return _st($Vector())._on_start_end_("10",_st($Point())._x_y_(_st(value).__star((50)),_st(index).__star((50))),_st($Point())._x_y_(_st(x).__star((50)),_st(y).__star((50))));
 }, function($ctx4) {$ctx4.fillBlock({other:other,x:x,y:y},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({key:key,value:value},$ctx1)})}));
-}, function($ctx2) {$ctx2.fillBlock({each:each,index:index},$ctx1)})}));
+index=_st(index).__plus((1));
+return index;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+};
 return self}, function($ctx1) {$ctx1.fill(self,"createDocCells",{},smalltalk.DocGraph)})},
-messageSends: ["withIndexDo:", "keysAndValuesDo:", "connect:to:doc:point:", "at:", "x:y:", "ascDo:", "myPosition:", "on:start:end:", "*"]}),
+messageSends: ["log:", "ifNotNil:", "whileTrue:", "at:", "keysAndValuesDo:", "connect:to:doc:point:", "x:y:", "ascDo:", "myPosition:", "on:start:end:", "*", "+", "includesKey:"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -105,6 +121,7 @@ function $JSON(){return smalltalk.JSON||(typeof JSON=="undefined"?nil:JSON)}
 function $Doc(){return smalltalk.Doc||(typeof Doc=="undefined"?nil:Doc)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
+_st(console)._log_(aJson);
 a=_st($JSON())._parse_(aJson);
 direction=(1);
 more=_st(a)._at_ifAbsent_("ascendants",(function(){
@@ -146,7 +163,7 @@ return _st(each)._addAsc_(_st(other)._at_("sha1"));
 _st(self)._putInLines_start_(direction,aPosition);
 _st(self)._putInpLines();
 return self}, function($ctx1) {$ctx1.fill(self,"loadJson:start:",{aJson:aJson,aPosition:aPosition,a:a,initialDoc:initialDoc,more:more,direction:direction},smalltalk.DocGraph)})},
-messageSends: ["parse:", "at:ifAbsent:", "at:", "do:", "jsono:", "at:put:", "detect:ifNone:", "=", "ifNotNil:", "addAsc:", "putInLines:start:", "putInpLines"]}),
+messageSends: ["log:", "parse:", "at:ifAbsent:", "at:", "do:", "jsono:", "at:put:", "detect:ifNone:", "=", "ifNotNil:", "addAsc:", "putInLines:start:", "putInpLines"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -469,10 +486,10 @@ $2=_st($1)._at_put_("data",$4);
 _st(ajax)._send_onResponce_(_st(data)._asJSONString(),(function(resp){
 return smalltalk.withContext(function($ctx2) {
 _st(self)._loadJson_start_(resp,aPosition);
-return _st(self)._realize();
+return _st(self)._createDocCells();
 }, function($ctx2) {$ctx2.fillBlock({resp:resp},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"requestGraph:direction:start:",{nodes:nodes,aDirection:aDirection,aPosition:aPosition,ajax:ajax,data:data},smalltalk.DocGraph)})},
-messageSends: ["url:", "new", "at:put:", "yourself", "send:onResponce:", "asJSONString", "loadJson:start:", "realize"]}),
+messageSends: ["url:", "new", "at:put:", "yourself", "send:onResponce:", "asJSONString", "loadJson:start:", "createDocCells"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
