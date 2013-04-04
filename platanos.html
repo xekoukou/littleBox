@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My First Amber Project</title>
+    <script src="amber/js/amber.js" type="text/javascript"></script>
+<script type="text/javascript"
+  src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+    <script src="packages/Markdown/Markdown.Converter.js" type="text/javascript"></script>
+    <script src="packages/Markdown/Markdown.Sanitizer.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      loadAmber({
+        packages: ['Ajax', 'DomBinding' , 'CSSCanvas' , 'Component','Markdown','platanosJsCommon/Platanos_Doc','Platanos_Graph' ,'Platanos_Search','Platanos_WikiPage','Platanos'],
+        packageHome: './packages/',
+        ready: function() {
+      	$(function() {
+        smalltalk.Platanos._new()._testDocGraph();
+     }); 
+
+        }
+	
+}); 
+    </script>
+  </head>
+  <body>
+    <article>
+      <h1>My First Amber Project</h1>
+      <img src='http://x.pstatic.gr/media/n/i/4/4034/11038.jpg'>
+      <p>Hello there </p>
+      <button onclick="smalltalk.Browser._open()">class browser</button>
+      <ul>
+	<li>Coffee</li>
+	<li>Milk</li>
+      </ul>
+    </article>
+  </body>
+</html>
