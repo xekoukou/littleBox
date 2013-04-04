@@ -98,16 +98,34 @@ self equations do:
 
 !Component methodsFor: 'diconnecting'!
 
+disconnectAllCompAt: aConnectorId
+
+|selector|
+
+(self connectors at: aConnectorId) withIndexDo: [:value :aPosition |
+
+	"remove from Connectors"
+	(self connectors at: aConnectorId) remove: aPosition ifAbsent:[].
+
+	"remove from DOM"
+	selector := pid,aConnectorId,' ',':nth-child(',(aPosition - 1) asString,')'.
+	selector asJQuery remove.
+
+	"disconnect variables"
+	self equations do: [ :each | each removeCompVarFrom: aConnectorId from: aPosition].
+]
+!
+
 disconnectCompAt: aConnectorId at: aPosition
 
 |selector|
 
+"remove from Connectors"
+(self connectors at: aConnectorId) remove: aPosition ifAbsent:[].
+
 "remove from DOM"
 selector := pid,aConnectorId,' ',':nth-child(',(aPosition - 1) asString,')'.
 selector asJQuery remove.
-
-"remove from Connectors"
-(self connectors at: aConnectorId) remove: aPosition ifAbsent:[].
 
 "disconnect variables"
 self equations do: [ :each | each removeCompVarFrom: aConnectorId from: aPosition].
