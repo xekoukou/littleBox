@@ -2,14 +2,19 @@
 <html>
   <head>
     <title>My First Amber Project</title>
-    <script src="../../js/amber.js" type="text/javascript"></script>
+    <script src="amber/js/amber.js" type="text/javascript"></script>
     <script type="text/javascript">
       loadAmber({
-        files: ['Ajax' , 'DomBinding.js' , 'CSSCanvas.js' , 'Component.js'],
-        prefix: './js',
+        packages: ['Ajax', 'DomBinding' , 'CSSCanvas' , 'Component'],
+        packageHome: './packages/',
         ready: function() {
+      	$(function() {
+        smalltalk.Platanos._new()._testDocGraph();
+     }); 
 
-        }}); 
+        }
+	
+}); 
     </script>
   </head>
   <body>

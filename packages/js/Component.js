@@ -290,25 +290,54 @@ smalltalk.Component);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "disconnectAllCompAt:",
+category: 'diconnecting',
+fn: function (aConnectorId){
+var self=this;
+var selector;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(_st(self)._connectors())._at_(aConnectorId))._withIndexDo_((function(value,aPosition){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(_st(self)._connectors())._at_(aConnectorId))._remove_ifAbsent_(aPosition,(function(){
+return smalltalk.withContext(function($ctx3) {
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+selector=_st(_st(_st(_st(_st(self["@pid"]).__comma(aConnectorId)).__comma(" ")).__comma(":nth-child(")).__comma(_st(_st(aPosition).__minus((1)))._asString())).__comma(")");
+selector;
+_st(_st(selector)._asJQuery())._remove();
+return _st(_st(self)._equations())._do_((function(each){
+return smalltalk.withContext(function($ctx3) {
+return _st(each)._removeCompVarFrom_from_(aConnectorId,aPosition);
+}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({value:value,aPosition:aPosition},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"disconnectAllCompAt:",{aConnectorId:aConnectorId,selector:selector},smalltalk.Component)})},
+args: ["aConnectorId"],
+source: "disconnectAllCompAt: aConnectorId\x0a\x0a|selector|\x0a\x0a(self connectors at: aConnectorId) withIndexDo: [:value :aPosition |\x0a\x0a\x09\x22remove from Connectors\x22\x0a\x09(self connectors at: aConnectorId) remove: aPosition ifAbsent:[].\x0a\x0a\x09\x22remove from DOM\x22\x0a\x09selector := pid,aConnectorId,' ',':nth-child(',(aPosition - 1) asString,')'.\x0a\x09selector asJQuery remove.\x0a\x0a\x09\x22disconnect variables\x22\x0a\x09self equations do: [ :each | each removeCompVarFrom: aConnectorId from: aPosition].\x0a]",
+messageSends: ["withIndexDo:", "remove:ifAbsent:", "at:", "connectors", ",", "asString", "-", "remove", "asJQuery", "do:", "removeCompVarFrom:from:", "equations"],
+referencedClasses: []
+}),
+smalltalk.Component);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "disconnectCompAt:at:",
 category: 'diconnecting',
 fn: function (aConnectorId,aPosition){
 var self=this;
 var selector;
 return smalltalk.withContext(function($ctx1) { 
-selector=_st(_st(_st(_st(_st(self["@pid"]).__comma(aConnectorId)).__comma(" ")).__comma(":nth-child(")).__comma(_st(_st(aPosition).__minus((1)))._asString())).__comma(")");
-_st(_st(selector)._asJQuery())._remove();
 _st(_st(_st(self)._connectors())._at_(aConnectorId))._remove_ifAbsent_(aPosition,(function(){
 return smalltalk.withContext(function($ctx2) {
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+selector=_st(_st(_st(_st(_st(self["@pid"]).__comma(aConnectorId)).__comma(" ")).__comma(":nth-child(")).__comma(_st(_st(aPosition).__minus((1)))._asString())).__comma(")");
+_st(_st(selector)._asJQuery())._remove();
 _st(_st(self)._equations())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
 return _st(each)._removeCompVarFrom_from_(aConnectorId,aPosition);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"disconnectCompAt:at:",{aConnectorId:aConnectorId,aPosition:aPosition,selector:selector},smalltalk.Component)})},
 args: ["aConnectorId", "aPosition"],
-source: "disconnectCompAt: aConnectorId at: aPosition\x0a\x0a|selector|\x0a\x0a\x22remove from DOM\x22\x0aselector := pid,aConnectorId,' ',':nth-child(',(aPosition - 1) asString,')'.\x0aselector asJQuery remove.\x0a\x0a\x22remove from Connectors\x22\x0a(self connectors at: aConnectorId) remove: aPosition ifAbsent:[].\x0a\x0a\x22disconnect variables\x22\x0aself equations do: [ :each | each removeCompVarFrom: aConnectorId from: aPosition].\x0a\x0a\x0a",
-messageSends: [",", "asString", "-", "remove", "asJQuery", "remove:ifAbsent:", "at:", "connectors", "do:", "removeCompVarFrom:from:", "equations"],
+source: "disconnectCompAt: aConnectorId at: aPosition\x0a\x0a|selector|\x0a\x0a\x22remove from Connectors\x22\x0a(self connectors at: aConnectorId) remove: aPosition ifAbsent:[].\x0a\x0a\x22remove from DOM\x22\x0aselector := pid,aConnectorId,' ',':nth-child(',(aPosition - 1) asString,')'.\x0aselector asJQuery remove.\x0a\x0a\x22disconnect variables\x22\x0aself equations do: [ :each | each removeCompVarFrom: aConnectorId from: aPosition].\x0a\x0a",
+messageSends: ["remove:ifAbsent:", "at:", "connectors", ",", "asString", "-", "remove", "asJQuery", "do:", "removeCompVarFrom:from:", "equations"],
 referencedClasses: []
 }),
 smalltalk.Component);
