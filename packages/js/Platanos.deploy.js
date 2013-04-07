@@ -20,7 +20,7 @@ function $Doc(){return smalltalk.Doc||(typeof Doc=="undefined"?nil:Doc)}
 function $Component(){return smalltalk.Component||(typeof Component=="undefined"?nil:Component)}
 function $DocGraph(){return smalltalk.DocGraph||(typeof DocGraph=="undefined"?nil:DocGraph)}
 return smalltalk.withContext(function($ctx1) { 
-json="{\x22sha1\x22:\x220\x22 , \x22csummary\x22: \x220 commit\x22 , \x22psha1\x22:[\x221\x22]}";
+json="{\x22sha1\x22:\x220\x22 , \x22csummary\x22: \x220 commit\x22 , \x22psha1\x22:[]}";
 doc=_st($Doc())._json_(json);
 _st($DocGraph())._connect_at_to_doc_("",(0),_st($Component())._root_("https://127.0.0.1:8000"),doc);
 return self}, function($ctx1) {$ctx1.fill(self,"testDocGraph",{json:json,doc:doc},smalltalk.Platanos)})},

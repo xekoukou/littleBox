@@ -14,7 +14,7 @@ testDocGraph
 
 |json doc|
 
-json := '{"sha1":"0" , "csummary": "0 commit" , "psha1":["1"]}'.
+json := '{"sha1":"0" , "csummary": "0 commit" , "psha1":[]}'.
 doc := Doc json: json.
 DocGraph connect: '' at: 0 to: (Component root:'https://127.0.0.1:8000') doc: doc.
 !

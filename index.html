@@ -10,15 +10,14 @@
     <script src="packages/Markdown/Markdown.Sanitizer.js" type="text/javascript"></script>
     <script type="text/javascript">
       loadAmber({
-        packages: ['Ajax', 'DomBinding' , 'CSSCanvas' , 'Component','Markdown','platanosJsCommon/Platanos_Doc','Platanos_Graph' ,'Platanos_Search','Platanos_WikiPage','Platanos'],
+        packages: ['Ajax', 'DomBinding' ,'IndexedDB', 'CSSCanvas' , 'Component','Markdown','platanosJsCommon/Platanos_Doc','Platanos_Graph' ,'Platanos_Search','Platanos_WikiPage','Platanos'],
         packageHome: './packages/',
         ready: function() {
       	$(function() {
-        smalltalk.Platanos._new()._testDocGraph();
+        smalltalk.Platanos._new()._testSearchPage();
      }); 
 
-        },
-	deploy:true
+        }
 	
 }); 
     </script>

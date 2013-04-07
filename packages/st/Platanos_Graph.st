@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'Platanos_Graph'!
 Component subclass: #DocGraph
-	instanceVariableNames: 'pointer docs rposition lines plines initDoc minPos maxPos'
+	instanceVariableNames: 'pointer docs rposition lines plines initDoc minPos maxPos cheight cwidth'
 	package: 'Platanos_Graph'!
 !DocGraph commentStamp!
 "The Json that is passed to this function has this form:
@@ -30,26 +30,29 @@ self requestGraph: (Array new add: initDoc; yourself) direction: 1 start: 0.
 
 createDocCells
 
+|index each d|
+
+d:= 150.
+console log: lines.
 console log: plines.
 
-plines ifNotNil:[
-	|index each|
-	index := rposition.
-	[plines includesKey:index] whileTrue:[
-		each := plines at: index.
-		each
-		keysAndValuesDo:[:key :value|
-			DocGraphCell connect: '2' to: self doc: ((lines at:index) at: key)  point: (Point x:value y:index).
-			"paint vector"
-			((lines at:index) at: key) ascDo:[:other| |x y|
-				y := other myPosition: self.
-				x := (plines at: y) at: (other at: 'sha1').
-				
-				Vector on: '10' start: (Point x:(value*50) y:(index*50)) end:(Point x:(x*50) y:(y*50)).
-			]
-		].
-	index := index +1.
-	]
+self disconnectAllCompAt: '2'.
+
+index := rposition.
+[plines includesKey:index] whileTrue:[
+	each := plines at: index.
+	each
+	keysAndValuesDo:[:key :value|
+		DocGraphCell connect: '2' to: self doc: ((lines at:index) at: key)  point: (Point x:((value-1)*d) y:(index*d)).
+		"paint vector"
+		((lines at:index) at: key) ascDo:[:other| |x y|
+			y := (docs at:other) myPosition: self.
+			x := (plines at: y) at: other.
+			
+			Vector on: (pid,'10') start: (Point x:((value-1)*d) y:( cheight -(index * d))) end:(Point x:((x-1)*d) y:(cheight - (y*d))).
+		]
+	].
+index := index +1.
 ]
 !
 
@@ -57,10 +60,13 @@ doc: aDoc
 
 "should only be used at the beginning"
 initDoc := aDoc.
+docs at: (initDoc at:'sha1') put:initDoc.
 lines at: minPos put: (HashedCollection new at: (initDoc at: 'sha1') put: initDoc ;yourself).
 !
 
 initialize
+
+|gheight gwidth|
 
 super initialize.
 
@@ -70,6 +76,11 @@ rposition := 0.
 minPos := 0.
 maxPos := 0.
 pointer := nil.
+gheight :=window innerHeight.
+gwidth := window innerWidth.
+
+cheight := gheight.
+cwidth := 0.4 * gwidth.
 !
 
 lines
@@ -100,11 +111,13 @@ more do: [:each|
 docs do:[:each|
 	docs do:[:other| |temp|
 		temp := (other at:'psha1') detect:[:psha1| 
-						(psha1 = (each at: 'sha1'))] ifNone:[temp := nil.].
+						(psha1 = (each at: 'sha1'))] ifNone:[ nil.].
 		temp ifNotNil:[each addAsc:(other at:'sha1')].
 		]
 	].
 
+console log: docs.
+console log: 'direction:',direction asString.
 
 self putInLines: direction start: aPosition .
 self putInpLines.
@@ -117,9 +130,10 @@ css selector: '' attr: 'box-shadow' val: '1px 1px 3px rgba(0, 0, 0, 0.5)'.
 css selector: '' attr: 'border-radius' val: '2px'.
 css selector: '' attr: 'margin' val: '3px'.
 
+css selector: '' attr: 'background-color' val: 'white'.
 css selector: '' attr:'position' val: 'fixed'.
 css selector: '' attr:'left' val: '0px'.
-css selector: '' attr:'top' val: '0px'.
+css selector: '' attr:'bottom' val: '0px'.
 !
 
 putInLines: direction start: aPosition
@@ -135,40 +149,30 @@ putInLinesAsc: aPosition
 pos := aPosition.
 
 nodes := lines at: pos.
-oldnodes := HashedCollection new.  "nodes that one of their parent hasnt been found yet"
-prevnodes := HashedCollection new. "previous (found) nodes that have at least one oldnode child"
 
-[(nodes size) > 0] whileTrue:[ |nnodes all| 
+
+prevnodes := HashedCollection new. "previous (found) nodes that have at least one child that one of its parent hasnt been found"
+
+[(nodes size) > 0] whileTrue:[ |nnodes nprevnodes noldnodes all| 
 	nnodes := HashedCollection new.
 	nodes do:[:node| node ascDo:[:each| 
-	|temp|
-	temp := each ascDetect:[:psha1| (nodes includes:psha1) not] ifNone:[temp:=nil.].
+	|temp doc|
+	doc := docs at:each.
+	temp := (doc at:'psha1') detect:[:psha1| ((nodes includesKey:psha1) not) &((prevnodes includesKey:psha1) not)] ifNone:[nil.].
 	
-	temp ifNil: [nnodes at:(each at:'sha1') put: each.].
-	temp ifNotNil:[ oldnodes  at:(each at:'sha1') put: each. 
+	temp ifNil: [nnodes at:each put: doc].
+	temp ifNotNil:[
+		"we never remove nodes form prevnodes but it doesnt create problems since the search through them has stoped(acyclic graph?)"
 				prevnodes at:(node at:'sha1') put: node.
 				].
 	]].
-	all := HashedCollection new.
-	all addAll: nodes.
-	all addAll:prevnodes.
-	oldnodes do:[:each| 
-	|temp|
-	temp := each ascDetect:[:psha1| (all includes:psha1) not] ifNone:[temp:=nil.].
-	
-	temp ifNil: [nnodes at:(each at:'sha1') put: each.
-		"remove their parents as well."
-		each ascDo:[:psha1| prevnodes removeKey:psha1].
-		oldnodes removeKey: each at: 'sha1'.
-		].
-	].
 	
 	pos := pos + 1.
 	lines at: pos put:nnodes.
     nodes := nnodes.
 ].
-
-maxPos := pos.
+lines removeKey:pos ifAbsent:[].
+maxPos := pos-1..
 !
 
 putInLinesDesc: aPosition
@@ -226,7 +230,7 @@ current := Array new.
 nodes := HashedCollection new.
 plines at:minPos put: nodes.
 
-siter := 0.
+siter := 1.
 (lines at: minPos) do: [:each| 
 	nodes at: (each at:'sha1') put: siter.  
 	current at: siter put: each. 
@@ -238,22 +242,23 @@ pos := minPos+1.
 whileTrue:[
 	|ncurrent|
 	
-	ncurrent:= Dictionary new.
-	siter:= 0.
+	ncurrent:= Array new.
+	siter:= 1.
 	nodes := HashedCollection new.
-    plines at:pos put: nodes.
 	
 	iter := lines at: pos.
+	console log: 'current is'.
+	console log: current.
 	current 
 	do:[:each| 
 		each 
 		ascDo:[:other|
-			(iter includesKey: (other at:'sha1')) 
+			(iter includesKey: other) 
 			ifTrue:[ 
-				(nodes includesKey:(other at:'sha1')) 
+				(nodes includesKey:other) 
 				ifFalse:[
-					nodes at: (other at:'sha1') put: siter. 
-					ncurrent at: siter put: other.
+					nodes at: other put: siter. 
+					ncurrent at: siter put: (docs at:other).
 					siter:= siter  + 1. 
 				]
 			]
@@ -263,6 +268,7 @@ whileTrue:[
 			]
 		]
 	 ].
+	plines at:pos put: nodes.
 	current := ncurrent.
 	pos:= pos +1.
 ].
@@ -270,9 +276,10 @@ whileTrue:[
 
 renderOn: html
 
-|iter maxLength|
+|iter|
 
-html canvas id: self assignId; width:'80%';height:'100%'.
+
+html canvas id: self assignId; width: (cwidth asString) ;height: (cheight asString).
 
 "the docCell connector div"
 html div id: self assignId.
@@ -333,8 +340,8 @@ css selector: '' attr: 'text-align' val: 'left'.
 css selector: '' attr: 'margin' val: '3px'.
 
 css selector: '' attr:'position' val: 'fixed'.
-css selector: '' attr:'left' val: (((point y) *50) asString),'px'.
-css selector: '' attr:'bottom' val: (((point y) *50) asString),'px'.
+css selector: '' attr:'left' val: ((point x) asString),'px'.
+css selector: '' attr:'bottom' val: ((point y) asString),'px'.
 
 css selector: '#',pid,'10' attr: 'font' val:'12px/25px Arial, sans-serif'.
 !
@@ -369,9 +376,11 @@ super initialize
 
 on: aCanvasId start: aStartPoint end: anEndPoint
 
-|ctx|
+|canvas ctx|
 
-ctx :=  '#',aCanvasId asJQuery at:0.
+canvas :=  ('#',aCanvasId) asJQuery at:0.
+console log:canvas.
+ctx := canvas getContext: '2d'.
 ctx beginPath.
 ctx moveTo: (aStartPoint x) and: (aStartPoint y).
 ctx lineTo: (anEndPoint x) and: (anEndPoint y).
@@ -382,6 +391,6 @@ ctx stroke.
 
 on: aCanvas start: aStart end: anEnd
 
-^ self new on aCanvas start:aStart end: anEnd; yourself.
+^ self new on: aCanvas start:aStart end: anEnd; yourself.
 ! !
 

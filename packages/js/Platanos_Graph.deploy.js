@@ -1,5 +1,5 @@
 smalltalk.addPackage('Platanos_Graph');
-smalltalk.addClass('DocGraph', smalltalk.Component, ['pointer', 'docs', 'rposition', 'lines', 'plines', 'initDoc', 'minPos', 'maxPos'], 'Platanos_Graph');
+smalltalk.addClass('DocGraph', smalltalk.Component, ['pointer', 'docs', 'rposition', 'lines', 'plines', 'initDoc', 'minPos', 'maxPos', 'cheight', 'cwidth'], 'Platanos_Graph');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "afunction",
@@ -21,19 +21,16 @@ smalltalk.method({
 selector: "createDocCells",
 fn: function (){
 var self=this;
+var index,each,d;
 function $Point(){return smalltalk.Point||(typeof Point=="undefined"?nil:Point)}
 function $DocGraphCell(){return smalltalk.DocGraphCell||(typeof DocGraphCell=="undefined"?nil:DocGraphCell)}
 function $Vector(){return smalltalk.Vector||(typeof Vector=="undefined"?nil:Vector)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
+d=(150);
+_st(console)._log_(self["@lines"]);
 _st(console)._log_(self["@plines"]);
-$1=self["@plines"];
-if(($receiver = $1) == nil || $receiver == undefined){
-$1;
-} else {
-var index,each;
+_st(self)._disconnectAllCompAt_("2");
 index=self["@rposition"];
-index;
 _st((function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self["@plines"])._includesKey_(index);
@@ -43,23 +40,22 @@ each=_st(self["@plines"])._at_(index);
 each;
 _st(each)._keysAndValuesDo_((function(key,value){
 return smalltalk.withContext(function($ctx3) {
-_st($DocGraphCell())._connect_to_doc_point_("2",self,_st(_st(self["@lines"])._at_(index))._at_(key),_st($Point())._x_y_(value,index));
+_st($DocGraphCell())._connect_to_doc_point_("2",self,_st(_st(self["@lines"])._at_(index))._at_(key),_st($Point())._x_y_(_st(_st(value).__minus((1))).__star(d),_st(index).__star(d)));
 return _st(_st(_st(self["@lines"])._at_(index))._at_(key))._ascDo_((function(other){
 var x,y;
 return smalltalk.withContext(function($ctx4) {
-y=_st(other)._myPosition_(self);
+y=_st(_st(self["@docs"])._at_(other))._myPosition_(self);
 y;
-x=_st(_st(self["@plines"])._at_(y))._at_(_st(other)._at_("sha1"));
+x=_st(_st(self["@plines"])._at_(y))._at_(other);
 x;
-return _st($Vector())._on_start_end_("10",_st($Point())._x_y_(_st(value).__star((50)),_st(index).__star((50))),_st($Point())._x_y_(_st(x).__star((50)),_st(y).__star((50))));
+return _st($Vector())._on_start_end_(_st(self["@pid"]).__comma("10"),_st($Point())._x_y_(_st(_st(value).__minus((1))).__star(d),_st(self["@cheight"]).__minus(_st(index).__star(d))),_st($Point())._x_y_(_st(_st(x).__minus((1))).__star(d),_st(self["@cheight"]).__minus(_st(y).__star(d))));
 }, function($ctx4) {$ctx4.fillBlock({other:other,x:x,y:y},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({key:key,value:value},$ctx1)})}));
 index=_st(index).__plus((1));
 return index;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-};
-return self}, function($ctx1) {$ctx1.fill(self,"createDocCells",{},smalltalk.DocGraph)})},
-messageSends: ["log:", "ifNotNil:", "whileTrue:", "at:", "keysAndValuesDo:", "connect:to:doc:point:", "x:y:", "ascDo:", "myPosition:", "on:start:end:", "*", "+", "includesKey:"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"createDocCells",{index:index,each:each,d:d},smalltalk.DocGraph)})},
+messageSends: ["log:", "disconnectAllCompAt:", "whileTrue:", "at:", "keysAndValuesDo:", "connect:to:doc:point:", "x:y:", "*", "-", "ascDo:", "myPosition:", "on:start:end:", ",", "+", "includesKey:"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -71,6 +67,7 @@ function $HashedCollection(){return smalltalk.HashedCollection||(typeof HashedCo
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 self["@initDoc"]=aDoc;
+_st(self["@docs"])._at_put_(_st(self["@initDoc"])._at_("sha1"),self["@initDoc"]);
 $1=_st($HashedCollection())._new();
 _st($1)._at_put_(_st(self["@initDoc"])._at_("sha1"),self["@initDoc"]);
 $2=_st($1)._yourself();
@@ -84,6 +81,7 @@ smalltalk.method({
 selector: "initialize",
 fn: function (){
 var self=this;
+var gheight,gwidth;
 function $HashedCollection(){return smalltalk.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
 function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
 return smalltalk.withContext(function($ctx1) { 
@@ -94,8 +92,12 @@ self["@rposition"]=(0);
 self["@minPos"]=(0);
 self["@maxPos"]=(0);
 self["@pointer"]=nil;
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.DocGraph)})},
-messageSends: ["initialize", "new"]}),
+gheight=_st(window)._innerHeight();
+gwidth=_st(window)._innerWidth();
+self["@cheight"]=gheight;
+self["@cwidth"]=_st((0.4)).__star(gwidth);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{gheight:gheight,gwidth:gwidth},smalltalk.DocGraph)})},
+messageSends: ["initialize", "new", "innerHeight", "innerWidth", "*"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -148,8 +150,7 @@ return smalltalk.withContext(function($ctx4) {
 return _st(psha1).__eq(_st(each)._at_("sha1"));
 }, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}),(function(){
 return smalltalk.withContext(function($ctx4) {
-temp=nil;
-return temp;
+return nil;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 temp;
 $1=temp;
@@ -160,10 +161,12 @@ return _st(each)._addAsc_(_st(other)._at_("sha1"));
 };
 }, function($ctx3) {$ctx3.fillBlock({other:other,temp:temp},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+_st(console)._log_(self["@docs"]);
+_st(console)._log_(_st("direction:").__comma(_st(direction)._asString()));
 _st(self)._putInLines_start_(direction,aPosition);
 _st(self)._putInpLines();
 return self}, function($ctx1) {$ctx1.fill(self,"loadJson:start:",{aJson:aJson,aPosition:aPosition,a:a,initialDoc:initialDoc,more:more,direction:direction},smalltalk.DocGraph)})},
-messageSends: ["log:", "parse:", "at:ifAbsent:", "at:", "do:", "jsono:", "at:put:", "detect:ifNone:", "=", "ifNotNil:", "addAsc:", "putInLines:start:", "putInpLines"]}),
+messageSends: ["log:", "parse:", "at:ifAbsent:", "at:", "do:", "jsono:", "at:put:", "detect:ifNone:", "=", "ifNotNil:", "addAsc:", ",", "asString", "putInLines:start:", "putInpLines"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -176,9 +179,10 @@ _st(css)._selector_attr_val_("","padding","5px");
 _st(css)._selector_attr_val_("","box-shadow","1px 1px 3px rgba(0, 0, 0, 0.5)");
 _st(css)._selector_attr_val_("","border-radius","2px");
 _st(css)._selector_attr_val_("","margin","3px");
+_st(css)._selector_attr_val_("","background-color","white");
 _st(css)._selector_attr_val_("","position","fixed");
 _st(css)._selector_attr_val_("","left","0px");
-_st(css)._selector_attr_val_("","top","0px");
+_st(css)._selector_attr_val_("","bottom","0px");
 return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css},smalltalk.DocGraph)})},
 messageSends: ["selector:attr:val:"]}),
 smalltalk.DocGraph);
@@ -208,36 +212,36 @@ var self=this;
 var nodes,oldnodes,prevnodes,pos;
 function $HashedCollection(){return smalltalk.HashedCollection||(typeof HashedCollection=="undefined"?nil:HashedCollection)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3;
+var $1,$2;
 pos=aPosition;
 nodes=_st(self["@lines"])._at_(pos);
-oldnodes=_st($HashedCollection())._new();
 prevnodes=_st($HashedCollection())._new();
 _st((function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(_st(nodes)._size()).__gt((0));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileTrue_((function(){
-var nnodes,all;
+var nnodes,nprevnodes,noldnodes,all;
 return smalltalk.withContext(function($ctx2) {
 nnodes=_st($HashedCollection())._new();
 nnodes;
 _st(nodes)._do_((function(node){
 return smalltalk.withContext(function($ctx3) {
 return _st(node)._ascDo_((function(each){
-var temp;
+var temp,doc;
 return smalltalk.withContext(function($ctx4) {
-temp=_st(each)._ascDetect_ifNone_((function(psha1){
+doc=_st(self["@docs"])._at_(each);
+doc;
+temp=_st(_st(doc)._at_("psha1"))._detect_ifNone_((function(psha1){
 return smalltalk.withContext(function($ctx5) {
-return _st(_st(nodes)._includes_(psha1))._not();
+return _st(_st(_st(nodes)._includesKey_(psha1))._not()).__and(_st(_st(prevnodes)._includesKey_(psha1))._not());
 }, function($ctx5) {$ctx5.fillBlock({psha1:psha1},$ctx1)})}),(function(){
 return smalltalk.withContext(function($ctx5) {
-temp=nil;
-return temp;
+return nil;
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 temp;
 $1=temp;
 if(($receiver = $1) == nil || $receiver == undefined){
-_st(nnodes)._at_put_(_st(each)._at_("sha1"),each);
+_st(nnodes)._at_put_(each,doc);
 } else {
 $1;
 };
@@ -245,48 +249,22 @@ $2=temp;
 if(($receiver = $2) == nil || $receiver == undefined){
 return $2;
 } else {
-_st(oldnodes)._at_put_(_st(each)._at_("sha1"),each);
 return _st(prevnodes)._at_put_(_st(node)._at_("sha1"),node);
 };
-}, function($ctx4) {$ctx4.fillBlock({each:each,temp:temp},$ctx1)})}));
+}, function($ctx4) {$ctx4.fillBlock({each:each,temp:temp,doc:doc},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({node:node},$ctx1)})}));
-all=_st($HashedCollection())._new();
-all;
-_st(all)._addAll_(nodes);
-_st(all)._addAll_(prevnodes);
-_st(oldnodes)._do_((function(each){
-var temp;
-return smalltalk.withContext(function($ctx3) {
-temp=_st(each)._ascDetect_ifNone_((function(psha1){
-return smalltalk.withContext(function($ctx4) {
-return _st(_st(all)._includes_(psha1))._not();
-}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}),(function(){
-return smalltalk.withContext(function($ctx4) {
-temp=nil;
-return temp;
-}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
-temp;
-$3=temp;
-if(($receiver = $3) == nil || $receiver == undefined){
-_st(nnodes)._at_put_(_st(each)._at_("sha1"),each);
-_st(each)._ascDo_((function(psha1){
-return smalltalk.withContext(function($ctx4) {
-return _st(prevnodes)._removeKey_(psha1);
-}, function($ctx4) {$ctx4.fillBlock({psha1:psha1},$ctx1)})}));
-return _st(oldnodes)._removeKey_at_(each,"sha1");
-} else {
-return $3;
-};
-}, function($ctx3) {$ctx3.fillBlock({each:each,temp:temp},$ctx1)})}));
 pos=_st(pos).__plus((1));
 pos;
 _st(self["@lines"])._at_put_(pos,nnodes);
 nodes=nnodes;
 return nodes;
-}, function($ctx2) {$ctx2.fillBlock({nnodes:nnodes,all:all},$ctx1)})}));
-self["@maxPos"]=pos;
+}, function($ctx2) {$ctx2.fillBlock({nnodes:nnodes,nprevnodes:nprevnodes,noldnodes:noldnodes,all:all},$ctx1)})}));
+_st(self["@lines"])._removeKey_ifAbsent_(pos,(function(){
+return smalltalk.withContext(function($ctx2) {
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+self["@maxPos"]=_st(pos).__minus((1));
 return self}, function($ctx1) {$ctx1.fill(self,"putInLinesAsc:",{aPosition:aPosition,nodes:nodes,oldnodes:oldnodes,prevnodes:prevnodes,pos:pos},smalltalk.DocGraph)})},
-messageSends: ["at:", "new", "whileTrue:", "do:", "ascDo:", "ascDetect:ifNone:", "not", "includes:", "ifNil:", "at:put:", "ifNotNil:", "addAll:", "removeKey:", "removeKey:at:", "+", ">", "size"]}),
+messageSends: ["at:", "new", "whileTrue:", "do:", "ascDo:", "detect:ifNone:", "&", "not", "includesKey:", "ifNil:", "at:put:", "ifNotNil:", "+", ">", "size", "removeKey:ifAbsent:", "-"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -394,7 +372,7 @@ self["@plines"]=_st($Dictionary())._new();
 current=_st($Array())._new();
 nodes=_st($HashedCollection())._new();
 _st(self["@plines"])._at_put_(self["@minPos"],nodes);
-siter=(0);
+siter=(1);
 _st(_st(self["@lines"])._at_(self["@minPos"]))._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
 _st(nodes)._at_put_(_st(each)._at_("sha1"),siter);
@@ -409,25 +387,26 @@ return _st(pos).__lt_eq(self["@maxPos"]);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileTrue_((function(){
 var ncurrent;
 return smalltalk.withContext(function($ctx2) {
-ncurrent=_st($Dictionary())._new();
+ncurrent=_st($Array())._new();
 ncurrent;
-siter=(0);
+siter=(1);
 siter;
 nodes=_st($HashedCollection())._new();
 nodes;
-_st(self["@plines"])._at_put_(pos,nodes);
 iter=_st(self["@lines"])._at_(pos);
 iter;
+_st(console)._log_("current is");
+_st(console)._log_(current);
 _st(current)._do_((function(each){
 return smalltalk.withContext(function($ctx3) {
 return _st(each)._ascDo_((function(other){
 return smalltalk.withContext(function($ctx4) {
-$1=_st(iter)._includesKey_(_st(other)._at_("sha1"));
+$1=_st(iter)._includesKey_(other);
 if(smalltalk.assert($1)){
-$2=_st(nodes)._includesKey_(_st(other)._at_("sha1"));
+$2=_st(nodes)._includesKey_(other);
 if(! smalltalk.assert($2)){
-_st(nodes)._at_put_(_st(other)._at_("sha1"),siter);
-_st(ncurrent)._at_put_(siter,other);
+_st(nodes)._at_put_(other,siter);
+_st(ncurrent)._at_put_(siter,_st(self["@docs"])._at_(other));
 siter=_st(siter).__plus((1));
 return siter;
 };
@@ -438,13 +417,14 @@ return siter;
 };
 }, function($ctx4) {$ctx4.fillBlock({other:other},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})}));
+_st(self["@plines"])._at_put_(pos,nodes);
 current=ncurrent;
 current;
 pos=_st(pos).__plus((1));
 return pos;
 }, function($ctx2) {$ctx2.fillBlock({ncurrent:ncurrent},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"putInpLines",{iter:iter,pos:pos,current:current,nodes:nodes,siter:siter},smalltalk.DocGraph)})},
-messageSends: ["new", "at:put:", "do:", "at:", "+", "whileTrue:", "ascDo:", "ifTrue:ifFalse:", "ifFalse:", "includesKey:", "<="]}),
+messageSends: ["new", "at:put:", "do:", "at:", "+", "whileTrue:", "log:", "ascDo:", "ifTrue:ifFalse:", "ifFalse:", "includesKey:", "<="]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -452,16 +432,16 @@ smalltalk.method({
 selector: "renderOn:",
 fn: function (html){
 var self=this;
-var iter,maxLength;
+var iter;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 $1=_st(html)._canvas();
 _st($1)._id_(_st(self)._assignId());
-_st($1)._width_("80%");
-$2=_st($1)._height_("100%");
+_st($1)._width_(_st(self["@cwidth"])._asString());
+$2=_st($1)._height_(_st(self["@cheight"])._asString());
 _st(_st(html)._div())._id_(_st(self)._assignId());
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html,iter:iter,maxLength:maxLength},smalltalk.DocGraph)})},
-messageSends: ["id:", "assignId", "canvas", "width:", "height:", "div"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html,iter:iter},smalltalk.DocGraph)})},
+messageSends: ["id:", "assignId", "canvas", "width:", "asString", "height:", "div"]}),
 smalltalk.DocGraph);
 
 smalltalk.addMethod(
@@ -556,11 +536,11 @@ _st(css)._selector_attr_val_("","border-radius","2px");
 _st(css)._selector_attr_val_("","text-align","left");
 _st(css)._selector_attr_val_("","margin","3px");
 _st(css)._selector_attr_val_("","position","fixed");
-_st(css)._selector_attr_val_("","left",_st(_st(_st(_st(self["@point"])._y()).__star((50)))._asString()).__comma("px"));
-_st(css)._selector_attr_val_("","bottom",_st(_st(_st(_st(self["@point"])._y()).__star((50)))._asString()).__comma("px"));
+_st(css)._selector_attr_val_("","left",_st(_st(_st(self["@point"])._x())._asString()).__comma("px"));
+_st(css)._selector_attr_val_("","bottom",_st(_st(_st(self["@point"])._y())._asString()).__comma("px"));
 _st(css)._selector_attr_val_(_st(_st("#").__comma(self["@pid"])).__comma("10"),"font","12px/25px Arial, sans-serif");
 return self}, function($ctx1) {$ctx1.fill(self,"paintOn:",{css:css},smalltalk.DocGraphCell)})},
-messageSends: ["selector:attr:val:", ",", "asString", "*", "y"]}),
+messageSends: ["selector:attr:val:", ",", "asString", "x", "y"]}),
 smalltalk.DocGraphCell);
 
 smalltalk.addMethod(
@@ -619,15 +599,17 @@ smalltalk.method({
 selector: "on:start:end:",
 fn: function (aCanvasId,aStartPoint,anEndPoint){
 var self=this;
-var ctx;
+var canvas,ctx;
 return smalltalk.withContext(function($ctx1) { 
-ctx=_st(_st("#").__comma(_st(aCanvasId)._asJQuery()))._at_((0));
+canvas=_st(_st(_st("#").__comma(aCanvasId))._asJQuery())._at_((0));
+_st(console)._log_(canvas);
+ctx=_st(canvas)._getContext_("2d");
 _st(ctx)._beginPath();
 _st(ctx)._moveTo_and_(_st(aStartPoint)._x(),_st(aStartPoint)._y());
 _st(ctx)._lineTo_and_(_st(anEndPoint)._x(),_st(anEndPoint)._y());
 _st(ctx)._stroke();
-return self}, function($ctx1) {$ctx1.fill(self,"on:start:end:",{aCanvasId:aCanvasId,aStartPoint:aStartPoint,anEndPoint:anEndPoint,ctx:ctx},smalltalk.Vector)})},
-messageSends: ["at:", ",", "asJQuery", "beginPath", "moveTo:and:", "x", "y", "lineTo:and:", "stroke"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"on:start:end:",{aCanvasId:aCanvasId,aStartPoint:aStartPoint,anEndPoint:anEndPoint,canvas:canvas,ctx:ctx},smalltalk.Vector)})},
+messageSends: ["at:", "asJQuery", ",", "log:", "getContext:", "beginPath", "moveTo:and:", "x", "y", "lineTo:and:", "stroke"]}),
 smalltalk.Vector);
 
 
@@ -638,13 +620,13 @@ fn: function (aCanvas,aStart,anEnd){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $2,$3,$1;
-$2=_st(_st(_st(self)._new())._on())._aCanvas();
-_st($2)._start_end_(aStart,anEnd);
+$2=_st(self)._new();
+_st($2)._on_start_end_(aCanvas,aStart,anEnd);
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"on:start:end:",{aCanvas:aCanvas,aStart:aStart,anEnd:anEnd},smalltalk.Vector.klass)})},
-messageSends: ["start:end:", "aCanvas", "on", "new", "yourself"]}),
+messageSends: ["on:start:end:", "new", "yourself"]}),
 smalltalk.Vector.klass);
 
 
